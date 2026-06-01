@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { ShoppingCart, Star, Filter, Search } from 'lucide-react';
+import { ShoppingCart, Star, Search } from 'lucide-react';
 
 interface Product {
   id: number;
@@ -28,7 +27,6 @@ const products: Product[] = [
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [cartCount, setCartCount] = useState(0);
 
   const categories = ['all', 'Jerseys', 'Apparel', 'Accessories', 'Equipment'];
 
@@ -39,7 +37,6 @@ const Shop = () => {
   });
 
   const addToCart = (productName: string) => {
-    setCartCount(prev => prev + 1);
     alert(`${productName} added to cart!`);
   };
 
@@ -61,7 +58,6 @@ const Shop = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Search and Filters */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '40px' }}>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               {categories.map(cat => (
@@ -101,7 +97,6 @@ const Shop = () => {
             </div>
           </div>
 
-          {/* Products Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '30px' }}>
             {filteredProducts.map(product => (
               <div key={product.id} style={{

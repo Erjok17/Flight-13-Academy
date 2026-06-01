@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { Calendar, Users, Trophy, Clock, Star, Award, UserCheck, Briefcase } from 'lucide-react';
+import { Calendar, Users, Trophy, Star, Award, UserCheck, Briefcase } from 'lucide-react';
 
 const Programs = () => {
   const programs = [
@@ -57,7 +57,7 @@ const Programs = () => {
         'Flexible scheduling options',
         'Accelerated improvement in weak areas'
       ],
-      video: '/videos/tyron1.mp4',
+      video: '/videos/tyron.mp4',
       color: '#f5f5f5'
     },
     {
@@ -82,33 +82,21 @@ const Programs = () => {
       <Navbar />
       <AnnouncementBanner />
       
-      {/* Hero Section */}
       <section style={{
         backgroundColor: 'var(--red)',
         color: 'white',
         padding: '80px 0',
         textAlign: 'center'
       }}>
-        <h1 style={{
-          fontSize: 'clamp(36px, 6vw, 52px)',
-          fontWeight: 'bold',
-          marginBottom: '16px'
-        }}>
+        <h1 style={{ fontSize: 'clamp(32px, 6vw, 52px)', fontWeight: 'bold', marginBottom: '16px' }}>
           Our Programs
         </h1>
-        <p style={{
-          fontSize: 'clamp(16px, 2vw, 20px)',
-          maxWidth: '700px',
-          margin: '0 auto',
-          opacity: 0.95
-        }}>
+        <p style={{ fontSize: 'clamp(16px, 2vw, 20px)', maxWidth: '700px', margin: '0 auto', opacity: 0.95 }}>
           Year-round training designed to develop skilled, confident, and disciplined athletes
         </p>
       </section>
 
       <main style={{ backgroundColor: 'white' }}>
-        
-        {/* Programs Grid */}
         <section style={{ padding: '80px 0' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '60px' }}>
@@ -129,49 +117,21 @@ const Programs = () => {
                     alignItems: 'center',
                     padding: '40px'
                   }}>
-                    {/* Left Side */}
                     <div>
-                      <div style={{ marginBottom: '20px' }}>
-                        {program.icon}
-                      </div>
-                      <h2 style={{
-                        fontSize: '28px',
-                        fontWeight: 'bold',
-                        color: 'var(--red)',
-                        marginBottom: '16px'
-                      }}>
+                      <div style={{ marginBottom: '20px' }}>{program.icon}</div>
+                      <h2 style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '16px' }}>
                         {program.title}
                       </h2>
-                      <p style={{
-                        fontSize: '16px',
-                        lineHeight: '1.6',
-                        color: '#555',
-                        marginBottom: '24px'
-                      }}>
+                      <p style={{ fontSize: '16px', lineHeight: '1.6', color: '#555', marginBottom: '24px' }}>
                         {program.description}
                       </p>
                       
-                      <h3 style={{
-                        fontSize: '18px',
-                        fontWeight: 'bold',
-                        color: '#333',
-                        marginBottom: '16px'
-                      }}>
+                      <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#333', marginBottom: '16px' }}>
                         Key Features:
                       </h3>
-                      <ul style={{
-                        listStyle: 'none',
-                        padding: 0
-                      }}>
+                      <ul style={{ listStyle: 'none', padding: 0 }}>
                         {program.features.map((feature, idx) => (
-                          <li key={idx} style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            marginBottom: '12px',
-                            fontSize: '14px',
-                            color: '#555'
-                          }}>
+                          <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', fontSize: '14px', color: '#555' }}>
                             <span style={{ color: 'var(--red)', fontSize: '18px' }}>✓</span>
                             {feature}
                           </li>
@@ -190,13 +150,11 @@ const Programs = () => {
                         transition: 'all 0.3s'
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
-                      >
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
                         Register Now →
                       </Link>
                     </div>
                     
-                    {/* Right Side - Schedule, Guest Coaches, Video, or Image */}
                     <div>
                       {program.schedule ? (
                         <div style={{
@@ -205,12 +163,7 @@ const Programs = () => {
                           padding: '24px',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{
-                            fontSize: '20px',
-                            fontWeight: 'bold',
-                            color: 'var(--red)',
-                            marginBottom: '20px'
-                          }}>
+                          <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '20px' }}>
                             Schedule Details
                           </h3>
                           {Object.entries(program.schedule).map(([key, value]) => (
@@ -242,12 +195,7 @@ const Programs = () => {
                           padding: '24px',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{
-                            fontSize: '20px',
-                            fontWeight: 'bold',
-                            color: 'var(--red)',
-                            marginBottom: '20px'
-                          }}>
+                          <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '20px' }}>
                             Guest Coaches & Scouts
                           </h3>
                           {program.guestCoaches.map((coach, idx) => (
@@ -276,7 +224,6 @@ const Programs = () => {
                               </div>
                             </div>
                           ))}
-                          
                           <div style={{
                             marginTop: '20px',
                             padding: '16px',
@@ -288,7 +235,6 @@ const Programs = () => {
                           }}>
                             <strong>🏀 Special Highlight:</strong> {program.specialHighlight}
                           </div>
-                          
                           <div style={{
                             marginTop: '16px',
                             padding: '12px',
@@ -354,7 +300,7 @@ const Programs = () => {
                             fontSize: '13px',
                             color: '#666'
                           }}>
-                            Coach Nathan on the touchline during competitive action
+                            Coach on the touchline during competitive action
                           </div>
                         </div>
                       ) : (
@@ -380,22 +326,12 @@ const Programs = () => {
           </div>
         </section>
         
-        {/* Why Choose Flight 13 Section */}
         <section style={{ backgroundColor: '#f9f9f9', padding: '80px 0' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
-            <h2 style={{
-              fontSize: 'clamp(28px, 4vw, 36px)',
-              color: 'var(--red)',
-              marginBottom: '16px'
-            }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--red)', marginBottom: '16px' }}>
               Why Parents Trust Flight 13
             </h2>
-            <p style={{
-              fontSize: '18px',
-              color: '#666',
-              maxWidth: '700px',
-              margin: '0 auto 48px auto'
-            }}>
+            <p style={{ fontSize: '18px', color: '#666', maxWidth: '700px', margin: '0 auto 48px auto' }}>
               We're committed to developing not just skilled players, but responsible young men and women
             </p>
             
@@ -418,8 +354,7 @@ const Programs = () => {
                   transition: 'transform 0.3s'
                 }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                >
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   <div style={{ color: 'var(--red)', marginBottom: '16px' }}>
                     {item.icon}
                   </div>
@@ -431,20 +366,11 @@ const Programs = () => {
           </div>
         </section>
         
-        {/* CTA Section */}
         <section style={{ padding: '80px 0', textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: 'clamp(24px, 4vw, 32px)',
-            marginBottom: '16px',
-            color: '#222'
-          }}>
+          <h2 style={{ fontSize: 'clamp(24px, 4vw, 32px)', marginBottom: '16px', color: '#222' }}>
             Ready to Start Your Journey?
           </h2>
-          <p style={{
-            fontSize: '16px',
-            color: '#666',
-            marginBottom: '32px'
-          }}>
+          <p style={{ fontSize: '16px', color: '#666', marginBottom: '32px' }}>
             Join Flight 13 today and take the first step toward becoming an elite athlete
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -458,8 +384,7 @@ const Programs = () => {
               transition: 'all 0.3s'
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
-            >
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
               Register Now
             </Link>
             <Link to="/contact" style={{
@@ -479,8 +404,7 @@ const Programs = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
               e.currentTarget.style.color = 'var(--red)';
-            }}
-            >
+            }}>
               Contact Us
             </Link>
           </div>

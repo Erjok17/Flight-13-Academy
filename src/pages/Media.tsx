@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { Play, Image, Grid3x3, List, X } from 'lucide-react';
+import { Grid3x3, List, X } from 'lucide-react';
 
 interface MediaItem {
   id: number;
@@ -16,7 +16,6 @@ const Media = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [viewMode, setViewMode] = useState('grid');
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
-  const videoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
 
   const categories = [
     { id: 'all', name: 'All', icon: '🎬' },
@@ -27,16 +26,12 @@ const Media = () => {
   ];
 
   const mediaItems: MediaItem[] = [
-    // Videos
     { id: 1, type: 'video', src: '/videos/ben1.mp4', title: 'Intensive Training Session', category: 'training' },
     { id: 2, type: 'video', src: '/videos/ben3.mp4', title: 'Skill Development Drills', category: 'training' },
-    { id: 3, type: 'video', src: '/videos/gameday3.mp4', title: 'Game Day Highlights', category: 'games' },
+    { id: 3, type: 'video', src: '/videos/gameday1.mp4', title: 'Game Day Highlights', category: 'games' },
     { id: 4, type: 'video', src: '/videos/tyron1.mp4', title: 'Private Session - One on One', category: 'training' },
-    { id: 5, type: 'video', src: '/videos/idris.mp4', title: 'Individual Session - Idris, one of our youngest players', category: 'training' },
-    { id: 6, type: 'video', src: '/videos/children1.mp4', title: 'Children\'s Training Session with Coach Mark', category: 'camps' },
-    
-    // Images
-
+    { id: 5, type: 'video', src: '/videos/idris.mp4', title: 'Camp Highlights - Building Champions', category: 'camps' },
+    { id: 6, type: 'video', src: '/videos/tyron.mp4', title: 'Individual Workout - Tyron', category: 'training' },
     { id: 7, type: 'image', src: '/images/p1.jpeg', title: 'Private Workout Session', category: 'training' },
     { id: 8, type: 'image', src: '/images/p6.jpeg', title: 'Team Practice', category: 'training' },
     { id: 9, type: 'image', src: '/images/p7.jpeg', title: 'Game Action', category: 'games' },
@@ -62,19 +57,11 @@ const Media = () => {
     document.body.style.overflow = 'auto';
   };
 
-  const playVideo = (id: number) => {
-    const video = videoRefs.current[id];
-    if (video) {
-      video.play();
-    }
-  };
-
   return (
     <div>
       <Navbar />
       <AnnouncementBanner />
       
-      {/* Hero Section */}
       <section style={{
         backgroundColor: '#1a1a1a',
         color: 'white',
@@ -104,7 +91,6 @@ const Media = () => {
       <main style={{ backgroundColor: 'white', padding: '60px 0' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Category Filters */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -140,7 +126,6 @@ const Media = () => {
               ))}
             </div>
             
-            {/* View Mode Toggle */}
             <div style={{ display: 'flex', gap: '10px' }}>
               <button
                 onClick={() => setViewMode('grid')}
@@ -169,7 +154,6 @@ const Media = () => {
             </div>
           </div>
 
-          {/* Media Grid */}
           {viewMode === 'grid' ? (
             <div style={{
               display: 'grid',
@@ -196,19 +180,16 @@ const Media = () => {
                   }}
                 >
                   {item.type === 'video' ? (
-                    <div style={{ position: 'relative' }}>
-                      <video
-                        ref={el => videoRefs.current[item.id] = el}
-                        src={item.src}
-                        controls
-                        style={{
-                          width: '100%',
-                          height: '220px',
-                          objectFit: 'cover',
-                          backgroundColor: '#1a1a1a'
-                        }}
-                      />
-                    </div>
+                    <video
+                      src={item.src}
+                      controls
+                      style={{
+                        width: '100%',
+                        height: '220px',
+                        objectFit: 'cover',
+                        backgroundColor: '#1a1a1a'
+                      }}
+                    />
                   ) : (
                     <img 
                       src={item.src} 
@@ -269,7 +250,6 @@ const Media = () => {
             </div>
           )}
 
-          {/* Empty State */}
           {filteredMedia.length === 0 && (
             <div style={{ textAlign: 'center', padding: '80px 20px' }}>
               <p style={{ fontSize: '18px', color: '#888' }}>No media found in this category.</p>
@@ -278,7 +258,6 @@ const Media = () => {
         </div>
       </main>
 
-      {/* Modal for Viewing Images (not videos) */}
       {selectedMedia && selectedMedia.type === 'image' && (
         <div style={{
           position: 'fixed',
@@ -334,7 +313,6 @@ const Media = () => {
         </div>
       )}
       
-      {/* Video Modal (when clicking on video thumbnail) */}
       {selectedMedia && selectedMedia.type === 'video' && (
         <div style={{
           position: 'fixed',

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { CreditCard, Lock, ChevronRight, User, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
+import { Lock, ChevronRight, AlertCircle } from 'lucide-react';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -11,17 +11,12 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   
   const [formData, setFormData] = useState({
-    // Personal Info
     fullName: '',
     email: '',
     phone: '',
-    
-    // Delivery Info
     address: '',
     city: '',
     district: '',
-    
-    // Payment
     paymentMethod: 'mobile_money',
     mobileMoneyNumber: '',
     transactionCode: '',
@@ -29,7 +24,6 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Sample cart summary (would come from cart state/context in real app)
   const cartSummary = {
     subtotal: 300000,
     deliveryFee: 10000,
@@ -45,7 +39,6 @@ const Checkout = () => {
       ...formData,
       [e.target.name]: e.target.value
     });
-    // Clear error for this field
     if (errors[e.target.name]) {
       setErrors({ ...errors, [e.target.name]: '' });
     }
@@ -91,10 +84,8 @@ const Checkout = () => {
     
     setIsProcessing(true);
     
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
-      // Redirect to success page or show confirmation
       alert('Payment submitted! Thank you for your registration.');
       navigate('/');
     }, 2000);
@@ -161,7 +152,6 @@ const Checkout = () => {
             <form onSubmit={handleSubmit}>
               <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
                 
-                {/* Step 1: Personal & Delivery Info */}
                 {step === 1 && (
                   <div>
                     <h2 style={{ fontSize: '22px', marginBottom: '24px', color: '#333' }}>Contact Information</h2>
@@ -280,7 +270,6 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Step 2: Payment */}
                 {step === 2 && (
                   <div>
                     <h2 style={{ fontSize: '22px', marginBottom: '24px', color: '#333' }}>Payment Method</h2>
@@ -398,7 +387,6 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Navigation Buttons */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px' }}>
                   {step === 2 && (
                     <button

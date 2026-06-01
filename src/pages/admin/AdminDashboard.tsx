@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { Users, ShoppingBag, Calendar, DollarSign, TrendingUp, Settings, Plus, Edit, Trash2 } from 'lucide-react';
+import { Users, ShoppingBag, Calendar, DollarSign, TrendingUp, Plus, Edit, Trash2 } from 'lucide-react';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -34,7 +33,6 @@ const AdminDashboard = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Tabs */}
           <div style={{ display: 'flex', gap: '16px', marginBottom: '40px', borderBottom: '1px solid #ddd', paddingBottom: '16px', flexWrap: 'wrap' }}>
             {['overview', 'athletes', 'programs', 'registrations', 'products', 'settings'].map(tab => (
               <button
@@ -56,7 +54,6 @@ const AdminDashboard = () => {
             ))}
           </div>
 
-          {/* Overview Tab */}
           {activeTab === 'overview' && (
             <div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '24px', marginBottom: '40px' }}>
@@ -101,7 +98,6 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* Athletes Tab */}
           {activeTab === 'athletes' && (
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -127,13 +123,12 @@ const AdminDashboard = () => {
                     <td style={{ padding: '12px' }}>Point Guard</td>
                     <td style={{ padding: '12px' }}>St. Mary's College</td>
                     <td style={{ padding: '12px' }}><button style={{ color: 'var(--red)', cursor: 'pointer' }}><Edit size={16} /></button> <button style={{ color: '#f44336', cursor: 'pointer' }}><Trash2 size={16} /></button></td>
-                  </tr>
+                   </tr>
                 </tbody>
               </table>
             </div>
           )}
 
-          {/* Products Tab */}
           {activeTab === 'products' && (
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -159,7 +154,7 @@ const AdminDashboard = () => {
                     <td style={{ padding: '12px' }}>Jerseys</td>
                     <td style={{ padding: '12px' }}>In Stock</td>
                     <td style={{ padding: '12px' }}><button style={{ color: 'var(--red)', cursor: 'pointer' }}><Edit size={16} /></button> <button style={{ color: '#f44336', cursor: 'pointer' }}><Trash2 size={16} /></button></td>
-                  </tr>
+                   </tr>
                 </tbody>
               </table>
             </div>

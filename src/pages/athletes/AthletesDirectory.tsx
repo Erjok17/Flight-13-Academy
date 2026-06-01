@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { Search, Filter, User, Ruler, Weight, GraduationCap, Award, TrendingUp } from 'lucide-react';
+import { Search, Ruler, Weight, GraduationCap } from 'lucide-react';
 
-// Sample athlete data - This would come from Supabase in production
 const athletes = [
   {
     id: 1,
@@ -90,7 +89,6 @@ const AthletesDirectory = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Search and Filters */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '40px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
               <div style={{ flex: 2, position: 'relative' }}>
@@ -134,7 +132,6 @@ const AthletesDirectory = () => {
             </div>
           </div>
 
-          {/* Athletes Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '30px' }}>
             {filteredAthletes.map(athlete => (
               <div key={athlete.id} style={{
@@ -216,7 +213,6 @@ const AthletesDirectory = () => {
             </div>
           )}
 
-          {/* Scout Call to Action */}
           <div style={{
             marginTop: '60px',
             backgroundColor: 'white',

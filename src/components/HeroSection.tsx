@@ -64,11 +64,6 @@ const HeroSection = () => {
     resetBorderAnimation();
   };
 
-  const moveToPrevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    resetBorderAnimation();
-  };
-
   const resetBorderAnimation = () => {
     setIsAnimating(false);
     setBorderProgress(0);

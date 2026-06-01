@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { User, Package, Heart, Settings, LogOut, Calendar, Trophy, Edit2, Save, X } from 'lucide-react';
+import { User, Package, Settings, LogOut, Calendar, Trophy, Edit2, Save, X } from 'lucide-react';
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState('profile');

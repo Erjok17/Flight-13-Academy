@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { User, Mail, Phone, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { User, Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react';
 
 const Register = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [userType, setUserType] = useState('parent'); // parent, scout, general
+  const [userType, setUserType] = useState('parent');
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -19,11 +19,9 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     userType: 'parent',
-    // For parents
     childName: '',
     childAge: '',
     childSchool: '',
-    // For scouts
     scoutOrganization: '',
     scoutRole: '',
   });
@@ -59,7 +57,6 @@ const Register = () => {
     
     setIsLoading(true);
     
-    // Simulate registration
     setTimeout(() => {
       setIsLoading(false);
       localStorage.setItem('user', JSON.stringify({ email: formData.email, name: formData.fullName, type: userType }));
@@ -86,7 +83,6 @@ const Register = () => {
         <div style={{ maxWidth: '600px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
             
-            {/* User Type Selector */}
             <div style={{ display: 'flex', gap: '16px', marginBottom: '32px', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
               {[
                 { id: 'parent', label: '👨‍👩‍👧 Parent/Guardian', desc: 'Register your child for programs' },
@@ -180,7 +176,6 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Parent-specific fields */}
               {userType === 'parent' && (
                 <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
                   <h4 style={{ marginBottom: '16px', color: '#333' }}>Child Information (Optional)</h4>
@@ -213,7 +208,6 @@ const Register = () => {
                 </div>
               )}
 
-              {/* Scout-specific fields */}
               {userType === 'scout' && (
                 <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
                   <h4 style={{ marginBottom: '16px', color: '#333' }}>Scout Information</h4>
