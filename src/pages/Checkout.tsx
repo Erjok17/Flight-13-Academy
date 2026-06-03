@@ -109,7 +109,6 @@ const Checkout = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Progress Steps */}
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px', gap: '40px' }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{
@@ -148,7 +147,6 @@ const Checkout = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '40px' }}>
-            {/* Form Section */}
             <form onSubmit={handleSubmit}>
               <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
                 
@@ -446,7 +444,6 @@ const Checkout = () => {
               </div>
             </form>
 
-            {/* Order Summary Sidebar */}
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)', height: 'fit-content', position: 'sticky', top: '20px' }}>
               <h3 style={{ fontSize: '20px', marginBottom: '20px', borderBottom: '2px solid var(--red)', paddingBottom: '12px', display: 'inline-block' }}>Your Order</h3>
               

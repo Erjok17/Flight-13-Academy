@@ -123,7 +123,7 @@ const AdminDashboard = () => {
                     <td style={{ padding: '12px' }}>Point Guard</td>
                     <td style={{ padding: '12px' }}>St. Mary's College</td>
                     <td style={{ padding: '12px' }}><button style={{ color: 'var(--red)', cursor: 'pointer' }}><Edit size={16} /></button> <button style={{ color: '#f44336', cursor: 'pointer' }}><Trash2 size={16} /></button></td>
-                   </tr>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
                     <td style={{ padding: '12px' }}>Jerseys</td>
                     <td style={{ padding: '12px' }}>In Stock</td>
                     <td style={{ padding: '12px' }}><button style={{ color: 'var(--red)', cursor: 'pointer' }}><Edit size={16} /></button> <button style={{ color: '#f44336', cursor: 'pointer' }}><Trash2 size={16} /></button></td>
-                   </tr>
+                  </tr>
                 </tbody>
               </table>
             </div>
