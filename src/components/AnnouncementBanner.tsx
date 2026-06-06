@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { X, Megaphone, Calendar, ShoppingBag, Trophy, Clock } from 'lucide-react';
+import { X, Megaphone, Calendar, ShoppingBag, Clock } from 'lucide-react';
 
 interface Announcement {
   id: number;
   title: string;
   message: string;
-  icon: 'camp' | 'store' | 'event' | 'urgent';
+  icon: 'camp' | 'store' | 'urgent';
   link?: string;
   linkText?: string;
 }
@@ -24,23 +24,15 @@ const announcements: Announcement[] = [
     title: '🛍️ NEW MERCHANDISE ARRIVED!',
     message: 'Flight 13 jerseys, hoodies, and accessories now available in our online store.',
     icon: 'store',
-    link: '/store',
+    link: '/shop',
     linkText: 'Shop Now →'
   },
   {
     id: 3,
-    title: '🏆 SCHOLARSHIP OPPORTUNITY',
-    message: 'Two new basketball scholarships available for talented athletes ages 14-18.',
-    icon: 'event',
-    link: '/scholarships',
-    linkText: 'Learn More →'
-  },
-  {
-    id: 4,
     title: '⏰ PRACTICE SCHEDULE UPDATE',
-    message: 'Saturday practices now from 9AM - 12PM. Check your age group time slot.',
+    message: 'Monday, Wednesday, Friday & Saturday — Check our programs page for full schedule details.',
     icon: 'urgent',
-    link: '/schedule',
+    link: '/programs',
     linkText: 'View Schedule →'
   }
 ];
@@ -67,8 +59,6 @@ const AnnouncementBanner = () => {
         return <Calendar size={20} />;
       case 'store':
         return <ShoppingBag size={20} />;
-      case 'event':
-        return <Trophy size={20} />;
       case 'urgent':
         return <Clock size={20} />;
       default:
@@ -87,7 +77,6 @@ const AnnouncementBanner = () => {
       backgroundColor: 'var(--red)',
       overflow: 'hidden',
       zIndex: 100,
-      // Add spacing above and below
       marginTop: '16px',
       marginBottom: '16px',
       borderRadius: '0px'
