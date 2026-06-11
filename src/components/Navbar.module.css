@@ -1,0 +1,221 @@
+.navbar {
+  background-color: white;
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.academyName {
+  color: var(--red);
+  font-size: 24px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Red Trapezoid Container - positioned absolutely */
+.trapezoidContainer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 1;
+}
+
+/* Red Trapezoid Shape */
+.desktopIcons {
+  background-color: var(--red);
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.iconWrapper {
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #FF9800;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.mobileMenuBtn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.desktopNav {
+  background-color: var(--red);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.navLinksContainer {
+  display: flex;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 48px);
+  padding: 12px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.navLink {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.navLink:hover {
+  opacity: 0.8;
+}
+
+.mobileNav {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding: 80px 20px 20px;
+  overflow-y: auto;
+}
+
+.mobileNav.open {
+  right: 0;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileNavLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobileNavLink {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+
+.mobileLogoutBtn {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+}
+
+.mobileSignInLink {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: var(--red);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  display: block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+@media (max-width: 768px) {
+  .trapezoidContainer {
+    display: none;
+  }
+  
+  .mobileMenuBtn {
+    display: block;
+  }
+  
+  .desktopNav {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobileNav {
+    display: none;
+  }
+  
+  .overlay {
+    display: none;
+  }
+}

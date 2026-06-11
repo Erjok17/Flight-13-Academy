@@ -1,34 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { ShoppingCart, Star, Search } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   category: string;
   sizes: string[];
-  image: string;
+  image_url: string;
   rating: number;
-  inStock: boolean;
+  in_stock: boolean;
+  description: string;
 }
 
-const products: Product[] = [
-  { id: 1, name: 'Flight 13 Home Jersey', price: 75000, category: 'Jerseys', sizes: ['S', 'M', 'L', 'XL'], image: '/images/jersey-home.jpg', rating: 4.8, inStock: true },
-  { id: 2, name: 'Flight 13 Away Jersey', price: 75000, category: 'Jerseys', sizes: ['S', 'M', 'L', 'XL'], image: '/images/jersey-away.jpg', rating: 4.7, inStock: true },
-  { id: 3, name: 'Flight 13 Hoodie', price: 120000, category: 'Apparel', sizes: ['S', 'M', 'L', 'XL'], image: '/images/hoodie.jpg', rating: 4.9, inStock: true },
-  { id: 4, name: 'Flight 13 Cap', price: 35000, category: 'Accessories', sizes: ['One Size'], image: '/images/cap.jpg', rating: 4.5, inStock: true },
-  { id: 5, name: 'Flight 13 Basketball', price: 85000, category: 'Equipment', sizes: ['Size 7'], image: '/images/ball.jpg', rating: 4.6, inStock: false },
-  { id: 6, name: 'Flight 13 Training T-Shirt', price: 55000, category: 'Apparel', sizes: ['S', 'M', 'L', 'XL'], image: '/images/tshirt.jpg', rating: 4.7, inStock: true },
-];
-
 const Shop = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedSize, setSelectedSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState<string | null>(null);
+  
+  const { addToCart } = useCart();
 
   const categories = ['all', 'Jerseys', 'Apparel', 'Accessories', 'Equipment'];
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products');
+      const data = await response.json();
+      if (data.success) {
+        setProducts(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
@@ -36,9 +55,29 @@ const Shop = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const addToCart = (productName: string) => {
-    alert(`${productName} added to cart!`);
+  const handleAddToCart = () => {
+    if (selectedProduct) {
+      addToCart(selectedProduct, quantity, selectedSize);
+      setAddedToCart(selectedProduct.id);
+      setTimeout(() => setAddedToCart(null), 2000);
+      setSelectedProduct(null);
+      setSelectedSize('');
+      setQuantity(1);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div>
+        <Navbar />
+        <AnnouncementBanner />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+          <p>Loading products...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -52,12 +91,13 @@ const Shop = () => {
         textAlign: 'center'
       }}>
         <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', marginBottom: '16px' }}>Flight 13 Shop</h1>
-        <p style={{ fontSize: '18px' }}>Represent the Flight 13 brand with official merchandise</p>
+        <p style={{ fontSize: '18px' }}>Browse our official merchandise</p>
       </section>
 
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
+          {/* Search and Filters */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px', marginBottom: '40px' }}>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               {categories.map(cat => (
@@ -97,6 +137,7 @@ const Shop = () => {
             </div>
           </div>
 
+          {/* Products Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '30px' }}>
             {filteredProducts.map(product => (
               <div key={product.id} style={{
@@ -109,8 +150,12 @@ const Shop = () => {
               onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
               onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                 <div style={{ position: 'relative' }}>
-                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-                  {!product.inStock && (
+                  <img 
+                    src={product.image_url || '/images/placeholder.jpg'} 
+                    alt={product.name} 
+                    style={{ width: '100%', height: '250px', objectFit: 'cover' }} 
+                  />
+                  {!product.in_stock && (
                     <div style={{
                       position: 'absolute',
                       top: '10px',
@@ -123,6 +168,21 @@ const Shop = () => {
                       fontWeight: 'bold'
                     }}>
                       Sold Out
+                    </div>
+                  )}
+                  {addedToCart === product.id && (
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '10px',
+                      left: '10px',
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      padding: '4px 12px',
+                      borderRadius: '20px',
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    }}>
+                      Added! ✓
                     </div>
                   )}
                 </div>
@@ -138,21 +198,25 @@ const Shop = () => {
                     UGX {product.price.toLocaleString()}
                   </p>
                   <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-                    {product.sizes.map(size => (
+                    {product.sizes?.slice(0, 3).map(size => (
                       <span key={size} style={{ fontSize: '12px', color: '#666', border: '1px solid #ddd', padding: '4px 10px', borderRadius: '20px' }}>{size}</span>
                     ))}
                   </div>
                   <button
-                    onClick={() => addToCart(product.name)}
-                    disabled={!product.inStock}
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setSelectedSize(product.sizes?.[0] || '');
+                      setQuantity(1);
+                    }}
+                    disabled={!product.in_stock}
                     style={{
                       width: '100%',
-                      backgroundColor: product.inStock ? 'var(--red)' : '#ccc',
+                      backgroundColor: product.in_stock ? 'var(--red)' : '#ccc',
                       color: 'white',
                       border: 'none',
                       padding: '10px',
                       borderRadius: '8px',
-                      cursor: product.inStock ? 'pointer' : 'not-allowed',
+                      cursor: product.in_stock ? 'pointer' : 'not-allowed',
                       fontWeight: 'bold',
                       display: 'flex',
                       alignItems: 'center',
@@ -160,7 +224,7 @@ const Shop = () => {
                       gap: '8px'
                     }}
                   >
-                    <ShoppingCart size={16} /> {product.inStock ? 'Add to Cart' : 'Out of Stock'}
+                    <ShoppingCart size={16} /> {product.in_stock ? 'Add to Cart' : 'Out of Stock'}
                   </button>
                 </div>
               </div>
@@ -168,6 +232,113 @@ const Shop = () => {
           </div>
         </div>
       </main>
+
+      {/* Product Modal */}
+      {selectedProduct && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          zIndex: 1000,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }} onClick={() => setSelectedProduct(null)}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '20px',
+            padding: '30px',
+            maxWidth: '500px',
+            width: '90%',
+            maxHeight: '90vh',
+            overflow: 'auto'
+          }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ fontSize: '24px', marginBottom: '16px' }}>{selectedProduct.name}</h2>
+            <img 
+              src={selectedProduct.image_url || '/images/placeholder.jpg'} 
+              alt={selectedProduct.name}
+              style={{ width: '100%', borderRadius: '12px', marginBottom: '16px' }}
+            />
+            <p style={{ color: '#666', marginBottom: '16px' }}>{selectedProduct.description}</p>
+            <p style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '16px' }}>
+              UGX {selectedProduct.price.toLocaleString()}
+            </p>
+            
+            {selectedProduct.sizes && selectedProduct.sizes.length > 0 && (
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Size</label>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {selectedProduct.sizes.map(size => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        border: selectedSize === size ? '2px solid var(--red)' : '1px solid #ddd',
+                        backgroundColor: selectedSize === size ? 'rgba(211,47,47,0.1)' : 'white',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+              <span>Quantity:</span>
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                style={{ width: '32px', height: '32px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer' }}
+              >
+                -
+              </button>
+              <span style={{ width: '40px', textAlign: 'center' }}>{quantity}</span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                style={{ width: '32px', height: '32px', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer' }}
+              >
+                +
+              </button>
+            </div>
+            
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <button
+                onClick={handleAddToCart}
+                style={{
+                  flex: 1,
+                  backgroundColor: 'var(--red)',
+                  color: 'white',
+                  padding: '12px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={() => setSelectedProduct(null)}
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#ddd',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <Footer />
     </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -21,41 +21,57 @@ import CoachChut from './pages/coaches/CoachChut';
 import CoachMark from './pages/coaches/CoachMark';
 import CoachNathan from './pages/coaches/CoachNathan';
 
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return <>{children}</>;
+};
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Main Pages */}
+        {/* Public Pages - Always Accessible */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/programs" element={<Programs />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/media" element={<Media />} />
-        
-        {/* Search & Cart & Checkout */}
         <Route path="/search" element={<Search />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        
-        {/* User Account */}
-        <Route path="/account" element={<Account />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/athletes" element={<AthletesDirectory />} />
+        <Route path="/athletes/:id" element={<AthleteProfile />} />
         
         {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         
-        {/* Shop */}
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
+        {/* Protected Routes - Require Login */}
+        <Route path="/checkout" element={
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
+        } />
         
-        {/* Athletes Directory (for Scouts) */}
-        <Route path="/athletes" element={<AthletesDirectory />} />
-        <Route path="/athletes/:id" element={<AthleteProfile />} />
+        <Route path="/account" element={
+          <ProtectedRoute>
+            <Account />
+          </ProtectedRoute>
+        } />
         
-        {/* Admin */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* Admin Routes */}
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
         
         {/* Coach Detail Pages */}
         <Route path="/coaches/1" element={<CoachChut />} />

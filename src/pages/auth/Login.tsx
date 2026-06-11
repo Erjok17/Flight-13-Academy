@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
@@ -9,12 +9,12 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     rememberMe: false
   });
-  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -30,14 +30,37 @@ const Login = () => {
     setIsLoading(true);
     setError('');
     
-    // Simulate login
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/account');
+      } else {
+        setError(data.error || 'Invalid email or password');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Network error. Please make sure the backend server is running on port 5000.');
+    } finally {
       setIsLoading(false);
-      // In real app, verify credentials with Supabase
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userEmail', formData.email);
-      navigate('/account');
-    }, 1500);
+    }
+  };
+
+  const handleRegister = () => {
+    navigate('/register');
   };
 
   return (
@@ -122,7 +145,12 @@ const Login = () => {
                   <input type="checkbox" name="rememberMe" checked={formData.rememberMe} onChange={handleChange} />
                   <span style={{ fontSize: '14px', color: '#666' }}>Remember me</span>
                 </label>
-                <Link to="/forgot-password" style={{ fontSize: '14px', color: 'var(--red)' }}>Forgot Password?</Link>
+                <button
+                  onClick={() => navigate('/forgot-password')}
+                  style={{ fontSize: '14px', color: 'var(--red)', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
+                  Forgot Password?
+                </button>
               </div>
 
               <button
@@ -151,7 +179,22 @@ const Login = () => {
               </button>
 
               <p style={{ textAlign: 'center', color: '#666' }}>
-                Don't have an account? <Link to="/register" style={{ color: 'var(--red)' }}>Create Account</Link>
+                Don't have an account?{' '}
+                <button
+                  onClick={handleRegister}
+                  style={{ 
+                    color: 'var(--red)', 
+                    background: 'none', 
+                    border: 'none', 
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    textDecoration: 'underline',
+                    padding: 0,
+                    fontSize: '16px'
+                  }}
+                >
+                  Create Account
+                </button>
               </p>
             </form>
           </div>

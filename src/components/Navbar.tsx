@@ -1,157 +1,130 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, User } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { useState, useEffect } from 'react';
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { getTotalItems } = useCart();
+  const itemCount = getTotalItems();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleSearch = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event from bubbling up
-    console.log('Navigating to /search');
-    navigate('/search');
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = () => {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    if (token && userData) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
   };
 
-  const handleCart = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event from bubbling up
-    console.log('Navigating to /cart');
-    navigate('/cart');
-  };
-
-  const handleAccount = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent event from bubbling up
-    console.log('Navigating to /account');
-    navigate('/account');
-  };
-
-  const handleLogoClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setIsMobileMenuOpen(false);
     navigate('/');
   };
 
+  const navLinks = [
+    { to: '/', label: 'HOME' },
+    { to: '/about', label: 'ABOUT US' },
+    { to: '/programs', label: 'PROGRAMS' },
+    { to: '/athletes', label: 'ATHLETES' },
+    { to: '/media', label: 'MEDIA' },
+    { to: '/shop', label: 'SHOP' },
+    { to: '/contact', label: 'CONTACT' },
+  ];
+
   return (
-    <nav style={{ backgroundColor: 'white', width: '100%' }}>
-      {/* Row 1: Logo + Academy Name + Red Trapezoid */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '16px 20px',
-        position: 'relative',
-        width: '100%'
-      }}>
-        {/* Left: Logo + Academy Name (Clickable - goes to Home) */}
-        <div 
-          onClick={handleLogoClick}
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '12px', 
-            zIndex: 2,
-            maxWidth: '1280px',
-            width: '100%',
-            paddingLeft: '20px',
-            cursor: 'pointer'
-          }}
-        >
-          <img 
-            src="/images/logo.jpeg" 
-            alt="Flight 13 Logo" 
-            style={{ height: '50px', width: 'auto' }}
-          />
-          <h1 style={{ 
-            color: 'var(--red)', 
-            fontSize: '24px', 
-            letterSpacing: '2px',
-            fontWeight: 'bold',
-            margin: 0
-          }}>
-            FLIGHT 13
-          </h1>
+    <nav className={styles.navbar}>
+      <div className={styles.topRow}>
+        <div onClick={() => navigate('/')} className={styles.logoSection}>
+          <img src="/images/logo.jpeg" alt="Flight 13 Logo" className={styles.logo} />
+          <h1 className={styles.academyName}>FLIGHT 13</h1>
         </div>
 
-        {/* Right: Red Trapezoid */}
-        <div style={{ 
-          position: 'absolute',
-          right: 0,
-          top: '10px',
-          bottom: '5px',
-          width: '50%',
-          zIndex: 100, // Higher z-index to ensure it's above the logo
-          pointerEvents: 'auto' // Ensure clicks are captured
-        }}>
-          <div style={{
-            backgroundColor: 'var(--red)',
-            width: '100%',
-            height: '100%',
-            clipPath: 'polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%)',
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            alignItems: 'center'
-          }}>
-            <div 
-              onClick={handleSearch}
-              style={{ 
-                cursor: 'pointer', 
-                padding: '10px', 
-                display: 'flex', 
-                alignItems: 'center',
-                zIndex: 101
-              }}
-            >
+        {/* Red Trapezoid Container */}
+        <div className={styles.trapezoidContainer}>
+          <div className={styles.desktopIcons}>
+            <div onClick={() => navigate('/search')} className={styles.iconWrapper}>
               <Search color="white" size={20} />
             </div>
             
-            <div 
-              onClick={handleCart}
-              style={{ 
-                cursor: 'pointer', 
-                padding: '10px', 
-                display: 'flex', 
-                alignItems: 'center',
-                zIndex: 101
-              }}
-            >
+            <div onClick={() => navigate('/cart')} className={styles.iconWrapper}>
               <ShoppingCart color="white" size={20} />
+              {itemCount > 0 && (
+                <span className={styles.cartBadge}>{itemCount}</span>
+              )}
             </div>
             
-            <div 
-              onClick={handleAccount}
-              style={{ 
-                cursor: 'pointer', 
-                padding: '10px', 
-                display: 'flex', 
-                alignItems: 'center',
-                zIndex: 101
-              }}
-            >
+            <div onClick={() => navigate(isLoggedIn ? '/account' : '/login')} className={styles.iconWrapper}>
               <User color="white" size={20} />
             </div>
           </div>
         </div>
+
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={styles.mobileMenuBtn}>
+          {isMobileMenuOpen ? <X color="var(--red)" size={24} /> : <Menu color="var(--red)" size={24} />}
+        </button>
       </div>
 
-      {/* Row 2: Red Navigation Links Bar */}
-      <div style={{
-        backgroundColor: 'var(--red)',
-        width: '100%',
-        marginTop: '8px'
-      }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '48px',
-          padding: '12px 20px',
-          maxWidth: '1280px',
-          margin: '0 auto',
-          flexWrap: 'wrap'
-        }}>
-          <Link to="/" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>HOME</Link>
-          <Link to="/about" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>ABOUT US</Link>
-          <Link to="/programs" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>OUR PROGRAMS</Link>
-          <Link to="/contact" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>CONTACT US</Link>
-          <Link to="/registration" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>REGISTRATION</Link>
-          <Link to="/media" style={{ color: 'white', fontWeight: '500', textDecoration: 'none' }}>MEDIA</Link>
+      <div className={styles.desktopNav}>
+        <div className={styles.navLinksContainer}>
+          {navLinks.map((link, index) => (
+            <Link key={index} to={link.to} className={styles.navLink}>
+              {link.label}
+            </Link>
+          ))}
         </div>
       </div>
+
+      <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.open : ''}`}>
+        <button onClick={() => setIsMobileMenuOpen(false)} className={styles.closeBtn}>
+          <X size={24} color="var(--red)" />
+        </button>
+        
+        <div className={styles.mobileNavLinks}>
+          {navLinks.map((link, index) => (
+            <Link 
+              key={index}
+              to={link.to} 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={styles.mobileNavLink}
+            >
+              {link.label}
+            </Link>
+          ))}
+          
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className={styles.mobileLogoutBtn}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link 
+              to="/login" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={styles.mobileSignInLink}
+            >
+              Sign In
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {isMobileMenuOpen && (
+        <div onClick={() => setIsMobileMenuOpen(false)} className={styles.overlay} />
+      )}
     </nav>
   );
 };

@@ -1,65 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Search, Ruler, Weight, GraduationCap } from 'lucide-react';
 
-const athletes = [
-  {
-    id: 1,
-    name: 'James Okello',
-    age: 16,
-    height: "6'4\"",
-    weight: "185 lbs",
-    position: 'Point Guard',
-    school: 'St. Mary\'s College',
-    achievements: ['MVP - Holiday Camp 2024', 'All-Star Selection 2025'],
-    strengths: ['Court Vision', 'Ball Handling', 'Leadership'],
-    image: '/images/athlete1.jpg',
-    collegeInterest: 'University of Kansas',
-    scholarshipOffers: 2
-  },
-  {
-    id: 2,
-    name: 'Sarah Namutebi',
-    age: 15,
-    height: "5'10\"",
-    weight: "145 lbs",
-    position: 'Shooting Guard',
-    school: 'Gayaza High School',
-    achievements: ['Top Scorer - League 2024', 'Most Improved 2025'],
-    strengths: ['Shooting', 'Defense', 'Speed'],
-    image: '/images/athlete2.jpg',
-    collegeInterest: 'Stanford University',
-    scholarshipOffers: 1
-  },
-  {
-    id: 3,
-    name: 'Michael Otim',
-    age: 17,
-    height: "6'7\"",
-    weight: "210 lbs",
-    position: 'Small Forward',
-    school: 'King\'s College Budo',
-    achievements: ['Championship MVP', 'All-Tournament Team'],
-    strengths: ['Rebounding', 'Scoring', 'Versatility'],
-    image: '/images/athlete3.jpg',
-    collegeInterest: 'UCLA',
-    scholarshipOffers: 3
-  },
-];
+interface Athlete {
+  id: string;
+  full_name: string;
+  age: number;
+  height: string;
+  weight: string;
+  position: string;
+  school: string;
+  achievements: string[];
+  strengths: string[];
+  avatar_url: string;
+  college_interest: string;
+  scholarship_offers: number;
+  user_type: string;
+}
 
 const AthletesDirectory = () => {
+  const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPosition, setSelectedPosition] = useState('all');
   const [selectedAge, setSelectedAge] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   
   const positions = ['all', 'Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center'];
   const ageRanges = ['all', '12-14', '15-16', '17-18'];
 
+  useEffect(() => {
+    fetchAthletes();
+  }, []);
+
+  const fetchAthletes = async () => {
+    try {
+      setIsLoading(true);
+      // Fetch users with type 'player' from your backend
+      const response = await fetch('http://localhost:5000/api/athletes');
+      const data = await response.json();
+      
+      if (data.success) {
+        setAthletes(data.data);
+      } else {
+        setError('Failed to fetch athletes');
+      }
+    } catch (err) {
+      console.error('Error fetching athletes:', err);
+      setError('Network error. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const filteredAthletes = athletes.filter(athlete => {
-    const matchesSearch = athlete.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = athlete.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
     const matchesPosition = selectedPosition === 'all' || athlete.position === selectedPosition;
     const matchesAge = selectedAge === 'all' || 
       (selectedAge === '12-14' && athlete.age >= 12 && athlete.age <= 14) ||
@@ -68,6 +66,19 @@ const AthletesDirectory = () => {
     
     return matchesSearch && matchesPosition && matchesAge;
   });
+
+  if (isLoading) {
+    return (
+      <div>
+        <Navbar />
+        <AnnouncementBanner />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+          <p>Loading athletes...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -89,6 +100,13 @@ const AthletesDirectory = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
+          {error && (
+            <div style={{ backgroundColor: '#ffebee', color: '#d32f2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', textAlign: 'center' }}>
+              {error}
+            </div>
+          )}
+
+          {/* Search and Filters */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '40px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
               <div style={{ flex: 2, position: 'relative' }}>
@@ -132,94 +150,90 @@ const AthletesDirectory = () => {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '30px' }}>
-            {filteredAthletes.map(athlete => (
-              <div key={athlete.id} style={{
-                backgroundColor: 'white',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
-                transition: 'transform 0.3s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                <img src={athlete.image} alt={athlete.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-                <div style={{ padding: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                    <h2 style={{ fontSize: '22px', fontWeight: 'bold', color: '#333' }}>{athlete.name}</h2>
-                    {athlete.scholarshipOffers > 0 && (
-                      <span style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '20px', fontSize: '12px' }}>
-                        {athlete.scholarshipOffers} Offer{athlete.scholarshipOffers > 1 ? 's' : ''}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', fontSize: '14px', color: '#666' }}>
-                    <span>🏀 {athlete.position}</span>
-                    <span>🎂 Age {athlete.age}</span>
-                    <span><Ruler size={14} style={{ display: 'inline' }} /> {athlete.height}</span>
-                    <span><Weight size={14} style={{ display: 'inline' }} /> {athlete.weight}</span>
-                  </div>
-                  
-                  <div style={{ marginBottom: '16px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
-                      <GraduationCap size={14} /> {athlete.school}
-                    </span>
-                  </div>
-                  
-                  <div style={{ marginBottom: '16px' }}>
-                    <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>🏆 Achievements</h4>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {athlete.achievements.map((ach, idx) => (
-                        <span key={idx} style={{ backgroundColor: '#f0f0f0', padding: '4px 10px', borderRadius: '20px', fontSize: '11px' }}>{ach}</span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div style={{ marginBottom: '20px' }}>
-                    <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>💪 Strengths</h4>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {athlete.strengths.map((strength, idx) => (
-                        <span key={idx} style={{ backgroundColor: 'rgba(211,47,47,0.1)', color: 'var(--red)', padding: '4px 10px', borderRadius: '20px', fontSize: '11px' }}>{strength}</span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div style={{ borderTop: '1px solid #eee', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <p style={{ fontSize: '12px', color: '#888' }}>College Interest</p>
-                      <p style={{ fontSize: '14px', fontWeight: '500' }}>{athlete.collegeInterest}</p>
-                    </div>
-                    <Link to={`/athletes/${athlete.id}`} style={{
-                      backgroundColor: 'var(--red)',
-                      color: 'white',
-                      padding: '8px 20px',
-                      borderRadius: '30px',
-                      textDecoration: 'none',
-                      fontSize: '12px',
-                      fontWeight: 'bold'
-                    }}>
-                      View Profile
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredAthletes.length === 0 && (
+          {/* Athletes Grid */}
+          {filteredAthletes.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px', backgroundColor: 'white', borderRadius: '16px' }}>
               <p style={{ fontSize: '18px', color: '#888' }}>No athletes found matching your criteria.</p>
             </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '30px' }}>
+              {filteredAthletes.map(athlete => (
+                <div key={athlete.id} style={{
+                  backgroundColor: 'white',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+                  transition: 'transform 0.3s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  <div style={{
+                    width: '100%',
+                    height: '200px',
+                    backgroundColor: '#f0f0f0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    {athlete.avatar_url ? (
+                      <img src={athlete.avatar_url} alt={athlete.full_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <span style={{ fontSize: '48px' }}>🏀</span>
+                    )}
+                  </div>
+                  <div style={{ padding: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <h2 style={{ fontSize: '22px', fontWeight: 'bold', color: '#333' }}>{athlete.full_name}</h2>
+                      {athlete.scholarship_offers > 0 && (
+                        <span style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '20px', fontSize: '12px' }}>
+                          {athlete.scholarship_offers} Offer{athlete.scholarship_offers > 1 ? 's' : ''}
+                        </span>
+                      )}
+                    </div>
+                    
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px', fontSize: '14px', color: '#666' }}>
+                      <span>🏀 {athlete.position || 'Not specified'}</span>
+                      <span>🎂 Age {athlete.age || 'N/A'}</span>
+                      <span><Ruler size={14} style={{ display: 'inline' }} /> {athlete.height || 'N/A'}</span>
+                      <span><Weight size={14} style={{ display: 'inline' }} /> {athlete.weight || 'N/A'}</span>
+                    </div>
+                    
+                    <div style={{ marginBottom: '16px' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#666' }}>
+                        <GraduationCap size={14} /> {athlete.school || 'School not specified'}
+                      </span>
+                    </div>
+                    
+                    <div style={{ borderTop: '1px solid #eee', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <p style={{ fontSize: '12px', color: '#888' }}>College Interest</p>
+                        <p style={{ fontSize: '14px', fontWeight: '500' }}>{athlete.college_interest || 'Undecided'}</p>
+                      </div>
+                      <Link to={`/athletes/${athlete.id}`} style={{
+                        backgroundColor: 'var(--red)',
+                        color: 'white',
+                        padding: '8px 20px',
+                        borderRadius: '30px',
+                        textDecoration: 'none',
+                        fontSize: '12px',
+                        fontWeight: 'bold'
+                      }}>
+                        View Profile
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
 
+          {/* Scout Call to Action */}
           <div style={{
             marginTop: '60px',
             backgroundColor: 'white',
             borderRadius: '16px',
             padding: '40px',
-            textAlign: 'center',
-            background: 'linear-gradient(135deg, #fff 0%, #f9f9f9 100%)'
+            textAlign: 'center'
           }}>
             <h2 style={{ fontSize: '28px', marginBottom: '16px', color: '#333' }}>Are You a Scout or College Recruiter?</h2>
             <p style={{ fontSize: '16px', color: '#666', marginBottom: '24px', maxWidth: '600px', margin: '0 auto 24px' }}>
