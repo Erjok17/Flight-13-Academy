@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Search as SearchIcon, X, Loader, ArrowRight } from 'lucide-react';
+import { API_URL } from '../config/api';
 
 interface SearchResult {
   id: string;
@@ -86,7 +87,7 @@ const Search = () => {
     setPageMatch(matchedPage);
 
     try {
-      const programsRes = await fetch('http://localhost:5000/api/programs');
+      const programsRes = await fetch(`${API_URL}/api/programs`);
       const programsData = await programsRes.json();
       if (programsData.success) {
         programsData.data.forEach((program: any) => {
@@ -107,7 +108,7 @@ const Search = () => {
         });
       }
 
-      const coachesRes = await fetch('http://localhost:5000/api/coaches');
+      const coachesRes = await fetch(`${API_URL}/api/coaches`);
       const coachesData = await coachesRes.json();
       if (coachesData.success) {
         coachesData.data.forEach((coach: any, index: number) => {
@@ -128,7 +129,7 @@ const Search = () => {
         });
       }
 
-      const productsRes = await fetch('http://localhost:5000/api/products');
+      const productsRes = await fetch(`${API_URL}/api/products`);
       const productsData = await productsRes.json();
       if (productsData.success) {
         productsData.data.forEach((product: any) => {
@@ -150,7 +151,7 @@ const Search = () => {
         });
       }
 
-      const athletesRes = await fetch('http://localhost:5000/api/athletes');
+      const athletesRes = await fetch(`${API_URL}/api/athletes`);
       const athletesData = await athletesRes.json();
       if (athletesData.success) {
         athletesData.data.forEach((athlete: any) => {
@@ -171,7 +172,7 @@ const Search = () => {
         });
       }
 
-      const announcementsRes = await fetch('http://localhost:5000/api/announcements/active');
+      const announcementsRes = await fetch(`${API_URL}/api/announcements/active`);
       const announcementsData = await announcementsRes.json();
       if (announcementsData.success) {
         announcementsData.data.forEach((announcement: any) => {

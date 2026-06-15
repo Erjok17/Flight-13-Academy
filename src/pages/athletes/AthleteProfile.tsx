@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Ruler, Weight, GraduationCap, Award, Mail, Phone, MapPin } from 'lucide-react';
+import { API_URL } from '../../config/api';
 
 interface AthleteProfile {
   id: string;
@@ -38,7 +39,7 @@ const AthleteProfile = () => {
   const fetchAthlete = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`http://localhost:5000/api/athletes/${id}`);
+      const response = await fetch(`${API_URL}/api/athletes/${id}`);
       const data = await response.json();
       
       if (data.success) {

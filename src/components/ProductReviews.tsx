@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
+import { API_URL } from '../config/api';
 
 interface Review {
   id: string;
@@ -42,7 +43,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/product/${productId}`);
+      const response = await fetch(`${API_URL}/api/reviews/product/${productId}`);
       const data = await response.json();
       if (data.success) {
         setReviews(data.data.reviews);
@@ -56,7 +57,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
 
   const fetchRatingStats = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/reviews/product/${productId}/rating`);
+      const response = await fetch(`${API_URL}/api/reviews/product/${productId}/rating`);
       const data = await response.json();
       if (data.success) {
         setStats(data.data);
@@ -70,7 +71,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/reviews`, {
+      const response = await fetch(`${API_URL}/api/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +136,6 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
     <div style={{ marginTop: '60px', borderTop: '2px solid #eee', paddingTop: '40px' }}>
       <h2 style={{ fontSize: '24px', marginBottom: '24px' }}>Customer Reviews</h2>
       
-      {/* Rating Summary */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 2fr',
@@ -185,7 +185,6 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
         </div>
       </div>
       
-      {/* Write Review Button */}
       <button
         onClick={() => setShowForm(!showForm)}
         style={{
@@ -202,7 +201,6 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
         {showForm ? 'Cancel' : 'Write a Review'}
       </button>
       
-      {/* Review Form */}
       {showForm && (
         <form onSubmit={handleSubmitReview} style={{
           backgroundColor: '#f9f9f9',
@@ -269,7 +267,6 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
         </form>
       )}
       
-      {/* Reviews List */}
       {reviews.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px', color: '#888' }}>
           No reviews yet. Be the first to review this product!
@@ -320,7 +317,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
               <button
                 onClick={async () => {
                   const token = localStorage.getItem('token');
-                  await fetch(`http://localhost:5000/api/reviews/${review.id}/helpful`, {
+                  await fetch(`${API_URL}/api/reviews/${review.id}/helpful`, {
                     method: 'POST',
                     headers: {
                       'Authorization': `Bearer ${token}`

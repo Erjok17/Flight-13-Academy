@@ -22,16 +22,42 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// CORS configuration - FIX THIS
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://flight13academy.vercel.app',
+  'https://flight-13-academy.onrender.com'
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+// Middleware - CORS must come FIRST
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
+
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -50,22 +76,6 @@ app.use('/api/reviews', reviewRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Flight 13 API is running' });
-});
-
-// Add this before the 404 handler
-app.get('/api/test-supabase', async (req, res) => {
-  const { supabase } = require('./config/supabase');
-  
-  // Test query
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('count');
-  
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-  
-  res.json({ success: true, message: 'Supabase connected', data });
 });
 
 // 404 handler

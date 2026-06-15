@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { User, Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react';
+import { API_URL } from '../../config/api';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ const Register = () => {
     setSuccess('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -126,7 +127,7 @@ const Register = () => {
       }
     } catch (err) {
       console.error('Registration error:', err);
-      setError('Network error. Please make sure the backend server is running on port 5000.');
+      setError('Network error. Please make sure the backend server is running.');
     } finally {
       setIsLoading(false);
     }
@@ -174,7 +175,6 @@ const Register = () => {
               </div>
             )}
 
-            {/* User Type Selection */}
             <div style={{ marginBottom: '32px' }}>
               <h3 style={{ fontSize: '18px', marginBottom: '16px', color: '#333' }}>I am a...</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
@@ -208,7 +208,6 @@ const Register = () => {
             </div>
 
             <form onSubmit={handleSubmit}>
-              {/* Common Fields */}
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Full Name *</label>
                 <div style={{ position: 'relative' }}>
@@ -276,21 +275,13 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Player-specific fields */}
               {userType === 'player' && (
                 <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
                   <h4 style={{ marginBottom: '16px', color: '#333' }}>Player Information</h4>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Age *</label>
-                      <input
-                        type="number"
-                        name="age"
-                        value={formData.age}
-                        onChange={handleChange}
-                        placeholder="e.g., 15"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="number" name="age" value={formData.age} onChange={handleChange} placeholder="e.g., 15" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                       {errors.age && <p style={{ color: '#d32f2f', fontSize: '12px', marginTop: '4px' }}>{errors.age}</p>}
                     </div>
                     <div>
@@ -307,128 +298,62 @@ const Register = () => {
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Jersey Number</label>
-                      <input
-                        type="text"
-                        name="jerseyNumber"
-                        value={formData.jerseyNumber}
-                        onChange={handleChange}
-                        placeholder="e.g., 23"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="jerseyNumber" value={formData.jerseyNumber} onChange={handleChange} placeholder="e.g., 23" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Height</label>
-                      <input
-                        type="text"
-                        name="height"
-                        value={formData.height}
-                        onChange={handleChange}
-                        placeholder="e.g., 6'2"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="height" value={formData.height} onChange={handleChange} placeholder="e.g., 6'2" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Weight</label>
-                      <input
-                        type="text"
-                        name="weight"
-                        value={formData.weight}
-                        onChange={handleChange}
-                        placeholder="e.g., 165 lbs"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="weight" value={formData.weight} onChange={handleChange} placeholder="e.g., 165 lbs" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>School</label>
-                      <input
-                        type="text"
-                        name="school"
-                        value={formData.school}
-                        onChange={handleChange}
-                        placeholder="School name"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="school" value={formData.school} onChange={handleChange} placeholder="School name" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Parent-specific fields */}
               {userType === 'parent' && (
                 <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
                   <h4 style={{ marginBottom: '16px', color: '#333' }}>Child Information</h4>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Child's Name *</label>
-                      <input
-                        type="text"
-                        name="childName"
-                        value={formData.childName}
-                        onChange={handleChange}
-                        placeholder="Child's full name"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="childName" value={formData.childName} onChange={handleChange} placeholder="Child's full name" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                       {errors.childName && <p style={{ color: '#d32f2f', fontSize: '12px', marginTop: '4px' }}>{errors.childName}</p>}
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Child's Age</label>
-                      <input
-                        type="number"
-                        name="childAge"
-                        value={formData.childAge}
-                        onChange={handleChange}
-                        placeholder="Age"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="number" name="childAge" value={formData.childAge} onChange={handleChange} placeholder="Age" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Child's School</label>
-                      <input
-                        type="text"
-                        name="childSchool"
-                        value={formData.childSchool}
-                        onChange={handleChange}
-                        placeholder="School name"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="childSchool" value={formData.childSchool} onChange={handleChange} placeholder="School name" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Scout-specific fields */}
               {userType === 'scout' && (
                 <div style={{ marginBottom: '20px', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '12px' }}>
                   <h4 style={{ marginBottom: '16px', color: '#333' }}>Scout Information</h4>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Organization *</label>
-                      <input
-                        type="text"
-                        name="organization"
-                        value={formData.organization}
-                        onChange={handleChange}
-                        placeholder="e.g., NBA Africa, College Name"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="organization" value={formData.organization} onChange={handleChange} placeholder="e.g., NBA Africa, College Name" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                       {errors.organization && <p style={{ color: '#d32f2f', fontSize: '12px', marginTop: '4px' }}>{errors.organization}</p>}
                     </div>
                     <div>
                       <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Role/Title</label>
-                      <input
-                        type="text"
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        placeholder="e.g., Talent Scout, Recruiter"
-                        style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }}
-                      />
+                      <input type="text" name="role" value={formData.role} onChange={handleChange} placeholder="e.g., Talent Scout, Recruiter" style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '8px' }} />
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Password Fields */}
               <div style={{ marginBottom: '20px' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>Password *</label>
                 <div style={{ position: 'relative' }}>

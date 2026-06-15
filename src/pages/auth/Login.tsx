@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
+import { API_URL } from '../../config/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Login = () => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError('Network error. Please make sure the backend server is running on port 5000.');
+      setError('Network error. Please make sure the backend server is running.');
     } finally {
       setIsLoading(false);
     }

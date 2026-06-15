@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Search, Ruler, Weight, GraduationCap } from 'lucide-react';
+import { API_URL } from '../../config/api';
 
 interface Athlete {
   id: string;
@@ -39,8 +40,7 @@ const AthletesDirectory = () => {
   const fetchAthletes = async () => {
     try {
       setIsLoading(true);
-      // Fetch users with type 'player' from your backend
-      const response = await fetch('http://localhost:5000/api/athletes');
+      const response = await fetch(`${API_URL}/api/athletes`);
       const data = await response.json();
       
       if (data.success) {
@@ -106,7 +106,6 @@ const AthletesDirectory = () => {
             </div>
           )}
 
-          {/* Search and Filters */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '40px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
               <div style={{ flex: 2, position: 'relative' }}>
@@ -150,7 +149,6 @@ const AthletesDirectory = () => {
             </div>
           </div>
 
-          {/* Athletes Grid */}
           {filteredAthletes.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '80px', backgroundColor: 'white', borderRadius: '16px' }}>
               <p style={{ fontSize: '18px', color: '#888' }}>No athletes found matching your criteria.</p>
@@ -227,7 +225,6 @@ const AthletesDirectory = () => {
             </div>
           )}
 
-          {/* Scout Call to Action */}
           <div style={{
             marginTop: '60px',
             backgroundColor: 'white',
