@@ -37,7 +37,7 @@
   margin: 0;
 }
 
-/* Red Trapezoid Container - positioned absolutely */
+/* Red Trapezoid Container - touches right edge */
 .trapezoidContainer {
   position: absolute;
   right: 0;
@@ -196,6 +196,17 @@
   z-index: 999;
 }
 
+/* Desktop styles */
+@media (min-width: 769px) {
+  .mobileNav {
+    display: none;
+  }
+  .overlay {
+    display: none;
+  }
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
   .trapezoidContainer {
     display: none;
@@ -208,14 +219,17 @@
   .desktopNav {
     display: none;
   }
-}
-
-@media (min-width: 769px) {
-  .mobileNav {
-    display: none;
+  
+  .topRow {
+    padding: 12px 16px;
   }
   
-  .overlay {
-    display: none;
+  .logo {
+    height: 40px;
+  }
+  
+  .academyName {
+    font-size: 18px;
+    letter-spacing: 1px;
   }
 }

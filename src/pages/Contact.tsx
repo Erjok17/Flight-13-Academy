@@ -49,17 +49,18 @@ const Contact = () => {
         textAlign: 'center'
       }}>
         <h1 style={{
-          fontSize: 'clamp(36px, 6vw, 48px)',
+          fontSize: 'clamp(32px, 6vw, 48px)',
           fontWeight: 'bold',
           marginBottom: '16px'
         }}>
           Contact Us
         </h1>
         <p style={{
-          fontSize: 'clamp(16px, 2vw, 18px)',
+          fontSize: 'clamp(14px, 2.5vw, 18px)',
           maxWidth: '600px',
           margin: '0 auto',
-          opacity: 0.9
+          opacity: 0.9,
+          padding: '0 16px'
         }}>
           Get in touch with us. We'd love to hear from you!
         </p>
@@ -68,12 +69,11 @@ const Contact = () => {
       <main style={{ backgroundColor: 'white', padding: '80px 0' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
-          {/* Two Column Layout */}
+          {/* Two Column Layout - stacks on mobile */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '60px',
-            alignItems: 'start'
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '60px'
           }}>
             
             {/* Left Column - Contact Info & Social Media */}
@@ -88,7 +88,7 @@ const Contact = () => {
               
               {/* Contact Details */}
               <div style={{ marginBottom: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
                   <div style={{
                     backgroundColor: 'rgba(211,47,47,0.1)',
                     padding: '12px',
@@ -107,7 +107,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
                   <div style={{
                     backgroundColor: 'rgba(211,47,47,0.1)',
                     padding: '12px',
@@ -126,7 +126,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
                   <div style={{
                     backgroundColor: 'rgba(211,47,47,0.1)',
                     padding: '12px',
@@ -144,13 +144,12 @@ const Contact = () => {
                 </div>
               </div>
               
-              {/* Social Media Links - Using Image Icons */}
+              {/* Social Media Links */}
               <div>
                 <h3 style={{ fontSize: '20px', color: 'var(--red)', marginBottom: '20px' }}>
                   Follow Us
                 </h3>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                  {/* Instagram */}
+                <div style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
                   <a 
                     href="https://www.instagram.com/flight_13_basketball_academy/" 
                     target="_blank"
@@ -171,7 +170,6 @@ const Contact = () => {
                     />
                   </a>
                   
-                  {/* X (Twitter) */}
                   <a 
                     href="#" 
                     target="_blank"
@@ -192,7 +190,6 @@ const Contact = () => {
                     />
                   </a>
                   
-                  {/* YouTube */}
                   <a 
                     href="#" 
                     target="_blank"
@@ -213,7 +210,6 @@ const Contact = () => {
                     />
                   </a>
                   
-                  {/* WhatsApp */}
                   <a 
                     href="https://wa.me/256780898611" 
                     target="_blank"
@@ -387,9 +383,11 @@ const Contact = () => {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '10px',
                     transition: 'all 0.3s',
-                    opacity: isLoading ? 0.7 : 1
+                    opacity: isLoading ? 0.7 : 1,
+                    width: '100%'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading) e.currentTarget.style.backgroundColor = 'var(--red-dark)';

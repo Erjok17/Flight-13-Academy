@@ -4,7 +4,6 @@ const TrainWithPurpose = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Auto-play video when card is hovered
   useEffect(() => {
     if (videoRef.current) {
       if (hoveredCard === 3) {
@@ -43,7 +42,7 @@ const TrainWithPurpose = () => {
   return (
     <section style={{ 
       position: 'relative',
-      padding: '80px 0', 
+      padding: 'clamp(40px, 10vw, 80px) 0', 
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
@@ -52,18 +51,18 @@ const TrainWithPurpose = () => {
       
       <div style={{
         position: 'relative',
-        width: '85%',
+        width: '90%',
         maxWidth: '1400px',
-        margin: '0 auto'
+        margin: '0 auto',
+        padding: '0 clamp(16px, 4vw, 0)'
       }}>
         
-        {/* Section Title */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '60px'
+          marginBottom: 'clamp(30px, 8vw, 60px)'
         }}>
           <h2 style={{
-            fontSize: 'clamp(32px, 5vw, 48px)',
+            fontSize: 'clamp(28px, 6vw, 48px)',
             fontWeight: 'bold',
             color: '#000000',
             marginBottom: '16px',
@@ -72,22 +71,23 @@ const TrainWithPurpose = () => {
             ACADEMY ACTIVITIES
           </h2>
           <p style={{
-            fontSize: 'clamp(16px, 2vw, 18px)',
+            fontSize: 'clamp(14px, 2.5vw, 18px)',
             color: '#444',
             maxWidth: '750px',
             margin: '0 auto',
-            lineHeight: '1.6'
+            lineHeight: '1.6',
+            padding: '0 16px'
           }}>
             Discover your journey — join the academy, celebrate milestones, and compete in every workout and game.
           </p>
         </div>
 
-        {/* Cards Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '40px',
-          alignItems: 'stretch'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 'clamp(20px, 5vw, 40px)',
+          alignItems: 'stretch',
+          padding: '0 clamp(8px, 2vw, 0)'
         }}>
           {cards.map((card) => (
             <div
@@ -122,10 +122,9 @@ const TrainWithPurpose = () => {
                 }} />
               )}
               
-              {/* Card Media - Image or Video */}
               <div style={{
                 width: '100%',
-                height: '200px',
+                height: 'clamp(180px, 25vw, 200px)',
                 overflow: 'hidden',
                 backgroundColor: '#f5f5f5',
                 position: 'relative'
@@ -146,15 +145,14 @@ const TrainWithPurpose = () => {
                         transform: hoveredCard === card.id ? 'scale(1.05)' : 'scale(1)'
                       }}
                     />
-                    {/* Play button overlay */}
                     {hoveredCard !== card.id && (
                       <div style={{
                         position: 'absolute',
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: '50px',
-                        height: '50px',
+                        width: 'clamp(40px, 8vw, 50px)',
+                        height: 'clamp(40px, 8vw, 50px)',
                         backgroundColor: 'rgba(0,0,0,0.6)',
                         borderRadius: '50%',
                         display: 'flex',
@@ -165,9 +163,9 @@ const TrainWithPurpose = () => {
                         <div style={{
                           width: 0,
                           height: 0,
-                          borderTop: '10px solid transparent',
-                          borderLeft: '18px solid white',
-                          borderBottom: '10px solid transparent',
+                          borderTop: 'clamp(8px, 2vw, 10px) solid transparent',
+                          borderLeft: `clamp(14px, 3vw, 18px) solid white`,
+                          borderBottom: 'clamp(8px, 2vw, 10px) solid transparent',
                           marginLeft: '5px'
                         }} />
                       </div>
@@ -188,12 +186,11 @@ const TrainWithPurpose = () => {
                 )}
               </div>
               
-              {/* Card Content */}
               <div style={{
-                padding: '24px'
+                padding: 'clamp(16px, 4vw, 24px)'
               }}>
                 <h3 style={{
-                  fontSize: 'clamp(14px, 1.8vw, 16px)',
+                  fontSize: 'clamp(13px, 2.5vw, 16px)',
                   fontWeight: 'bold',
                   color: 'var(--red)',
                   marginBottom: '16px',
@@ -204,7 +201,7 @@ const TrainWithPurpose = () => {
                 </h3>
                 
                 <p style={{
-                  fontSize: 'clamp(16px, 2.2vw, 18px)',
+                  fontSize: 'clamp(14px, 2.2vw, 18px)',
                   color: '#000000',
                   lineHeight: '1.6',
                   marginBottom: '20px',
@@ -255,8 +252,6 @@ const TrainWithPurpose = () => {
             </div>
           ))}
         </div>
-
-        {/* Navigation Dots - REMOVED */}
       </div>
     </section>
   );

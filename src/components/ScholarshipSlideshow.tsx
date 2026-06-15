@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const scheduleData = [
   {
@@ -37,6 +37,16 @@ const scheduleData = [
 
 const WeeklySchedule = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : scheduleData.length - 1));
@@ -49,14 +59,18 @@ const WeeklySchedule = () => {
   const currentDay = scheduleData[currentIndex];
 
   return (
-    <section style={{ position: 'relative', padding: '80px 0', backgroundColor: 'white' }}>
+    <section style={{ 
+      position: 'relative', 
+      padding: '60px 0', 
+      backgroundColor: 'white' 
+    }}>
       {/* Red Left Trapezoid */}
       <div
         style={{
           position: 'absolute',
           left: 0,
           top: 0,
-          width: '200px',
+          width: isMobile ? '120px' : '180px',
           height: '100%',
           backgroundColor: 'var(--red)',
           clipPath: 'polygon(0% 0%, 100% 0%, 80% 100%, 0% 100%)',
@@ -64,17 +78,21 @@ const WeeklySchedule = () => {
           cursor: 'pointer',
           transition: 'all 0.3s'
         }}
-        onMouseEnter={(e) => e.currentTarget.style.width = '220px'}
-        onMouseLeave={(e) => e.currentTarget.style.width = '200px'}
+        onMouseEnter={(e) => {
+          if (!isMobile) e.currentTarget.style.width = '220px';
+        }}
+        onMouseLeave={(e) => {
+          if (!isMobile) e.currentTarget.style.width = '180px';
+        }}
         onClick={handlePrev}
       >
         <div style={{
           position: 'absolute',
-          left: '20px',
+          left: isMobile ? '10px' : '20px',
           top: '50%',
           transform: 'translateY(-50%)',
           color: 'white',
-          fontSize: '24px',
+          fontSize: isMobile ? '18px' : '24px',
           fontWeight: 'bold'
         }}>
           ←
@@ -87,7 +105,7 @@ const WeeklySchedule = () => {
           position: 'absolute',
           right: 0,
           top: 0,
-          width: '200px',
+          width: isMobile ? '120px' : '180px',
           height: '100%',
           backgroundColor: 'var(--red)',
           clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)',
@@ -95,24 +113,28 @@ const WeeklySchedule = () => {
           cursor: 'pointer',
           transition: 'all 0.3s'
         }}
-        onMouseEnter={(e) => e.currentTarget.style.width = '220px'}
-        onMouseLeave={(e) => e.currentTarget.style.width = '200px'}
+        onMouseEnter={(e) => {
+          if (!isMobile) e.currentTarget.style.width = '220px';
+        }}
+        onMouseLeave={(e) => {
+          if (!isMobile) e.currentTarget.style.width = '180px';
+        }}
         onClick={handleNext}
       >
         <div style={{
           position: 'absolute',
-          right: '20px',
+          right: isMobile ? '10px' : '20px',
           top: '50%',
           transform: 'translateY(-50%)',
           color: 'white',
-          fontSize: '24px',
+          fontSize: isMobile ? '18px' : '24px',
           fontWeight: 'bold'
         }}>
           →
         </div>
       </div>
 
-      {/* White Center Content */}
+      {/* Center Content - Responsive text colors */}
       <div style={{ 
         position: 'relative', 
         zIndex: 2, 
@@ -121,37 +143,59 @@ const WeeklySchedule = () => {
         margin: '0 auto',
         padding: '0 20px'
       }}>
-        <h2 style={{ fontSize: '36px', color: 'var(--red)', marginBottom: '16px' }}>
+        {/* Title - Red on desktop, White with shadow on mobile */}
+        <h2 style={{ 
+          fontSize: 'clamp(24px, 5vw, 36px)', 
+          color: isMobile ? 'white' : 'var(--red)',
+          textShadow: isMobile ? '2px 2px 4px rgba(0,0,0,0.5)' : 'none',
+          marginBottom: '16px' 
+        }}>
           WEEKLY TRAINING SCHEDULE
         </h2>
-        <p style={{ fontSize: '18px', color: 'var(--gray-dark)', marginBottom: '40px' }}>
+        
+        {/* Subtitle - Dark gray on desktop, White with shadow on mobile */}
+        <p style={{ 
+          fontSize: 'clamp(14px, 3vw, 18px)', 
+          color: isMobile ? 'white' : 'var(--gray-dark)',
+          textShadow: isMobile ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none',
+          marginBottom: '40px',
+          padding: '0 10px'
+        }}>
           Monday, Wednesday, Friday & Saturday — Getting Better. "It's a process."
         </p>
 
+        {/* White Card Content */}
         <div style={{ 
           maxWidth: '800px', 
           margin: '0 auto',
-          backgroundColor: '#f9f9f9',
+          backgroundColor: 'white',
           borderRadius: '20px',
           overflow: 'hidden',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
         }}>
-          {/* Day Header */}
+          {/* Day Header - Red */}
           <div style={{
             backgroundColor: 'var(--red)',
             padding: '20px',
             color: 'white'
           }}>
-            <h3 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>
+            <h3 style={{ 
+              fontSize: 'clamp(24px, 5vw, 28px)', 
+              fontWeight: 'bold', 
+              marginBottom: '8px' 
+            }}>
               {currentDay.day}
             </h3>
-            <p style={{ fontSize: '18px', opacity: 0.9 }}>
+            <p style={{ 
+              fontSize: 'clamp(14px, 3vw, 18px)', 
+              opacity: 0.9 
+            }}>
               {currentDay.time}
             </p>
           </div>
 
-          {/* Schedule Details */}
-          <div style={{ padding: '30px' }}>
+          {/* Schedule Details - White background with dark text */}
+          <div style={{ padding: 'clamp(20px, 5vw, 30px)' }}>
             <div style={{ marginBottom: '24px' }}>
               <h4 style={{ 
                 fontSize: '18px', 
@@ -161,7 +205,12 @@ const WeeklySchedule = () => {
               }}>
                 ACTIVITIES:
               </h4>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+              <div style={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                gap: '12px',
+                justifyContent: 'center'
+              }}>
                 {currentDay.activities.map((activity, idx) => (
                   <span
                     key={idx}
@@ -192,7 +241,10 @@ const WeeklySchedule = () => {
               }}>
                 AGE GROUPS:
               </h4>
-              <p style={{ fontSize: '16px', color: '#333' }}>
+              <p style={{ 
+                fontSize: '16px', 
+                color: '#333' 
+              }}>
                 {currentDay.ageGroups}
               </p>
             </div>
@@ -200,25 +252,24 @@ const WeeklySchedule = () => {
         </div>
 
         {/* Navigation Dots */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginTop: '32px' }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '12px', 
+          marginTop: '32px' 
+        }}>
           {scheduleData.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               style={{
-                width: '40px',
+                width: currentIndex === idx ? '40px' : '10px',
                 height: '8px',
-                backgroundColor: currentIndex === idx ? 'var(--red)' : '#e0e0e0',
-                border: 'none',
                 borderRadius: '4px',
+                backgroundColor: currentIndex === idx ? (isMobile ? 'white' : 'var(--red)') : (isMobile ? 'rgba(255,255,255,0.5)' : '#e0e0e0'),
+                border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.3s'
-              }}
-              onMouseEnter={(e) => {
-                if (currentIndex !== idx) e.currentTarget.style.backgroundColor = 'var(--red)';
-              }}
-              onMouseLeave={(e) => {
-                if (currentIndex !== idx) e.currentTarget.style.backgroundColor = '#e0e0e0';
               }}
             />
           ))}

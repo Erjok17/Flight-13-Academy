@@ -85,22 +85,22 @@ const Programs = () => {
       <section style={{
         backgroundColor: 'var(--red)',
         color: 'white',
-        padding: '80px 0',
+        padding: 'clamp(40px, 10vw, 80px) 0',
         textAlign: 'center'
       }}>
-        <h1 style={{ fontSize: 'clamp(32px, 6vw, 52px)', fontWeight: 'bold', marginBottom: '16px' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 6vw, 52px)', fontWeight: 'bold', marginBottom: '16px' }}>
           Our Programs
         </h1>
-        <p style={{ fontSize: 'clamp(16px, 2vw, 20px)', maxWidth: '700px', margin: '0 auto', opacity: 0.95 }}>
+        <p style={{ fontSize: 'clamp(14px, 2.5vw, 20px)', maxWidth: '700px', margin: '0 auto', opacity: 0.95, padding: '0 16px' }}>
           Year-round training designed to develop skilled, confident, and disciplined athletes
         </p>
       </section>
 
       <main style={{ backgroundColor: 'white' }}>
-        <section style={{ padding: '80px 0' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '60px' }}>
-              {programs.map((program, index) => (
+        <section style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(30px, 6vw, 60px)' }}>
+              {programs.map((program ) => (
                 <div
                   key={program.id}
                   style={{
@@ -111,27 +111,44 @@ const Programs = () => {
                   }}
                 >
                   <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: index % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr',
-                    gap: '40px',
-                    alignItems: 'center',
-                    padding: '40px'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 'clamp(20px, 5vw, 40px)',
+                    padding: 'clamp(20px, 5vw, 40px)'
                   }}>
+                    {/* Left Side Content */}
                     <div>
                       <div style={{ marginBottom: '20px' }}>{program.icon}</div>
-                      <h2 style={{ fontSize: '28px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '16px' }}>
+                      <h2 style={{ 
+                        fontSize: 'clamp(22px, 5vw, 28px)', 
+                        fontWeight: 'bold', 
+                        color: 'var(--red)', 
+                        marginBottom: '16px' 
+                      }}>
                         {program.title}
                       </h2>
-                      <p style={{ fontSize: '16px', lineHeight: '1.6', color: '#555', marginBottom: '24px' }}>
+                      <p style={{ 
+                        fontSize: 'clamp(14px, 2.5vw, 16px)', 
+                        lineHeight: '1.6', 
+                        color: '#555', 
+                        marginBottom: '24px' 
+                      }}>
                         {program.description}
                       </p>
                       
-                      <h3 style={{ fontSize: '18px', fontWeight: 'bold', color: '#333', marginBottom: '16px' }}>
+                      <h3 style={{ fontSize: 'clamp(16px, 3vw, 18px)', fontWeight: 'bold', color: '#333', marginBottom: '16px' }}>
                         Key Features:
                       </h3>
                       <ul style={{ listStyle: 'none', padding: 0 }}>
                         {program.features.map((feature, idx) => (
-                          <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', fontSize: '14px', color: '#555' }}>
+                          <li key={idx} style={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '10px', 
+                            marginBottom: '12px', 
+                            fontSize: 'clamp(12px, 2vw, 14px)', 
+                            color: '#555' 
+                          }}>
                             <span style={{ color: 'var(--red)', fontSize: '18px' }}>✓</span>
                             {feature}
                           </li>
@@ -142,12 +159,13 @@ const Programs = () => {
                         display: 'inline-block',
                         backgroundColor: 'var(--red)',
                         color: 'white',
-                        padding: '12px 28px',
+                        padding: 'clamp(10px, 2.5vw, 12px) clamp(20px, 5vw, 28px)',
                         borderRadius: '30px',
                         textDecoration: 'none',
                         fontWeight: 'bold',
                         marginTop: '24px',
-                        transition: 'all 0.3s'
+                        transition: 'all 0.3s',
+                        fontSize: 'clamp(13px, 2.5vw, 16px)'
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
@@ -155,15 +173,21 @@ const Programs = () => {
                       </Link>
                     </div>
                     
+                    {/* Right Side Content */}
                     <div>
                       {program.schedule ? (
                         <div style={{
                           backgroundColor: 'white',
                           borderRadius: '16px',
-                          padding: '24px',
+                          padding: 'clamp(16px, 4vw, 24px)',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '20px' }}>
+                          <h3 style={{ 
+                            fontSize: 'clamp(16px, 3.5vw, 20px)', 
+                            fontWeight: 'bold', 
+                            color: 'var(--red)', 
+                            marginBottom: '20px' 
+                          }}>
                             Schedule Details
                           </h3>
                           {Object.entries(program.schedule).map(([key, value]) => (
@@ -171,10 +195,12 @@ const Programs = () => {
                               display: 'flex',
                               justifyContent: 'space-between',
                               padding: '12px 0',
-                              borderBottom: '1px solid #eee'
+                              borderBottom: '1px solid #eee',
+                              flexWrap: 'wrap',
+                              gap: '8px'
                             }}>
-                              <span style={{ fontWeight: '500' }}>{key}</span>
-                              <span style={{ color: '#666' }}>{value}</span>
+                              <span style={{ fontWeight: '500', fontSize: 'clamp(13px, 2.5vw, 14px)' }}>{key}</span>
+                              <span style={{ color: '#666', fontSize: 'clamp(13px, 2.5vw, 14px)' }}>{value}</span>
                             </div>
                           ))}
                           <div style={{
@@ -182,7 +208,7 @@ const Programs = () => {
                             padding: '12px',
                             backgroundColor: '#f9f9f9',
                             borderRadius: '8px',
-                            fontSize: '13px',
+                            fontSize: 'clamp(12px, 2vw, 13px)',
                             color: '#555'
                           }}>
                             <strong>Note:</strong> Different age categories are handled by specialized coaches
@@ -192,10 +218,15 @@ const Programs = () => {
                         <div style={{
                           backgroundColor: 'white',
                           borderRadius: '16px',
-                          padding: '24px',
+                          padding: 'clamp(16px, 4vw, 24px)',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '20px' }}>
+                          <h3 style={{ 
+                            fontSize: 'clamp(16px, 3.5vw, 20px)', 
+                            fontWeight: 'bold', 
+                            color: 'var(--red)', 
+                            marginBottom: '20px' 
+                          }}>
                             Guest Coaches & Scouts
                           </h3>
                           {program.guestCoaches.map((coach, idx) => (
@@ -204,23 +235,24 @@ const Programs = () => {
                               borderBottom: idx < program.guestCoaches.length - 1 ? '1px solid #eee' : 'none',
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '16px'
+                              gap: '16px',
+                              flexWrap: 'wrap'
                             }}>
                               {coach.image && (
                                 <img 
                                   src={coach.image}
                                   alt={coach.name}
                                   style={{
-                                    width: '60px',
-                                    height: '60px',
+                                    width: 'clamp(50px, 10vw, 60px)',
+                                    height: 'clamp(50px, 10vw, 60px)',
                                     borderRadius: '50%',
                                     objectFit: 'cover'
                                   }}
                                 />
                               )}
                               <div>
-                                <div style={{ fontWeight: 'bold', color: '#333' }}>{coach.name}</div>
-                                <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>{coach.role}</div>
+                                <div style={{ fontWeight: 'bold', color: '#333', fontSize: 'clamp(14px, 2.5vw, 16px)' }}>{coach.name}</div>
+                                <div style={{ fontSize: 'clamp(11px, 2vw, 13px)', color: '#666', marginTop: '4px' }}>{coach.role}</div>
                               </div>
                             </div>
                           ))}
@@ -229,7 +261,7 @@ const Programs = () => {
                             padding: '16px',
                             backgroundColor: 'rgba(211,47,47,0.1)',
                             borderRadius: '12px',
-                            fontSize: '13px',
+                            fontSize: 'clamp(12px, 2.5vw, 13px)',
                             color: '#555',
                             borderLeft: `4px solid var(--red)`
                           }}>
@@ -240,7 +272,7 @@ const Programs = () => {
                             padding: '12px',
                             backgroundColor: '#f9f9f9',
                             borderRadius: '8px',
-                            fontSize: '12px',
+                            fontSize: 'clamp(11px, 2vw, 12px)',
                             color: '#666',
                             textAlign: 'center'
                           }}>
@@ -271,7 +303,7 @@ const Programs = () => {
                           <div style={{
                             padding: '16px',
                             textAlign: 'center',
-                            fontSize: '13px',
+                            fontSize: 'clamp(12px, 2.5vw, 13px)',
                             color: '#666'
                           }}>
                             One-on-one training session in action
@@ -297,7 +329,7 @@ const Programs = () => {
                           <div style={{
                             padding: '16px',
                             textAlign: 'center',
-                            fontSize: '13px',
+                            fontSize: 'clamp(12px, 2.5vw, 13px)',
                             color: '#666'
                           }}>
                             Coach on the touchline during competitive action
@@ -312,8 +344,8 @@ const Programs = () => {
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
                           <Briefcase size={48} color="var(--red)" style={{ marginBottom: '16px' }} />
-                          <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '8px' }}>School Support</h3>
-                          <p style={{ fontSize: '14px', color: '#666' }}>
+                          <h3 style={{ fontSize: 'clamp(16px, 3vw, 18px)', fontWeight: 'bold', marginBottom: '8px' }}>School Support</h3>
+                          <p style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', color: '#666' }}>
                             Our coaches also support school teams participating in competitions
                           </p>
                         </div>
@@ -326,19 +358,19 @@ const Programs = () => {
           </div>
         </section>
         
-        <section style={{ backgroundColor: '#f9f9f9', padding: '80px 0' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px', textAlign: 'center' }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--red)', marginBottom: '16px' }}>
+        <section style={{ backgroundColor: '#f9f9f9', padding: 'clamp(40px, 8vw, 80px) 0' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px', textAlign: 'center' }}>
+            <h2 style={{ fontSize: 'clamp(24px, 5vw, 36px)', color: 'var(--red)', marginBottom: '16px' }}>
               Why Parents Trust Flight 13
             </h2>
-            <p style={{ fontSize: '18px', color: '#666', maxWidth: '700px', margin: '0 auto 48px auto' }}>
+            <p style={{ fontSize: 'clamp(14px, 2.5vw, 18px)', color: '#666', maxWidth: '700px', margin: '0 auto 48px auto', padding: '0 16px' }}>
               We're committed to developing not just skilled players, but responsible young men and women
             </p>
             
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '30px'
+              gap: 'clamp(20px, 5vw, 30px)'
             }}>
               {[
                 { title: 'Professional Coaching', description: 'Experienced coaches who prioritize player development and safety', icon: <Star size={32} /> },
@@ -348,7 +380,7 @@ const Programs = () => {
               ].map((item, idx) => (
                 <div key={idx} style={{
                   backgroundColor: 'white',
-                  padding: '30px',
+                  padding: 'clamp(20px, 5vw, 30px)',
                   borderRadius: '16px',
                   boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
                   transition: 'transform 0.3s'
@@ -358,30 +390,31 @@ const Programs = () => {
                   <div style={{ color: 'var(--red)', marginBottom: '16px' }}>
                     {item.icon}
                   </div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '12px' }}>{item.title}</h3>
-                  <p style={{ fontSize: '14px', color: '#666', lineHeight: '1.5' }}>{item.description}</p>
+                  <h3 style={{ fontSize: 'clamp(16px, 3vw, 18px)', fontWeight: 'bold', marginBottom: '12px' }}>{item.title}</h3>
+                  <p style={{ fontSize: 'clamp(12px, 2.5vw, 14px)', color: '#666', lineHeight: '1.5' }}>{item.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
         
-        <section style={{ padding: '80px 0', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(24px, 4vw, 32px)', marginBottom: '16px', color: '#222' }}>
+        <section style={{ padding: 'clamp(40px, 8vw, 80px) 0', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 'clamp(22px, 5vw, 32px)', marginBottom: '16px', color: '#222' }}>
             Ready to Start Your Journey?
           </h2>
-          <p style={{ fontSize: '16px', color: '#666', marginBottom: '32px' }}>
+          <p style={{ fontSize: 'clamp(14px, 2.5vw, 16px)', color: '#666', marginBottom: '32px', padding: '0 16px' }}>
             Join Flight 13 today and take the first step toward becoming an elite athlete
           </p>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', padding: '0 16px' }}>
             <Link to="/registration" style={{
               backgroundColor: 'var(--red)',
               color: 'white',
-              padding: '14px 32px',
+              padding: 'clamp(10px, 2.5vw, 14px) clamp(20px, 5vw, 32px)',
               borderRadius: '30px',
               textDecoration: 'none',
               fontWeight: 'bold',
-              transition: 'all 0.3s'
+              transition: 'all 0.3s',
+              fontSize: 'clamp(13px, 2.5vw, 16px)'
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
@@ -390,12 +423,13 @@ const Programs = () => {
             <Link to="/contact" style={{
               backgroundColor: 'transparent',
               color: 'var(--red)',
-              padding: '14px 32px',
+              padding: 'clamp(10px, 2.5vw, 14px) clamp(20px, 5vw, 32px)',
               borderRadius: '30px',
               textDecoration: 'none',
               fontWeight: 'bold',
               border: '2px solid var(--red)',
-              transition: 'all 0.3s'
+              transition: 'all 0.3s',
+              fontSize: 'clamp(13px, 2.5vw, 16px)'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'var(--red)';

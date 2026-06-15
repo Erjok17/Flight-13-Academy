@@ -27,9 +27,8 @@ const HeroSection = () => {
   const [isAnimating, setIsAnimating] = useState(true);
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number>(0);
-  const slideDuration = 5000; // 5 seconds total per slide
+  const slideDuration = 5000;
 
-  // Animate the red border
   useEffect(() => {
     if (!isAnimating) return;
 
@@ -45,7 +44,6 @@ const HeroSection = () => {
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
-        // When border reaches 100% (right side), move to next slide
         moveToNextSlide();
       }
     };
@@ -96,7 +94,6 @@ const HeroSection = () => {
         borderRadius: '1px',
         overflow: 'hidden'
       }}>
-        {/* Slideshow Images */}
         {slides.map((slide, index) => (
           <img 
             key={slide.id}
@@ -116,7 +113,6 @@ const HeroSection = () => {
           />
         ))}
         
-        {/* Subtle Gradient Overlay - Only at bottom where text sits */}
         <div style={{
           position: 'absolute',
           bottom: 0,
@@ -127,7 +123,6 @@ const HeroSection = () => {
           zIndex: 1
         }} />
 
-        {/* Text Content - All White & Bold */}
         <div style={{
           position: 'absolute',
           bottom: '15%',
@@ -136,7 +131,7 @@ const HeroSection = () => {
           textAlign: 'left'
         }}>
           <h2 style={{ 
-            fontSize: 'clamp(24px, 4vw, 36px)', 
+            fontSize: 'clamp(18px, 4vw, 36px)', 
             marginBottom: '8px', 
             color: 'white',
             fontWeight: 'bold',
@@ -145,7 +140,7 @@ const HeroSection = () => {
             FLIGHT13 BASKETBALL ACADEMY
           </h2>
           <p style={{ 
-            fontSize: 'clamp(16px, 2.5vw, 20px)', 
+            fontSize: 'clamp(14px, 3vw, 20px)', 
             marginBottom: '24px', 
             color: 'white',
             fontStyle: 'italic',
@@ -155,7 +150,7 @@ const HeroSection = () => {
             "it's a process."
           </p>
           <h1 style={{ 
-            fontSize: 'clamp(32px, 6vw, 52px)', 
+            fontSize: 'clamp(28px, 6vw, 52px)', 
             marginBottom: '8px', 
             color: 'white',
             fontWeight: 'bold',
@@ -164,7 +159,7 @@ const HeroSection = () => {
             ELITE SKILLS TRAINING
           </h1>
           <p style={{ 
-            fontSize: 'clamp(20px, 3.5vw, 28px)', 
+            fontSize: 'clamp(18px, 4vw, 28px)', 
             marginBottom: '32px', 
             color: 'white',
             fontWeight: 'bold',
@@ -173,19 +168,17 @@ const HeroSection = () => {
             FOR AGES 5-18
           </p>
           
-          {/* Description Card with Animated Red Border Timer */}
           <div style={{
             backgroundColor: 'rgba(0, 0, 0, 0.6)',
             backdropFilter: 'blur(4px)',
-            padding: '16px 24px',
+            padding: '12px 16px',
             borderRadius: '12px',
-            maxWidth: '500px',
+            maxWidth: 'min(500px, 90vw)',
             marginBottom: '24px',
             position: 'relative',
             overflow: 'hidden',
             border: '1px solid rgba(255,255,255,0.1)'
           }}>
-            {/* Top Border - Animated Timer (travels left to right) */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -196,7 +189,6 @@ const HeroSection = () => {
               transition: 'width 0.05s linear'
             }} />
             
-            {/* Right Border - Appears when timer completes */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -207,7 +199,6 @@ const HeroSection = () => {
               transition: 'height 0.1s linear'
             }} />
             
-            {/* Bottom Border - Appears when timer completes */}
             <div style={{
               position: 'absolute',
               bottom: 0,
@@ -218,7 +209,6 @@ const HeroSection = () => {
               transition: 'width 0.1s linear'
             }} />
             
-            {/* Left Border - Appears when timer completes */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -230,7 +220,7 @@ const HeroSection = () => {
             }} />
             
             <h3 style={{
-              fontSize: 'clamp(18px, 3vw, 24px)',
+              fontSize: 'clamp(16px, 3vw, 24px)',
               fontWeight: 'bold',
               color: 'var(--red)',
               marginBottom: '8px',
@@ -240,7 +230,7 @@ const HeroSection = () => {
               {slides[currentSlide].title}
             </h3>
             <p style={{
-              fontSize: 'clamp(14px, 2vw, 16px)',
+              fontSize: 'clamp(12px, 2vw, 16px)',
               color: 'white',
               lineHeight: '1.5',
               position: 'relative',
@@ -249,12 +239,11 @@ const HeroSection = () => {
               {slides[currentSlide].description}
             </p>
             
-            {/* Timer Text */}
             <div style={{
               position: 'absolute',
               bottom: '8px',
               right: '12px',
-              fontSize: '12px',
+              fontSize: '10px',
               color: 'rgba(255,255,255,0.4)',
               zIndex: 1
             }}>
@@ -266,8 +255,8 @@ const HeroSection = () => {
             backgroundColor: 'var(--red)',
             color: 'white',
             border: 'none',
-            padding: '14px 40px',
-            fontSize: '18px',
+            padding: 'clamp(10px, 3vw, 14px) clamp(20px, 5vw, 40px)',
+            fontSize: 'clamp(14px, 3vw, 18px)',
             fontWeight: 'bold',
             borderRadius: '4px',
             cursor: 'pointer',
@@ -280,14 +269,13 @@ const HeroSection = () => {
           </button>
         </div>
 
-        {/* Navigation Dots */}
         <div style={{
           position: 'absolute',
           bottom: '20px',
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
-          gap: '12px',
+          gap: 'clamp(8px, 2vw, 12px)',
           zIndex: 3
         }}>
           {slides.map((_, index) => (
@@ -295,8 +283,8 @@ const HeroSection = () => {
               key={index}
               onClick={() => goToSlide(index)}
               style={{
-                width: currentSlide === index ? '40px' : '10px',
-                height: '10px',
+                width: currentSlide === index ? 'clamp(30px, 6vw, 40px)' : 'clamp(8px, 2vw, 10px)',
+                height: 'clamp(8px, 2vw, 10px)',
                 borderRadius: '5px',
                 backgroundColor: currentSlide === index ? 'var(--red)' : 'rgba(255,255,255,0.7)',
                 border: 'none',
