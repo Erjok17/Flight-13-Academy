@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
+import { SafeImage } from './skeletons';
 
 const coaches = [
   { 
@@ -82,17 +83,20 @@ const CoachesSection = () => {
               }}
             >
               <div style={{ overflow: 'hidden', height: '320px' }}>
-                <motion.img 
-                  src={coach.image} 
-                  alt={coach.name} 
+                <motion.div
                   whileHover={{ scale: 1.06 }}
                   transition={{ duration: 0.4 }}
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
-                    objectFit: 'cover'
-                  }}
-                />
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <SafeImage 
+                    src={coach.image} 
+                    alt={coach.name} 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%'
+                    }}
+                  />
+                </motion.div>
               </div>
               <div style={{ padding: '24px' }}>
                 <h3 style={{ fontSize: '22px', marginBottom: '8px', color: '#222' }}>{coach.name}</h3>

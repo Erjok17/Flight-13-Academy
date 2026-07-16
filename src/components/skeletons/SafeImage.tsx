@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ImageSkeleton } from './MediaSkeleton';
 
 interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string;
@@ -7,23 +8,30 @@ interface SafeImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 export const SafeImage = ({
   src,
   alt = '',
-  fallbackSrc = '/images/monday-training.jpg', // safe fallback default
   style,
   ...props
 }: SafeImageProps) => {
-  const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
 
   const handleError = () => {
-    if (!hasError) {
-      setHasError(true);
-      setImgSrc(fallbackSrc);
-    }
+    setHasError(true);
   };
+
+  if (hasError || !src) {
+    const borderRadius = style?.borderRadius || '0px';
+    const width = style?.width || '100%';
+    const height = style?.height || '100%';
+
+    return (
+      <div style={{ width, height, borderRadius: borderRadius as any, overflow: 'hidden' }}>
+        <ImageSkeleton width="100%" height="100%" borderRadius={borderRadius} />
+      </div>
+    );
+  }
 
   return (
     <img
-      src={imgSrc || fallbackSrc}
+      src={src}
       alt={alt}
       onError={handleError}
       style={{

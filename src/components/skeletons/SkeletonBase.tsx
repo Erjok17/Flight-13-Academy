@@ -20,7 +20,7 @@ export const SkeletonBase = ({
   // Determine standard styles based on type
   const getStyle = (): React.CSSProperties => {
     const baseStyle: React.CSSProperties = {
-      backgroundColor: 'rgba(230, 230, 230, 0.65)',
+      backgroundColor: 'var(--skeleton-bg)',
       position: 'relative',
       overflow: 'hidden',
       ...style
