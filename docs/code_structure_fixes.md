@@ -104,3 +104,17 @@ This document details the code fixes implemented during the optimization cycle t
   * Wrapped entry point in `main.tsx` with `<HelmetProvider>`.
   * Created a reusable [SEO.tsx](file:///home/code8/Desktop/Flight-13-Academy/src/components/SEO.tsx) component that dynamically updates document title, keywords, descriptions, and OpenGraph/Twitter social cards.
   * Wrapped key page wrappers (Home, About, Contact, Programs, Shop) with dynamic SEO details.
+
+---
+
+## 12. Smooth Scroll & Scroll-To-Top Page Resets
+* **Problem**: Navigating to a new route did not reset the scroll offset, causing the user to remain at the bottom/middle of the viewport if they had scrolled down on the previous view. Additionally, browser scrolling snapped instantly.
+* **Fix**:
+  * Scroll Reset Hook: Created [ScrollToTop.tsx](file:///home/code8/Desktop/Flight-13-Academy/src/components/ScrollToTop.tsx) which listens to route path changes and programmatically executes `window.scrollTo(0, 0)` upon navigation.
+  * Smooth Scroll CSS: Enabled site-wide `scroll-behavior: smooth` in `src/index.css` to deliver premium sliding scroll transitions.
+
+---
+
+## 13. Unique Testing IDs on Navigation Elements
+* **Problem**: Interactive items inside [Navbar.tsx](file:///home/code8/Desktop/Flight-13-Academy/src/components/Navbar.tsx) lacked structural IDs, making automated browser end-to-end testing fragile.
+* **Fix**: Added descriptive unique `id` parameters to all primary navbar elements, including search triggers, shopping cart indicators, profile dashboard links, and responsive drawer toggles.

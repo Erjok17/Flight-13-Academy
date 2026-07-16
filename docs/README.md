@@ -28,6 +28,8 @@ Click on the guides below to understand what was completed:
    * Created Zustand global stores for persisted cart states and authentication.
    * Implemented hardware-accelerated Framer Motion route transitions and slide drawers.
    * Integrated react-helmet-async to dynamically update search engine title and keywords headers.
+   * Configured site-wide smooth scrolling and automatic scroll-to-top resets on page transitions.
+   * Assigned unique browser testing IDs to all critical header and navigation components.
 
 ---
 
