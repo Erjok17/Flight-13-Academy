@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -86,45 +87,100 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className={`${styles.mobileNav} ${isMobileMenuOpen ? styles.open : ''}`}>
-        <button onClick={() => setIsMobileMenuOpen(false)} className={styles.closeBtn}>
-          <X size={24} color="var(--red)" />
-        </button>
-        
-        <div className={styles.mobileNavLinks}>
-          {navLinks.map((link, index) => (
-            <Link 
-              key={index}
-              to={link.to} 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={styles.mobileNavLink}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className={styles.overlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div 
+              className={styles.mobileNav}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 150, damping: 20 }}
             >
-              {link.label}
-            </Link>
-          ))}
-          
-          {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className={styles.mobileLogoutBtn}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link 
-              to="/login" 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={styles.mobileSignInLink}
-            >
-              Sign In
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {isMobileMenuOpen && (
-        <div onClick={() => setIsMobileMenuOpen(false)} className={styles.overlay} />
-      )}
+              <button onClick={() => setIsMobileMenuOpen(false)} className={styles.closeBtn}>
+                <X size={24} color="var(--red)" />
+              </button>
+              
+              <div className={styles.mobileNavLinks}>
+                {navLinks.map((link, index) => (
+                  <Link 
+                    key={index}
+                    to={link.to} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={styles.mobileNavLink}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                
+                <Link 
+                  to="/search" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={styles.mobileNavLink}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <Search size={18} /> SEARCH
+                </Link>
+                
+                <Link 
+                  to="/cart" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={styles.mobileNavLink}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                  <ShoppingCart size={18} /> CART
+                  {itemCount > 0 && (
+                    <span style={{
+                      backgroundColor: '#FF9800',
+                      color: 'white',
+                      borderRadius: '12px',
+                      padding: '2px 8px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                      marginLeft: '5px'
+                    }}>{itemCount}</span>
+                  )}
+                </Link>
+                
+                {isLoggedIn ? (
+                  <>
+                    <Link 
+                      to="/account" 
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={styles.mobileNavLink}
+                      style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                    >
+                      <User size={18} /> ACCOUNT
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className={styles.mobileLogoutBtn}
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link 
+                    to="/login" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={styles.mobileSignInLink}
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

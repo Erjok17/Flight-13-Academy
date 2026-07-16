@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import NavigationDots from '../components/NavigationDots';
+import SEO from '../components/SEO';
 
 const About = () => {
   const [counts, setCounts] = useState({
@@ -93,6 +94,7 @@ const About = () => {
 
   return (
     <div>
+      <SEO title="About Us - Our Story & Vision" />
       <Navbar />
       <AnnouncementBanner />
       

@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Calendar, Users, Trophy, Star, Award, UserCheck, Briefcase } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Programs = () => {
   const programs = [
@@ -79,6 +80,7 @@ const Programs = () => {
 
   return (
     <div>
+      <SEO title="Programs - Basketball Training Classes" />
       <Navbar />
       <AnnouncementBanner />
       

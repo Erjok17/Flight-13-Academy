@@ -6,10 +6,12 @@ import ScholarshipSlideshow from '../components/ScholarshipSlideshow';
 import CoachesSection from '../components/CoachesSection';
 import Footer from '../components/Footer';
 import NavigationDots from '../components/NavigationDots';
+import SEO from '../components/SEO';
 
 const Home = () => {
   return (
     <div>
+      <SEO title="Home - Elite Basketball Training" />
       <Navbar />
       <AnnouncementBanner />  {/* ← Add this line */}
       <section id="hero"><HeroSection /></section>

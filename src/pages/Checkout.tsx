@@ -4,11 +4,14 @@ import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Lock, ChevronRight, AlertCircle } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import { API_URL } from '../config/api';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [apiError, setApiError] = useState('');
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -24,14 +27,20 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const { items, getTotalPrice, clearCart } = useCart();
+  const subtotal = getTotalPrice();
+  const deliveryFee = subtotal > 100000 ? 0 : 10000;
+  const total = subtotal + deliveryFee;
+
   const cartSummary = {
-    subtotal: 300000,
-    deliveryFee: 10000,
-    total: 310000,
-    items: [
-      { name: 'Weekly Practices - 1 Month', quantity: 1, price: 150000 },
-      { name: 'Flight 13 Jersey', quantity: 2, price: 75000 },
-    ]
+    subtotal,
+    deliveryFee,
+    total,
+    items: items.map(item => ({
+      name: item.name + (item.size ? ` (Size: ${item.size})` : ''),
+      quantity: item.quantity,
+      price: item.price
+    }))
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -83,12 +92,82 @@ const Checkout = () => {
     if (!validateStep2()) return;
     
     setIsProcessing(true);
+    setApiError('');
     
-    setTimeout(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setApiError('You must be logged in to complete checkout.');
       setIsProcessing(false);
-      alert('Payment submitted! Thank you for your registration.');
+      return;
+    }
+
+    try {
+      // 1. Submit Order to Backend
+      const orderResponse = await fetch(`${API_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          items: items.map(item => ({
+            product_id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            size: item.size
+          })),
+          total: total,
+          shipping_address: {
+            full_name: formData.fullName,
+            email: formData.email,
+            phone: formData.phone,
+            address: formData.address,
+            city: formData.city,
+            district: formData.district
+          },
+          payment_method: formData.paymentMethod
+        })
+      });
+
+      const orderData = await orderResponse.json();
+      if (!orderData.success) {
+        throw new Error(orderData.error || 'Failed to place order.');
+      }
+
+      const orderId = orderData.data.id;
+
+      // 2. Submit Payment to Backend
+      const paymentResponse = await fetch(`${API_URL}/api/payments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          amount: total,
+          payment_method: formData.paymentMethod,
+          phone_number: formData.mobileMoneyNumber || formData.phone,
+          transaction_code: formData.transactionCode
+        })
+      });
+
+      const paymentData = await paymentResponse.json();
+      if (!paymentData.success) {
+        throw new Error(paymentData.error || 'Failed to register payment.');
+      }
+
+      // 3. Clear Cart and Redirect
+      clearCart();
+      alert('Order placed and payment submitted successfully! Thank you for your registration.');
       navigate('/');
-    }, 2000);
+    } catch (err: any) {
+      console.error(err);
+      setApiError(err.message || 'Network error. Failed to process order.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -149,6 +228,11 @@ const Checkout = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '40px' }}>
             <form onSubmit={handleSubmit}>
               <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '32px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
+                {apiError && (
+                  <div style={{ backgroundColor: '#ffebee', color: '#d32f2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '14px' }}>
+                    {apiError}
+                  </div>
+                )}
                 
                 {step === 1 && (
                   <div>

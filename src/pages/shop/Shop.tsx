@@ -4,6 +4,8 @@ import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { ShoppingCart, Star, Search } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { API_URL } from '../../config/api';
+import SEO from '../../components/SEO';
 
 interface Product {
   id: string;
@@ -37,7 +39,7 @@ const Shop = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(`${API_URL}/api/products`);
       const data = await response.json();
       if (data.success) {
         setProducts(data.data);
@@ -81,6 +83,7 @@ const Shop = () => {
 
   return (
     <div>
+      <SEO title="Official Shop - Merch & Gear" />
       <Navbar />
       <AnnouncementBanner />
       

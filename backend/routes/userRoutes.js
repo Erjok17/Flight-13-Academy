@@ -1,23 +1,23 @@
-﻿// User routes
+// User routes
 
 const express = require('express');
 const router = express.Router();
 const {
-  getAllCoaches,
-  getCoachById,
-  createCoach,
-  updateCoach,
-  deleteCoach
-} = require('../controllers/coachController');
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  getUserStats
+} = require('../controllers/userController');
 const { authenticate, isAdmin } = require('../middleware/auth');
 
-// Public routes
-router.get('/', getAllCoaches);
-router.get('/:id', getCoachById);
-
 // Admin only routes
-router.post('/', authenticate, isAdmin, createCoach);
-router.put('/:id', authenticate, isAdmin, updateCoach);
-router.delete('/:id', authenticate, isAdmin, deleteCoach);
+router.get('/', authenticate, isAdmin, getAllUsers);
+router.get('/stats', authenticate, isAdmin, getUserStats);
+
+// User profile routes
+router.get('/:id', authenticate, getUserById);
+router.put('/:id', authenticate, updateUser);
+router.delete('/:id', authenticate, isAdmin, deleteUser);
 
 module.exports = router;

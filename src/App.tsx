@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -21,6 +22,20 @@ import CoachChut from './pages/coaches/CoachChut';
 import CoachMark from './pages/coaches/CoachMark';
 import CoachNathan from './pages/coaches/CoachNathan';
 
+// Page Transition Animation Wrapper
+const PageTransition = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
@@ -30,54 +45,64 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
   return (
-    <Router>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         {/* Public Pages - Always Accessible */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/programs" element={<Programs />} />
-        <Route path="/registration" element={<Registration />} />
-        <Route path="/media" element={<Media />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/athletes" element={<AthletesDirectory />} />
-        <Route path="/athletes/:id" element={<AthleteProfile />} />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/programs" element={<PageTransition><Programs /></PageTransition>} />
+        <Route path="/registration" element={<PageTransition><Registration /></PageTransition>} />
+        <Route path="/media" element={<PageTransition><Media /></PageTransition>} />
+        <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
+        <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+        <Route path="/shop" element={<PageTransition><Shop /></PageTransition>} />
+        <Route path="/product/:id" element={<PageTransition><ProductDetail /></PageTransition>} />
+        <Route path="/athletes" element={<PageTransition><AthletesDirectory /></PageTransition>} />
+        <Route path="/athletes/:id" element={<PageTransition><AthleteProfile /></PageTransition>} />
         
         {/* Auth Pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+        <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
         
         {/* Protected Routes - Require Login */}
         <Route path="/checkout" element={
           <ProtectedRoute>
-            <Checkout />
+            <PageTransition><Checkout /></PageTransition>
           </ProtectedRoute>
         } />
         
         <Route path="/account" element={
           <ProtectedRoute>
-            <Account />
+            <PageTransition><Account /></PageTransition>
           </ProtectedRoute>
         } />
         
         {/* Admin Routes */}
         <Route path="/admin" element={
           <ProtectedRoute>
-            <AdminDashboard />
+            <PageTransition><AdminDashboard /></PageTransition>
           </ProtectedRoute>
         } />
         
         {/* Coach Detail Pages */}
-        <Route path="/coaches/1" element={<CoachChut />} />
-        <Route path="/coaches/2" element={<CoachMark />} />
-        <Route path="/coaches/3" element={<CoachNathan />} />
+        <Route path="/coaches/1" element={<PageTransition><CoachChut /></PageTransition>} />
+        <Route path="/coaches/2" element={<PageTransition><CoachMark /></PageTransition>} />
+        <Route path="/coaches/3" element={<PageTransition><CoachNathan /></PageTransition>} />
       </Routes>
+    </AnimatePresence>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }
