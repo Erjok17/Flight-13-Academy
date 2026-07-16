@@ -196,45 +196,15 @@ const HeroSection = () => {
               justifyContent: 'center'
             }}
           >
-            {/* Slide Ticker Border Indicators */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: `${borderProgress * 100}%`,
-              height: '3px',
-              backgroundColor: 'var(--red)',
-              transition: 'width 0.05s linear'
-            }} />
-            
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '3px',
-              height: borderProgress >= 0.99 ? '100%' : '0%',
-              backgroundColor: 'var(--red)',
-              transition: 'height 0.1s linear'
-            }} />
-            
+            {/* Slide Ticker Bottom Progress Indicator */}
             <div style={{
               position: 'absolute',
               bottom: 0,
-              right: 0,
-              width: borderProgress >= 0.99 ? '100%' : '0%',
-              height: '3px',
-              backgroundColor: 'var(--red)',
-              transition: 'width 0.1s linear'
-            }} />
-            
-            <div style={{
-              position: 'absolute',
-              top: 0,
               left: 0,
-              width: '3px',
-              height: borderProgress >= 0.99 ? '100%' : '0%',
+              width: `${borderProgress * 100}%`,
+              height: '4px',
               backgroundColor: 'var(--red)',
-              transition: 'height 0.1s linear'
+              transition: 'width 0.05s linear'
             }} />
             
             <AnimatePresence mode="wait">
