@@ -130,14 +130,19 @@ const HeroSection = () => {
 
         <div style={{
           position: 'absolute',
-          bottom: '15%',
+          top: 0,
           left: '10%',
+          right: '10%',
+          bottom: 0,
           zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
           textAlign: 'left'
         }}>
           <h2 style={{ 
-            fontSize: 'clamp(18px, 4vw, 36px)', 
-            marginBottom: '8px', 
+            fontSize: 'clamp(16px, 3vw, 28px)', 
+            marginBottom: '4px', 
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -145,8 +150,8 @@ const HeroSection = () => {
             FLIGHT13 BASKETBALL ACADEMY
           </h2>
           <p style={{ 
-            fontSize: 'clamp(14px, 3vw, 20px)', 
-            marginBottom: '24px', 
+            fontSize: 'clamp(12px, 2vw, 16px)', 
+            marginBottom: '16px', 
             color: 'white',
             fontStyle: 'italic',
             fontWeight: 'bold',
@@ -155,8 +160,8 @@ const HeroSection = () => {
             "it's a process."
           </p>
           <h1 style={{ 
-            fontSize: 'clamp(28px, 6vw, 52px)', 
-            marginBottom: '8px', 
+            fontSize: 'clamp(24px, 5vw, 44px)', 
+            marginBottom: '4px', 
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
@@ -164,8 +169,8 @@ const HeroSection = () => {
             ELITE SKILLS TRAINING
           </h1>
           <p style={{ 
-            fontSize: 'clamp(18px, 4vw, 28px)', 
-            marginBottom: '32px', 
+            fontSize: 'clamp(14px, 3vw, 22px)', 
+            marginBottom: '20px', 
             color: 'white',
             fontWeight: 'bold',
             textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
@@ -282,6 +287,7 @@ const HeroSection = () => {
             id="hero-start-journey-btn"
             onClick={() => navigate('/registration')}
             style={{
+              alignSelf: 'flex-start',
               backgroundColor: 'var(--red)',
               color: 'white',
               border: 'none',
