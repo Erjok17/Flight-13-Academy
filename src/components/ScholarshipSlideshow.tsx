@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 const scheduleData = [
   {
@@ -165,14 +166,15 @@ const WeeklySchedule = () => {
         </p>
 
         {/* White Card Content */}
-        <div style={{ 
-          maxWidth: '800px', 
-          margin: '0 auto',
-          backgroundColor: 'white',
-          borderRadius: '20px',
-          overflow: 'hidden',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
-        }}>
+        <ScrollReveal>
+          <div style={{ 
+            maxWidth: '800px', 
+            margin: '0 auto',
+            backgroundColor: 'white',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+          }}>
           {/* Day Header - Red */}
           <div style={{
             backgroundColor: 'var(--red)',
@@ -249,7 +251,8 @@ const WeeklySchedule = () => {
               </p>
             </div>
           </div>
-        </div>
+          </div>
+        </ScrollReveal>
 
         {/* Navigation Dots */}
         <div style={{ 

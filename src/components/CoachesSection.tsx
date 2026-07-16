@@ -44,13 +44,16 @@ const CoachesSection = () => {
           {coaches.map((coach) => (
             <motion.div 
               key={coach.id} 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.15 }}
               whileHover={{ 
                 y: -8, 
                 scale: 1.01,
                 boxShadow: '0 20px 40px rgba(237, 0, 55, 0.12)',
                 borderColor: 'var(--red)'
               }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
               style={{ 
                 textAlign: 'center', 
                 backgroundColor: 'var(--gray-light)', 
