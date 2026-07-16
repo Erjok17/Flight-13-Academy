@@ -1,3 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-red: #ED0037;
+  --color-red-dark: #B71C1C;
+  --color-gray-light: #F5F5F5;
+  --color-gray: #9E9E9E;
+  --color-gray-dark: #333333;
+  --color-black: #111111;
+  
+  --color-glass-light: rgba(255, 255, 255, 0.1);
+  --color-glass-border-light: rgba(255, 255, 255, 0.15);
+  --color-glass-dark: rgba(0, 0, 0, 0.65);
+  --color-glass-border-dark: rgba(255, 255, 255, 0.08);
+}
+
 /* Local Font Faces for Poppins */
 @font-face {
   font-family: 'Poppins';

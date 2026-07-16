@@ -181,15 +181,16 @@ const HeroSection = () => {
           <div 
             id={`hero-slide-card-${currentSlide}`}
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
-              backdropFilter: 'blur(4px)',
-              padding: '16px 20px',
+              backgroundColor: 'rgba(15, 15, 15, 0.65)',
+              backdropFilter: 'blur(12px)',
+              padding: '16px 20px 20px 20px',
               borderRadius: '12px',
               maxWidth: 'min(500px, 90vw)',
               marginBottom: '24px',
               position: 'relative',
               overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
               minHeight: '110px',
               display: 'flex',
               flexDirection: 'column',
@@ -197,15 +198,17 @@ const HeroSection = () => {
             }}
           >
             {/* Slide Ticker Bottom Progress Indicator */}
-            <div style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: `${borderProgress * 100}%`,
-              height: '4px',
-              backgroundColor: 'var(--red)',
-              transition: 'width 0.05s linear'
-            }} />
+            <motion.div 
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                height: '4px',
+                backgroundColor: 'var(--red)'
+              }}
+              animate={{ width: `${borderProgress * 100}%` }}
+              transition={{ duration: 0.05, ease: 'linear' }}
+            />
             
             <AnimatePresence mode="wait">
               <motion.div
