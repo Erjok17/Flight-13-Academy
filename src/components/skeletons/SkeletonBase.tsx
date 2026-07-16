@@ -84,7 +84,7 @@ export const SkeletonBase = ({
       className={`skeleton-shimmer ${className}`}
       style={getStyle()}
       animate={{
-        opacity: [0.5, 0.85, 0.5]
+        opacity: [0.75, 1.0, 0.75]
       }}
       transition={{
         duration: 1.5,

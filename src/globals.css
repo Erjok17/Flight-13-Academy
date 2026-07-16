@@ -14,6 +14,6 @@
   --glass-shadow: rgba(0, 0, 0, 0.37);
 
   /* Shimmer / Skeleton Brand Color Variables */
-  --skeleton-bg: rgba(237, 0, 55, 0.05);       /* Light brand-red tint */
-  --skeleton-shimmer: rgba(237, 0, 55, 0.12);  /* Highlight brand-red pulse */
+  --skeleton-bg: #e8e2e2;       /* Warm brand-red tinted gray, highly visible */
+  --skeleton-shimmer: #d8cdcd;  /* Darker warm brand-red tint for highlight */
 }

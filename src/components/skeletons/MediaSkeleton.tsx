@@ -28,7 +28,7 @@ export const ImageSkeleton = ({
         overflow: 'hidden',
         border: '1px solid rgba(0, 0, 0, 0.05)'
       }}
-      animate={{ opacity: [0.6, 0.9, 0.6] }}
+      animate={{ opacity: [0.75, 1.0, 0.75] }}
       transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
     >
       {/* Centered Image Icon */}
@@ -71,7 +71,7 @@ export const VideoSkeleton = ({
         overflow: 'hidden',
         border: '1px solid rgba(0, 0, 0, 0.05)'
       }}
-      animate={{ opacity: [0.6, 0.9, 0.6] }}
+      animate={{ opacity: [0.75, 1.0, 0.75] }}
       transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
     >
       {/* Centered Video Play Circle Icon */}
