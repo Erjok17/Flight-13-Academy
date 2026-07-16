@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const coaches = [
   { 
@@ -25,6 +25,26 @@ const coaches = [
   }
 ];
 
+// Stagger Animation Variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: 'easeOut' }
+  }
+};
+
 const CoachesSection = () => {
   return (
     <section style={{ padding: '80px 0', backgroundColor: 'white' }}>
@@ -40,21 +60,24 @@ const CoachesSection = () => {
           Dedicated coaches committed to developing young athletes on and off the court.
         </p>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
-          {coaches.map((coach, index) => (
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.15 }}
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}
+        >
+          {coaches.map((coach) => (
             <motion.div 
               id={`coach-card-${coach.id}`}
               key={coach.id} 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
+              variants={cardVariants}
               whileHover={{ 
                 y: -8, 
                 scale: 1.01,
                 boxShadow: '0 20px 40px rgba(237, 0, 55, 0.12)',
                 borderColor: 'var(--red)'
               }}
-              transition={{ duration: 0.4, ease: 'easeOut', delay: index * 0.15 }}
               style={{ 
                 textAlign: 'center', 
                 backgroundColor: 'var(--gray-light)', 
@@ -101,7 +124,7 @@ const CoachesSection = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
