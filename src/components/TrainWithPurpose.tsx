@@ -2,23 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 
 // Stagger Animation Variants
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 45 },
-  visible: {
+  visible: (index: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: 'easeOut' }
-  }
+    transition: { 
+      duration: 0.4, 
+      ease: 'easeOut',
+      delay: index * 0.15 
+    }
+  })
 };
 
 const TrainWithPurpose = () => {
@@ -103,11 +97,7 @@ const TrainWithPurpose = () => {
           </p>
         </div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.15 }}
+        <div 
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -116,11 +106,15 @@ const TrainWithPurpose = () => {
             padding: '0 clamp(8px, 2vw, 0)'
           }}
         >
-          {cards.map((card) => (
+          {cards.map((card, index) => (
             <motion.div
               id={`activity-card-${card.id}`}
               key={card.id}
+              custom={index}
               variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.15 }}
               whileHover={{ 
                 scale: 1.02,
                 boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
@@ -280,7 +274,7 @@ const TrainWithPurpose = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

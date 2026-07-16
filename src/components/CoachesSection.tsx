@@ -26,23 +26,17 @@ const coaches = [
 ];
 
 // Stagger Animation Variants
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
-  visible: {
+  visible: (index: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: 'easeOut' }
-  }
+    transition: { 
+      duration: 0.4, 
+      ease: 'easeOut',
+      delay: index * 0.15 
+    }
+  })
 };
 
 const CoachesSection = () => {
@@ -60,18 +54,16 @@ const CoachesSection = () => {
           Dedicated coaches committed to developing young athletes on and off the court.
         </p>
         
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.15 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}
-        >
-          {coaches.map((coach) => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
+          {coaches.map((coach, index) => (
             <motion.div 
               id={`coach-card-${coach.id}`}
               key={coach.id} 
+              custom={index}
               variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.15 }}
               whileHover={{ 
                 y: -8, 
                 scale: 1.01,
@@ -124,7 +116,7 @@ const CoachesSection = () => {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
