@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const slides = [
   {
@@ -96,11 +97,15 @@ const HeroSection = () => {
         borderRadius: '1px',
         overflow: 'hidden'
       }}>
-        {slides.map((slide, index) => (
-          <img 
-            key={slide.id}
-            src={slide.image} 
-            alt={slide.title}
+        <AnimatePresence mode="popLayout">
+          <motion.img 
+            key={currentSlide}
+            src={slides[currentSlide].image} 
+            alt={slides[currentSlide].title}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
             style={{ 
               width: '100%', 
               height: '100%', 
@@ -108,12 +113,10 @@ const HeroSection = () => {
               display: 'block',
               position: 'absolute',
               top: 0,
-              left: 0,
-              opacity: currentSlide === index ? 1 : 0,
-              transition: 'opacity 0.3s ease-in-out'
+              left: 0
             }}
           />
-        ))}
+        </AnimatePresence>
         
         <div style={{
           position: 'absolute',
@@ -170,17 +173,25 @@ const HeroSection = () => {
             FOR AGES 5-18
           </p>
           
-          <div style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(4px)',
-            padding: '12px 16px',
-            borderRadius: '12px',
-            maxWidth: 'min(500px, 90vw)',
-            marginBottom: '24px',
-            position: 'relative',
-            overflow: 'hidden',
-            border: '1px solid rgba(255,255,255,0.1)'
-          }}>
+          <div 
+            id={`hero-slide-card-${currentSlide}`}
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              backdropFilter: 'blur(4px)',
+              padding: '16px 20px',
+              borderRadius: '12px',
+              maxWidth: 'min(500px, 90vw)',
+              marginBottom: '24px',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.1)',
+              minHeight: '110px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
+            }}
+          >
+            {/* Slide Ticker Border Indicators */}
             <div style={{
               position: 'absolute',
               top: 0,
@@ -221,25 +232,39 @@ const HeroSection = () => {
               transition: 'height 0.1s linear'
             }} />
             
-            <h3 style={{
-              fontSize: 'clamp(16px, 3vw, 24px)',
-              fontWeight: 'bold',
-              color: 'var(--red)',
-              marginBottom: '8px',
-              position: 'relative',
-              zIndex: 1
-            }}>
-              {slides[currentSlide].title}
-            </h3>
-            <p style={{
-              fontSize: 'clamp(12px, 2vw, 16px)',
-              color: 'white',
-              lineHeight: '1.5',
-              position: 'relative',
-              zIndex: 1
-            }}>
-              {slides[currentSlide].description}
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                style={{ position: 'relative', zIndex: 1 }}
+              >
+                <h3 
+                  id={`hero-slide-title-${currentSlide}`}
+                  style={{
+                    fontSize: 'clamp(15px, 2.5vw, 20px)',
+                    fontWeight: 'bold',
+                    color: 'var(--red)',
+                    marginBottom: '6px'
+                  }}
+                >
+                  {slides[currentSlide].title}
+                </h3>
+                <p 
+                  id={`hero-slide-desc-${currentSlide}`}
+                  style={{
+                    fontSize: 'clamp(12px, 1.8vw, 15px)',
+                    color: 'white',
+                    lineHeight: '1.5',
+                    margin: 0
+                  }}
+                >
+                  {slides[currentSlide].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
             
             <div style={{
               position: 'absolute',
