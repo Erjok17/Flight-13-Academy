@@ -5,7 +5,7 @@ import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Search as SearchIcon, X, Loader, ArrowRight } from 'lucide-react';
 import { API_URL } from '../config/api';
-import { EmptyState, SkeletonBase, SafeImage } from '../components/skeletons';
+import { SearchEmptyState, SkeletonBase, SafeImage } from '../components/skeletons';
 
 interface SearchResult {
   id: string;
@@ -396,11 +396,7 @@ const Search = () => {
                   ))}
                 </div>
               ) : results.length === 0 ? (
-                <EmptyState
-                  iconType="search"
-                  title="No results found"
-                  description={`We couldn't find any matches for "${searchTerm}". Try checking your spelling, using different keywords, or exploring popular sections.`}
-                />
+                <SearchEmptyState searchTerm={searchTerm} />
               ) : (
                 <>
                   <p style={{ marginBottom: '20px', color: '#666' }}>

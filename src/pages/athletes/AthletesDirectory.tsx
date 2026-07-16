@@ -5,7 +5,7 @@ import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Search, Ruler, Weight, GraduationCap } from 'lucide-react';
 import { API_URL } from '../../config/api';
-import { SkeletonBase } from '../../components/skeletons';
+import { SkeletonBase, AthletesEmptyState } from '../../components/skeletons';
 
 interface Athlete {
   id: string;
@@ -67,6 +67,12 @@ const AthletesDirectory = () => {
     
     return matchesSearch && matchesPosition && matchesAge;
   });
+
+  const resetFilters = () => {
+    setSearchTerm('');
+    setSelectedPosition('all');
+    setSelectedAge('all');
+  };
 
   if (isLoading) {
     return (
@@ -164,9 +170,7 @@ const AthletesDirectory = () => {
           </div>
 
           {filteredAthletes.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '80px', backgroundColor: 'white', borderRadius: '16px' }}>
-              <p style={{ fontSize: '18px', color: '#888' }}>No athletes found matching your criteria.</p>
-            </div>
+            <AthletesEmptyState onReset={resetFilters} />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '30px' }}>
               {filteredAthletes.map(athlete => (

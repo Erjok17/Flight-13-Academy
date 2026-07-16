@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { useCart } from '../context/CartContext';
-import { EmptyState, CheckoutSkeleton } from '../components/skeletons';
+import { CartEmptyState, CheckoutSkeleton } from '../components/skeletons';
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalItems, getTotalPrice, isLoading } = useCart();
@@ -49,13 +49,7 @@ const Cart = () => {
 
         <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-            <EmptyState
-              iconType="cart"
-              title="Your cart is empty"
-              description="Looks like you haven't added anything to your cart yet. Explore our training gear and accessories to get started."
-              actionText="Continue Shopping"
-              actionPath="/shop"
-            />
+            <CartEmptyState />
           </div>
         </main>
         
