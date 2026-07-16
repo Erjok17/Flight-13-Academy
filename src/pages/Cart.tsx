@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Trash2, ArrowRight, Plus, Minus, CreditCard, ShieldCheck, Truck } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { Trash2, ShoppingBag, ArrowRight, Plus, Minus, CreditCard, ShieldCheck, Truck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { EmptyState, CheckoutSkeleton } from '../components/skeletons';
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalItems, getTotalPrice, isLoading } = useCart();
@@ -24,9 +25,7 @@ const Cart = () => {
       <div>
         <Navbar />
         <AnnouncementBanner />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-          <p>Loading cart...</p>
-        </div>
+        <CheckoutSkeleton />
         <Footer />
       </div>
     );
@@ -50,28 +49,13 @@ const Cart = () => {
 
         <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-            <div style={{
-              textAlign: 'center',
-              padding: '80px 20px',
-              backgroundColor: 'white',
-              borderRadius: '16px',
-              boxShadow: '0 5px 20px rgba(0,0,0,0.05)'
-            }}>
-              <ShoppingBag size={64} color="#ccc" style={{ marginBottom: '20px' }} />
-              <h2 style={{ fontSize: '24px', marginBottom: '16px', color: '#333' }}>Your cart is empty</h2>
-              <p style={{ color: '#666', marginBottom: '24px' }}>Looks like you haven't added anything yet</p>
-              <Link to="/shop" style={{
-                backgroundColor: 'var(--red)',
-                color: 'white',
-                padding: '12px 28px',
-                borderRadius: '30px',
-                textDecoration: 'none',
-                display: 'inline-block',
-                fontWeight: 'bold'
-              }}>
-                Continue Shopping
-              </Link>
-            </div>
+            <EmptyState
+              iconType="cart"
+              title="Your cart is empty"
+              description="Looks like you haven't added anything to your cart yet. Explore our training gear and accessories to get started."
+              actionText="Continue Shopping"
+              actionPath="/shop"
+            />
           </div>
         </main>
         

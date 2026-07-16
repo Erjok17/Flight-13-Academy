@@ -5,6 +5,7 @@ import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Search as SearchIcon, X, Loader, ArrowRight } from 'lucide-react';
 import { API_URL } from '../config/api';
+import { EmptyState, SkeletonBase, SafeImage } from '../components/skeletons';
 
 interface SearchResult {
   id: string;
@@ -382,17 +383,24 @@ const Search = () => {
           {hasSearched && (
             <>
               {isLoading ? (
-                <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: 'white', borderRadius: '16px' }}>
-                  <Loader size={40} className="spinner" />
-                  <p style={{ marginTop: '16px', color: '#888' }}>Searching...</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {[1, 2, 3].map((idx) => (
+                    <div key={idx} style={{ backgroundColor: 'white', padding: '20px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+                      <div style={{ display: 'flex', gap: '12px', marginBottom: '8px', alignItems: 'center' }}>
+                        <SkeletonBase type="rectangle" width="80px" height="24px" borderRadius="20px" style={{ marginBottom: 0 }} />
+                        <SkeletonBase type="title" width="200px" height="20px" style={{ marginBottom: 0 }} />
+                      </div>
+                      <SkeletonBase type="text" width="100%" height="14px" />
+                      <SkeletonBase type="text" width="70%" height="14px" style={{ marginBottom: 0 }} />
+                    </div>
+                  ))}
                 </div>
               ) : results.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px 20px', backgroundColor: 'white', borderRadius: '16px' }}>
-                  <p style={{ fontSize: '18px', color: '#888' }}>No results found for "{searchTerm}"</p>
-                  <p style={{ fontSize: '14px', color: '#aaa', marginTop: '8px' }}>
-                    Try one of the popular searches below
-                  </p>
-                </div>
+                <EmptyState
+                  iconType="search"
+                  title="No results found"
+                  description={`We couldn't find any matches for "${searchTerm}". Try checking your spelling, using different keywords, or exploring popular sections.`}
+                />
               ) : (
                 <>
                   <p style={{ marginBottom: '20px', color: '#666' }}>
@@ -445,7 +453,7 @@ const Search = () => {
                         <p style={{ fontSize: '14px', color: '#666' }}>{result.description}</p>
                         {result.image && (
                           <div style={{ marginTop: '12px' }}>
-                            <img src={result.image} alt={result.title} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
+                            <SafeImage src={result.image} alt={result.title} style={{ width: '50px', height: '50px', borderRadius: '8px' }} />
                           </div>
                         )}
                       </Link>

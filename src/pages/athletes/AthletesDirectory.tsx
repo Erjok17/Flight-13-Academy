@@ -5,6 +5,7 @@ import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Search, Ruler, Weight, GraduationCap } from 'lucide-react';
 import { API_URL } from '../../config/api';
+import { SkeletonBase } from '../../components/skeletons';
 
 interface Athlete {
   id: string;
@@ -72,8 +73,21 @@ const AthletesDirectory = () => {
       <div>
         <Navbar />
         <AnnouncementBanner />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-          <p>Loading athletes...</p>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '60px 20px' }}>
+          <SkeletonBase type="title" width="300px" height="40px" style={{ marginBottom: '24px' }} />
+          <SkeletonBase type="text" width="500px" height="18px" style={{ marginBottom: '48px' }} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '30px' }}>
+            {[1, 2, 3, 4, 5, 6].map((idx) => (
+              <div key={idx} style={{ border: '1px solid #eee', borderRadius: '16px', padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <SkeletonBase type="avatar" width="120px" height="120px" style={{ marginBottom: '16px' }} />
+                <SkeletonBase type="title" width="160px" height="22px" style={{ marginBottom: '8px' }} />
+                <SkeletonBase type="text" width="100px" height="14px" style={{ marginBottom: '12px' }} />
+                <SkeletonBase type="text" width="100%" height="14px" />
+                <SkeletonBase type="text" width="80%" height="14px" style={{ marginBottom: '20px' }} />
+                <SkeletonBase type="button" width="100%" height="36px" />
+              </div>
+            ))}
+          </div>
         </div>
         <Footer />
       </div>
