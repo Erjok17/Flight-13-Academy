@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
@@ -17,6 +17,15 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -92,12 +101,12 @@ const Contact = () => {
           {/* Two Column Layout - stacks on mobile */}
           <div style={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: isMobile ? 'column' : 'row',
             gap: '60px'
           }}>
             
             {/* Left Column - Contact Info & Social Media */}
-            <div>
+            <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '28px', color: 'var(--red)', marginBottom: '24px' }}>
                 Get in Touch
               </h2>
@@ -268,7 +277,7 @@ const Contact = () => {
             </div>
             
             {/* Right Column - Contact Form */}
-            <div>
+            <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '28px', color: 'var(--red)', marginBottom: '24px' }}>
                 Send Us a Message
               </h2>

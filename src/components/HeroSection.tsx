@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const slides = [
   {
@@ -22,6 +23,7 @@ const slides = [
 ];
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [borderProgress, setBorderProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
@@ -251,19 +253,22 @@ const HeroSection = () => {
             </div>
           </div>
           
-          <button style={{
-            backgroundColor: 'var(--red)',
-            color: 'white',
-            border: 'none',
-            padding: 'clamp(10px, 3vw, 14px) clamp(20px, 5vw, 40px)',
-            fontSize: 'clamp(14px, 3vw, 18px)',
-            fontWeight: 'bold',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
+          <button 
+            id="hero-start-journey-btn"
+            onClick={() => navigate('/registration')}
+            style={{
+              backgroundColor: 'var(--red)',
+              color: 'white',
+              border: 'none',
+              padding: 'clamp(10px, 3vw, 14px) clamp(20px, 5vw, 40px)',
+              fontSize: 'clamp(14px, 3vw, 18px)',
+              fontWeight: 'bold',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
           >
             START YOUR JOURNEY
           </button>
