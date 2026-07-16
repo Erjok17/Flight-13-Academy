@@ -90,8 +90,9 @@ const TrainWithPurpose = () => {
           alignItems: 'stretch',
           padding: '0 clamp(8px, 2vw, 0)'
         }}>
-          {cards.map((card) => (
+          {cards.map((card, index) => (
             <motion.div
+              id={`activity-card-${card.id}`}
               key={card.id}
               initial={{ opacity: 0, y: 45 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +101,7 @@ const TrainWithPurpose = () => {
                 scale: 1.02,
                 boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
               }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.4, ease: 'easeOut', delay: index * 0.15 }}
               onMouseEnter={() => setHoveredCard(card.id)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{

@@ -41,8 +41,9 @@ const CoachesSection = () => {
         </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
-          {coaches.map((coach) => (
+          {coaches.map((coach, index) => (
             <motion.div 
+              id={`coach-card-${coach.id}`}
               key={coach.id} 
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +54,7 @@ const CoachesSection = () => {
                 boxShadow: '0 20px 40px rgba(237, 0, 55, 0.12)',
                 borderColor: 'var(--red)'
               }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}
+              transition={{ duration: 0.4, ease: 'easeOut', delay: index * 0.15 }}
               style={{ 
                 textAlign: 'center', 
                 backgroundColor: 'var(--gray-light)', 
