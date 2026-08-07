@@ -38,9 +38,9 @@ const Programs = () => {
         'Competition preparation and tournament play'
       ],
       guestCoaches: [
-        { name: 'Wal Deng', role: 'Elite Basketball Coach & Mentor', image: '/images/wal-deng-coaching.jpg' },
+        { name: 'Wal Deng', role: 'Elite Basketball Coach & Mentor', image: '/images/wal1.jpeg' },
         { name: 'NBA Africa Scout', role: 'Talent Evaluation Specialist' },
-        { name: 'Kaman Maluach', role: 'NBA Drafted Player & Inspiration', image: '/images/wal-deng-khaman.jpg' }
+        { name: 'Kaman Maluach & Mawut Mabil', role: 'Khaman NBA Drafted Player & Inspiration. Mawut Mabil Arizona Wildcat & NBA Draft prospect', image: '/images/wal-khaman.webp' }
       ],
       specialHighlight: 'NBA drafted player Kaman Maluach — trained and mentored by Coach Wal Deng',
       color: '#f9f9f9'

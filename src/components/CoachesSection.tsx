@@ -17,10 +17,10 @@ const coaches = [
   },
   { 
     id: 3, 
-    name: 'Coach Nathan Ateng', 
+    name: 'Coach Erjok Agot', 
     role: 'Defense & Strength Conditioning', 
-    image: '/images/coach-nathan.jpg', 
-    bio: 'Focuses on defensive fundamentals, agility, and strength training. Committed to building disciplined, hard-nosed players.' 
+    image: '/images/coach-erjok.JPG', 
+    bio: 'Focuses on defensive fundamentals, agility, and strength training. Committed to building disciplined, hard-nosed players who compete at the highest level.' 
   }
 ];
 

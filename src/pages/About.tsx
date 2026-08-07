@@ -89,7 +89,7 @@ const About = () => {
   }, [hasAnimated]);
 
   // Define sections for navigation dots
-  const sections = ['about-hero', 'about-what', 'about-numbers', 'about-values', 'about-philosophy', 'about-cta'];
+  const sections = ['about-hero', 'about-what', 'about-numbers', 'about-values', 'about-philosophy', 'about-founders', 'about-cta'];
 
   return (
     <div>
@@ -312,6 +312,113 @@ const About = () => {
                 />
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Founders Section - NEW (Nathan & Emmanuel only) */}
+        <section id="about-founders" style={{ padding: '80px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--red)', marginBottom: '16px', textAlign: 'center' }}>
+            Our Founders
+          </h2>
+          <p style={{ fontSize: '18px', color: '#666', textAlign: 'center', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px auto' }}>
+            The visionaries behind Flight 13 — building a legacy on and off the court.
+          </p>
+          
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '40px',
+            justifyContent: 'center'
+          }}>
+            {/* Founder 1: Emmanuel Ateng */}
+            <div style={{
+              backgroundColor: '#f9f9f9',
+              borderRadius: '16px',
+              padding: '30px',
+              textAlign: 'center',
+              transition: 'transform 0.3s',
+              boxShadow: '0 5px 15px rgba(0,0,0,0.05)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <div style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                backgroundColor: '#e0e0e0',
+                margin: '0 auto 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}>
+                <img 
+                  src="/images/emmanuel-ateng.jpg" 
+                  alt="Emmanuel Ateng"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '4px' }}>Emmanuel Ateng</h3>
+              <p style={{ color: 'var(--red)', fontWeight: '600', marginBottom: '12px' }}>Co-Founder</p>
+              <p style={{ color: '#666', fontSize: '14px', lineHeight: '1.6' }}>
+                Emmanuel co-founded Flight 13 with a vision to create a basketball program that develops 
+                young athletes into disciplined, skilled players. His leadership and passion laid the 
+                foundation for the academy's success and continues to inspire the Flight 13 community.
+              </p>
+            </div>
+
+            {/* Founder 2: Coach Nathan Ateng */}
+            <div style={{
+              backgroundColor: '#f9f9f9',
+              borderRadius: '16px',
+              padding: '30px',
+              textAlign: 'center',
+              transition: 'transform 0.3s',
+              boxShadow: '0 5px 15px rgba(0,0,0,0.05)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <div style={{
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                backgroundColor: '#e0e0e0',
+                margin: '0 auto 20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden'
+              }}>
+                <img 
+                  src="/images/coach-erjok.jpg" 
+                  alt="Coach Nathan Ateng"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              <h3 style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '4px' }}>Coach Nathan Ateng</h3>
+              <p style={{ color: 'var(--red)', fontWeight: '600', marginBottom: '12px' }}>Co-Founder & Head Coach</p>
+              <p style={{ color: '#666', fontSize: '14px', lineHeight: '1.6' }}>
+                Coach Nathan co-founded Flight 13 with a focus on defense, strength, and mental toughness. 
+                His coaching expertise and commitment to player development have shaped the academy's 
+                identity and training philosophy, creating a culture of excellence.
+              </p>
+            </div>
+          </div>
+
+          {/* Note about revival */}
+          <div style={{
+            marginTop: '40px',
+            padding: '20px',
+            backgroundColor: '#f5f5f5',
+            borderRadius: '12px',
+            textAlign: 'center',
+            borderLeft: `4px solid var(--red)`
+          }}>
+            {/* <p style={{ fontSize: '14px', color: '#666' }}>
+              <strong>Note:</strong> After a period of dormancy, Coach Chut Achol Matet revived Flight 13, 
+              bringing renewed energy and expertise to the program. Today, the academy continues to grow 
+              under his leadership alongside the founders' vision.
+            </p> */}
           </div>
         </section>
 

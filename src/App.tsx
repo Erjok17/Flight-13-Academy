@@ -19,7 +19,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import CoachChut from './pages/coaches/CoachChut';
 import CoachMark from './pages/coaches/CoachMark';
-import CoachNathan from './pages/coaches/CoachNathan';
+import CoachNathan from './pages/coaches/CoachErjok';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
