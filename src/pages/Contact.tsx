@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { API_URL } from '../config/api';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,16 @@ const Contact = () => {
   
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -25,19 +37,36 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
+    try {
+      const response = await fetch(`${API_URL}/api/contacts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        setError(data.error || 'Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Network error. Failed to connect to server.');
+    } finally {
       setIsLoading(false);
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
+    }
   };
 
   return (
     <div>
+      <SEO title="Contact Us - Get in Touch" />
       <Navbar />
       <AnnouncementBanner />
       
@@ -72,12 +101,12 @@ const Contact = () => {
           {/* Two Column Layout - stacks on mobile */}
           <div style={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: isMobile ? 'column' : 'row',
             gap: '60px'
           }}>
             
             {/* Left Column - Contact Info & Social Media */}
-            <div>
+            <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '28px', color: 'var(--red)', marginBottom: '24px' }}>
                 Get in Touch
               </h2>
@@ -248,7 +277,7 @@ const Contact = () => {
             </div>
             
             {/* Right Column - Contact Form */}
-            <div>
+            <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '28px', color: 'var(--red)', marginBottom: '24px' }}>
                 Send Us a Message
               </h2>
@@ -263,6 +292,19 @@ const Contact = () => {
                   border: '1px solid #c3e6cb'
                 }}>
                   ✓ Thank you for your message! We'll get back to you soon.
+                </div>
+              )}
+              
+              {error && (
+                <div style={{
+                  backgroundColor: '#f8d7da',
+                  color: '#721c24',
+                  padding: '12px 20px',
+                  borderRadius: '8px',
+                  marginBottom: '20px',
+                  border: '1px solid #f5c6cb'
+                }}>
+                  {error}
                 </div>
               )}
               

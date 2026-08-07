@@ -1,10 +1,10 @@
-﻿// Product model
+// Product model
 const { supabase } = require('../config/supabase');
 
-const Program = {
+const Product = {
   async findAll() {
     const { data, error } = await supabase
-      .from('programs')
+      .from('products')
       .select('*')
       .eq('is_active', true);
     
@@ -14,7 +14,7 @@ const Program = {
 
   async findById(id) {
     const { data, error } = await supabase
-      .from('programs')
+      .from('products')
       .select('*')
       .eq('id', id)
       .single();
@@ -23,10 +23,21 @@ const Program = {
     return data;
   },
 
-  async create(programData) {
+  async findByCategory(category) {
     const { data, error } = await supabase
-      .from('programs')
-      .insert([programData])
+      .from('products')
+      .select('*')
+      .eq('category', category)
+      .eq('is_active', true);
+    
+    if (error) throw error;
+    return data;
+  },
+
+  async create(productData) {
+    const { data, error } = await supabase
+      .from('products')
+      .insert([productData])
       .select()
       .single();
     
@@ -34,10 +45,10 @@ const Program = {
     return data;
   },
 
-  async update(id, programData) {
+  async update(id, productData) {
     const { data, error } = await supabase
-      .from('programs')
-      .update(programData)
+      .from('products')
+      .update(productData)
       .eq('id', id)
       .select()
       .single();
@@ -48,7 +59,7 @@ const Program = {
 
   async delete(id) {
     const { error } = await supabase
-      .from('programs')
+      .from('products')
       .update({ is_active: false })
       .eq('id', id);
     
@@ -57,4 +68,4 @@ const Program = {
   }
 };
 
-module.exports = Program;
+module.exports = Product;

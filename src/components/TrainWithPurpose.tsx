@@ -1,4 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion, Variants } from 'framer-motion';
+
+// Stagger Animation Variants
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 45 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { 
+      duration: 0.4, 
+      ease: 'easeOut',
+      delay: index * 0.15 
+    }
+  })
+};
 
 const TrainWithPurpose = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -82,27 +97,35 @@ const TrainWithPurpose = () => {
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 'clamp(20px, 5vw, 40px)',
-          alignItems: 'stretch',
-          padding: '0 clamp(8px, 2vw, 0)'
-        }}>
-          {cards.map((card) => (
-            <div
+        <div 
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: 'clamp(20px, 5vw, 40px)',
+            alignItems: 'stretch',
+            padding: '0 clamp(8px, 2vw, 0)'
+          }}
+        >
+          {cards.map((card, index) => (
+            <motion.div
+              id={`activity-card-${card.id}`}
               key={card.id}
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.15 }}
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+              }}
               onMouseEnter={() => setHoveredCard(card.id)}
               onMouseLeave={() => setHoveredCard(null)}
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: '16px',
                 overflow: 'hidden',
-                boxShadow: hoveredCard === card.id 
-                  ? '0 20px 40px rgba(0,0,0,0.1)' 
-                  : '0 5px 20px rgba(0,0,0,0.05)',
-                transform: hoveredCard === card.id ? 'scale(1.02)' : 'scale(1)',
-                transition: 'all 0.3s ease-in-out',
+                boxShadow: '0 5px 20px rgba(0,0,0,0.05)',
                 cursor: 'pointer',
                 position: 'relative',
                 border: '1px solid #f0f0f0'
@@ -249,7 +272,7 @@ const TrainWithPurpose = () => {
                   }}>→</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

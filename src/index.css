@@ -1,3 +1,68 @@
+@import "tailwindcss";
+@import "./globals.css";
+
+@theme {
+  --color-red: var(--brand-red);
+  --color-red-dark: var(--brand-red-dark);
+  --color-gray-light: var(--brand-gray-light);
+  --color-gray: var(--brand-gray);
+  --color-gray-dark: var(--brand-gray-dark);
+  --color-black: var(--brand-black);
+  
+  --color-glass-light: rgba(255, 255, 255, 0.1);
+  --color-glass-border-light: rgba(255, 255, 255, 0.15);
+  --color-glass-dark: var(--glass-bg);
+  --color-glass-border-dark: var(--glass-border);
+}
+
+/* Local Font Faces for Poppins */
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,13 +75,13 @@ body {
 }
 
 :root {
-  --red: #ED0037;
-  --red-dark: #B71C1C;
-  --white: #FFFFFF;
-  --gray-light: #F5F5F5;
-  --gray: #9E9E9E;
-  --gray-dark: #333333;
-  --black: #111111;
+  --red: var(--brand-red);
+  --red-dark: var(--brand-red-dark);
+  --white: var(--brand-white);
+  --gray-light: var(--brand-gray-light);
+  --gray: var(--brand-gray);
+  --gray-dark: var(--brand-gray-dark);
+  --black: var(--brand-black);
 }
 
 .container {

@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { motion, Variants } from 'framer-motion';
+import { SafeImage } from './skeletons';
 
 const coaches = [
   { 
@@ -24,6 +26,20 @@ const coaches = [
   }
 ];
 
+// Stagger Animation Variants
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { 
+      duration: 0.4, 
+      ease: 'easeOut',
+      delay: index * 0.15 
+    }
+  })
+};
+
 const CoachesSection = () => {
   return (
     <section style={{ padding: '80px 0', backgroundColor: 'white' }}>
@@ -40,39 +56,48 @@ const CoachesSection = () => {
         </p>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '40px' }}>
-          {coaches.map((coach) => (
-            <div 
+          {coaches.map((coach, index) => (
+            <motion.div 
+              id={`coach-card-${coach.id}`}
               key={coach.id} 
+              custom={index}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.15 }}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.01,
+                boxShadow: '0 20px 40px rgba(237, 0, 55, 0.12)',
+                borderColor: 'var(--red)'
+              }}
               style={{ 
                 textAlign: 'center', 
                 backgroundColor: 'var(--gray-light)', 
                 borderRadius: '16px', 
                 overflow: 'hidden', 
-                transition: 'transform 0.3s, box-shadow 0.3s',
                 cursor: 'pointer',
-                boxShadow: '0 5px 15px rgba(0,0,0,0.05)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 5px 15px rgba(0,0,0,0.05)';
+                border: '1px solid rgba(0, 0, 0, 0.05)',
+                boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+                transition: 'border-color 0.3s ease'
               }}
             >
-              <img 
-                src={coach.image} 
-                alt={coach.name} 
-                style={{ 
-                  width: '100%', 
-                  height: '320px', 
-                  objectFit: 'cover',
-                  transition: 'transform 0.5s'
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              />
+              <div style={{ overflow: 'hidden', height: '320px' }}>
+                <motion.div
+                  whileHover={{ scale: 1.06 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <SafeImage 
+                    src={coach.image} 
+                    alt={coach.name} 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%'
+                    }}
+                  />
+                </motion.div>
+              </div>
               <div style={{ padding: '24px' }}>
                 <h3 style={{ fontSize: '22px', marginBottom: '8px', color: '#222' }}>{coach.name}</h3>
                 <p style={{ color: 'var(--red)', fontWeight: '600', marginBottom: '12px', fontSize: '15px' }}>{coach.role}</p>
@@ -93,7 +118,7 @@ const CoachesSection = () => {
                   Learn more about {coach.name.split(' ')[1]} →
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

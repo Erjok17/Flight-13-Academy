@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useInView } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import NavigationDots from '../components/NavigationDots';
+import SEO from '../components/SEO';
 
 const About = () => {
   const [counts, setCounts] = useState({
@@ -16,83 +18,67 @@ const About = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px 0px" });
+
   useEffect(() => {
-    const checkIfInView = () => {
-      if (hasAnimated) return;
-      
-      const element = sectionRef.current;
-      if (!element) return;
-      
-      const rect = element.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      if (rect.top < windowHeight - 100) {
-        setHasAnimated(true);
-        startAnimations();
+    if (isInView && !hasAnimated) {
+      setHasAnimated(true);
+      startAnimations();
+    }
+  }, [isInView, hasAnimated]);
+
+  const startAnimations = () => {
+    let currentAthletes = 0;
+    const athleteInterval = setInterval(() => {
+      if (currentAthletes < 10) {
+        currentAthletes++;
+        setCounts(prev => ({ ...prev, athletes: currentAthletes }));
+      } else if (currentAthletes < 50) {
+        currentAthletes += 2;
+        if (currentAthletes > 50) currentAthletes = 50;
+        setCounts(prev => ({ ...prev, athletes: currentAthletes }));
+      } else {
+        clearInterval(athleteInterval);
       }
-    };
+    }, 50);
     
-    const startAnimations = () => {
-      let currentAthletes = 0;
-      const athleteInterval = setInterval(() => {
-        if (currentAthletes < 10) {
-          currentAthletes++;
-          setCounts(prev => ({ ...prev, athletes: currentAthletes }));
-        } else if (currentAthletes < 50) {
-          currentAthletes += 2;
-          if (currentAthletes > 50) currentAthletes = 50;
-          setCounts(prev => ({ ...prev, athletes: currentAthletes }));
-        } else {
-          clearInterval(athleteInterval);
-        }
-      }, 50);
-      
-      let currentDays = 0;
-      const daysInterval = setInterval(() => {
-        if (currentDays < 4) {
-          currentDays++;
-          setCounts(prev => ({ ...prev, trainingDays: currentDays }));
-        } else {
-          clearInterval(daysInterval);
-        }
-      }, 80);
-      
-      let currentAge = 0;
-      const ageInterval = setInterval(() => {
-        if (currentAge < 1) {
-          currentAge++;
-          setCounts(prev => ({ ...prev, ageGroups: currentAge }));
-        } else {
-          clearInterval(ageInterval);
-        }
-      }, 50);
-      
-      let currentScholarships = 0;
-      const scholarshipsInterval = setInterval(() => {
-        if (currentScholarships < 2) {
-          currentScholarships++;
-          setCounts(prev => ({ ...prev, scholarships: currentScholarships }));
-        } else {
-          clearInterval(scholarshipsInterval);
-        }
-      }, 200);
-    };
+    let currentDays = 0;
+    const daysInterval = setInterval(() => {
+      if (currentDays < 4) {
+        currentDays++;
+        setCounts(prev => ({ ...prev, trainingDays: currentDays }));
+      } else {
+        clearInterval(daysInterval);
+      }
+    }, 80);
     
-    setTimeout(checkIfInView, 100);
-    window.addEventListener('scroll', checkIfInView);
-    window.addEventListener('resize', checkIfInView);
+    let currentAge = 0;
+    const ageInterval = setInterval(() => {
+      if (currentAge < 1) {
+        currentAge++;
+        setCounts(prev => ({ ...prev, ageGroups: currentAge }));
+      } else {
+        clearInterval(ageInterval);
+      }
+    }, 50);
     
-    return () => {
-      window.removeEventListener('scroll', checkIfInView);
-      window.removeEventListener('resize', checkIfInView);
-    };
-  }, [hasAnimated]);
+    let currentScholarships = 0;
+    const scholarshipsInterval = setInterval(() => {
+      if (currentScholarships < 2) {
+        currentScholarships++;
+        setCounts(prev => ({ ...prev, scholarships: currentScholarships }));
+      } else {
+        clearInterval(scholarshipsInterval);
+      }
+    }, 200);
+  };
 
   // Define sections for navigation dots
   const sections = ['about-hero', 'about-what', 'about-numbers', 'about-values', 'about-philosophy', 'about-founders', 'about-cta'];
 
   return (
     <div>
+      <SEO title="About Us - Our Story & Vision" />
       <Navbar />
       <AnnouncementBanner />
       

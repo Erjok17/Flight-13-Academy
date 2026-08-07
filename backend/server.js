@@ -18,6 +18,7 @@ const mediaRoutes = require('./routes/mediaRoutes');
 const coachRoutes = require('./routes/coachRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -72,6 +73,7 @@ app.use('/api/media', mediaRoutes);
 app.use('/api/coaches', coachRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/contacts', contactRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

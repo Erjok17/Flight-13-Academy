@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star, ThumbsUp } from 'lucide-react';
 import { API_URL } from '../config/api';
+import { ProductReviewsSkeleton } from './skeletons';
 
 interface Review {
   id: string;
@@ -129,7 +130,7 @@ const ProductReviews = ({ productId }: ProductReviewsProps) => {
   };
 
   if (isLoading) {
-    return <div style={{ textAlign: 'center', padding: '40px' }}>Loading reviews...</div>;
+    return <ProductReviewsSkeleton />;
   }
 
   return (

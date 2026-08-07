@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
+import { API_URL } from '../config/api';
 
 const Registration = () => {
   const [step, setStep] = useState(1);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     // Athlete Info
     athleteName: '',
@@ -49,17 +51,58 @@ const Registration = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    setTimeout(() => {
-      console.log('Registration submitted:', formData);
+    setError('');
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('You must be logged in to submit a registration.');
       setIsLoading(false);
-      setIsSubmitted(true);
-      
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/registrations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          athlete_name: formData.athleteName,
+          date_of_birth: formData.dateOfBirth,
+          gender: formData.gender,
+          school: formData.school,
+          grade: formData.grade,
+          experience_level: formData.experienceLevel,
+          jersey_size: formData.jerseySize,
+          medical_conditions: formData.medicalConditions,
+          parent_name: formData.parentName,
+          relationship: formData.relationship,
+          phone: formData.phone,
+          email: formData.email,
+          address: formData.address,
+          emergency_contact: formData.emergencyContact,
+          program_type: formData.programType,
+          preferred_days: formData.preferredDays,
+          hear_about_us: formData.hearAboutUs
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setIsSubmitted(true);
+      } else {
+        setError(data.error || 'Failed to submit registration. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Network error. Failed to connect to server.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const nextStep = () => setStep(step + 1);
@@ -134,6 +177,11 @@ const Registration = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', borderRadius: '20px', padding: '40px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
             
+            {error && (
+              <div style={{ backgroundColor: '#ffebee', color: '#d32f2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '14px' }}>
+                {error}
+              </div>
+            )}
             {/* Step 1: Athlete Information */}
             {step === 1 && (
               <div>

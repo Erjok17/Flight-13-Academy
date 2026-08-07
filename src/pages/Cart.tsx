@@ -1,10 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Trash2, ArrowRight, Plus, Minus, CreditCard, ShieldCheck, Truck } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
-import { Trash2, ShoppingBag, ArrowRight, Plus, Minus, Truck, Mail, MessageCircle, Phone } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { CartEmptyState, CheckoutSkeleton } from '../components/skeletons';
+
+// Define CartItem interface
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image_url: string;
+  size?: string;
+}
 
 const Cart = () => {
   const { items, removeFromCart, updateQuantity, getTotalItems, getTotalPrice, isLoading } = useCart();
@@ -16,16 +27,15 @@ const Cart = () => {
   }, []);
 
   const subtotal = getTotalPrice();
-  const total = subtotal;
+  const deliveryFee = subtotal > 100000 ? 0 : 10000;
+  const total = subtotal + deliveryFee;
 
   if (isLoading) {
     return (
       <div>
         <Navbar />
         <AnnouncementBanner />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-          <p>Loading cart...</p>
-        </div>
+        <CheckoutSkeleton />
         <Footer />
       </div>
     );
@@ -49,28 +59,7 @@ const Cart = () => {
 
         <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-            <div style={{
-              textAlign: 'center',
-              padding: '80px 20px',
-              backgroundColor: 'white',
-              borderRadius: '16px',
-              boxShadow: '0 5px 20px rgba(0,0,0,0.05)'
-            }}>
-              <ShoppingBag size={64} color="#ccc" style={{ marginBottom: '20px' }} />
-              <h2 style={{ fontSize: '24px', marginBottom: '16px', color: '#333' }}>Your cart is empty</h2>
-              <p style={{ color: '#666', marginBottom: '24px' }}>Looks like you haven't added anything yet</p>
-              <Link to="/shop" style={{
-                backgroundColor: 'var(--red)',
-                color: 'white',
-                padding: '12px 28px',
-                borderRadius: '30px',
-                textDecoration: 'none',
-                display: 'inline-block',
-                fontWeight: 'bold'
-              }}>
-                Continue Shopping
-              </Link>
-            </div>
+            <CartEmptyState />
           </div>
         </main>
         
@@ -98,7 +87,6 @@ const Cart = () => {
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
           
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '40px' }}>
-            {/* Cart Items */}
             <div>
               <div style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 5px 20px rgba(0,0,0,0.05)' }}>
                 <div style={{
@@ -117,7 +105,7 @@ const Cart = () => {
                   <div></div>
                 </div>
                 
-                {items.map((item) => (
+                {items.map((item: CartItem) => (
                   <div
                     key={item.id}
                     style={{
@@ -176,7 +164,6 @@ const Cart = () => {
               </Link>
             </div>
 
-            {/* Order Summary */}
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 5px 20px rgba(0,0,0,0.05)', height: 'fit-content', position: 'sticky', top: '20px' }}>
               <h3 style={{ fontSize: '20px', marginBottom: '20px', borderBottom: '2px solid var(--red)', paddingBottom: '12px', display: 'inline-block' }}>Order Summary</h3>
               
@@ -185,6 +172,10 @@ const Cart = () => {
                   <span>Subtotal ({getTotalItems()} items)</span>
                   <span>UGX {subtotal.toLocaleString()}</span>
                 </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#555' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Truck size={14} /> Delivery Fee</span>
+                  <span>{deliveryFee === 0 ? 'Free' : `UGX ${deliveryFee.toLocaleString()}`}</span>
+                </div>
                 <div style={{ borderTop: '1px solid #eee', margin: '16px 0' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold', fontSize: '20px', color: '#333' }}>
                   <span>Total</span>
@@ -192,76 +183,35 @@ const Cart = () => {
                 </div>
               </div>
 
-              {/* Checkout Note - Delivery handled offline */}
-              <div style={{
-                backgroundColor: '#fff3e0',
-                padding: '12px',
-                borderRadius: '8px',
-                marginBottom: '16px',
-                fontSize: '13px',
-                color: '#666',
-                textAlign: 'center',
-                borderLeft: '3px solid #FF9800'
-              }}>
-                <p style={{ marginBottom: '4px' }}>
-                  📦 <strong>Delivery handled offline</strong>
-                </p>
-                <p style={{ fontSize: '12px' }}>
-                  After checkout, we'll contact you via WhatsApp or email to arrange delivery.
-                </p>
-              </div>
-
               {!isLoggedIn && (
-                <div style={{
-                  backgroundColor: '#e3f2fd',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  marginBottom: '16px',
-                  textAlign: 'center',
-                  fontSize: '13px'
-                }}>
+                <div style={{ backgroundColor: '#e3f2fd', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', fontSize: '13px' }}>
                   <Link to="/login" style={{ color: 'var(--red)', fontWeight: 'bold' }}>Sign in</Link> for faster checkout
                 </div>
               )}
 
-              <Link 
-                to="/checkout" 
-                style={{
-                  display: 'block',
-                  backgroundColor: 'var(--red)',
-                  color: 'white',
-                  textAlign: 'center',
-                  padding: '14px',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  fontWeight: 'bold',
-                  marginBottom: '16px',
-                  transition: 'all 0.3s'
-                }}
-              >
+              <Link to="/checkout" style={{
+                display: 'block',
+                backgroundColor: 'var(--red)',
+                color: 'white',
+                textAlign: 'center',
+                padding: '14px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                fontWeight: 'bold',
+                marginBottom: '16px',
+                transition: 'all 0.3s'
+              }}>
                 Proceed to Checkout
                 <ArrowRight size={16} style={{ marginLeft: '8px', verticalAlign: 'middle' }} />
               </Link>
 
-              {/* Contact Options */}
-              <div style={{ marginTop: '16px', textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: '#888', marginBottom: '12px' }}>Questions? Contact us directly:</p>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-                  <a href="mailto:flight13@gmail.com" style={{ color: 'var(--red)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Mail size={16} /> Email
-                  </a>
-                  <a href="https://wa.me/256780898611" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <MessageCircle size={16} /> WhatsApp
-                  </a>
-                  <a href="tel:+256780898611" style={{ color: 'var(--red)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Phone size={16} /> Call
-                  </a>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '12px' }}>
+                  <ShieldCheck size={20} color="#888" />
+                  <CreditCard size={20} color="#888" />
                 </div>
-              </div>
-
-              <div style={{ textAlign: 'center', marginTop: '16px' }}>
-                <p style={{ fontSize: '11px', color: '#aaa' }}>
-                  🔒 Your information is secure
+                <p style={{ fontSize: '12px', color: '#888' }}>
+                  Secure payment. Your information is protected.
                 </p>
               </div>
             </div>

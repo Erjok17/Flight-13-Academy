@@ -4,6 +4,9 @@ import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { ShoppingCart, Star, Search } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { API_URL } from '../../config/api';
+import SEO from '../../components/SEO';
+import { ProductsEmptyState, SafeImage } from '../../components/skeletons';
 
 interface Product {
   id: string;
@@ -37,7 +40,7 @@ const Shop = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(`${API_URL}/api/products`);
       const data = await response.json();
       if (data.success) {
         setProducts(data.data);
@@ -81,6 +84,7 @@ const Shop = () => {
 
   return (
     <div>
+      <SEO title="Official Shop - Merch & Gear" />
       <Navbar />
       <AnnouncementBanner />
       
@@ -138,23 +142,26 @@ const Shop = () => {
           </div>
 
           {/* Products Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '30px' }}>
-            {filteredProducts.map(product => (
-              <div key={product.id} style={{
-                backgroundColor: 'white',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
-                transition: 'transform 0.3s'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                <div style={{ position: 'relative' }}>
-                  <img 
-                    src={product.image_url || '/images/placeholder.jpg'} 
-                    alt={product.name} 
-                    style={{ width: '100%', height: '250px', objectFit: 'cover' }} 
-                  />
+          {filteredProducts.length === 0 ? (
+            <ProductsEmptyState onReset={() => { setSearchTerm(''); setSelectedCategory('all'); }} />
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '30px' }}>
+              {filteredProducts.map(product => (
+                <div key={product.id} style={{
+                  backgroundColor: 'white',
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
+                  transition: 'transform 0.3s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  <div style={{ position: 'relative' }}>
+                    <SafeImage 
+                      src={product.image_url} 
+                      alt={product.name} 
+                      style={{ width: '100%', height: '250px' }} 
+                    />
                   {!product.in_stock && (
                     <div style={{
                       position: 'absolute',
@@ -228,8 +235,9 @@ const Shop = () => {
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
 
