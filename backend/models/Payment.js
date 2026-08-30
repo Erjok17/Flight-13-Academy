@@ -1,10 +1,10 @@
 ﻿// Payment model
-const { supabase } = require('../config/supabase');
+const { supabaseAdmin } = require('../config/supabase');
 
 const Payment = {
   // Create payment
   async create(paymentData) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
       .insert([paymentData])
       .select()
@@ -16,9 +16,9 @@ const Payment = {
 
   // Find by ID
   async findById(id) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
-      .select('*, profiles(*), registrations(*)')
+      .select('*, profiles(*)')
       .eq('id', id)
       .single();
     
@@ -28,25 +28,13 @@ const Payment = {
 
   // Find by user ID
   async findByUserId(userId) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
-      .select('*, registrations(*)')
+      .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data;
-  },
-
-  // Find by registration ID
-  async findByRegistrationId(registrationId) {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*')
-      .eq('registration_id', registrationId)
-      .single();
-    
-    if (error && error.code !== 'PGRST116') throw error;
     return data;
   },
 
@@ -55,7 +43,7 @@ const Payment = {
     const updates = { status };
     if (transactionCode) updates.transaction_code = transactionCode;
     
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
       .update(updates)
       .eq('id', id)
@@ -68,9 +56,9 @@ const Payment = {
 
   // Get all payments (admin)
   async findAll() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
-      .select('*, profiles(*), registrations(*)')
+      .select('*, profiles(*)')
       .order('created_at', { ascending: false });
     
     if (error) throw error;
@@ -79,7 +67,7 @@ const Payment = {
 
   // Get total revenue
   async getTotalRevenue() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
       .select('amount')
       .eq('status', 'completed');
@@ -92,7 +80,7 @@ const Payment = {
 
   // Get revenue by date range
   async getRevenueByDateRange(startDate, endDate) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
       .select('amount')
       .eq('status', 'completed')
@@ -107,7 +95,7 @@ const Payment = {
 
   // Get payment stats
   async getStats() {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('payments')
       .select('status, amount')
       .eq('status', 'completed');

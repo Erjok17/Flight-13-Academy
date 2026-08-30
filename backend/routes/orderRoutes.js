@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { supabase } = require('../config/supabase');
+const { supabaseAdmin } = require('../config/supabase');
 const { authenticate, isAdmin } = require('../middleware/auth');
 
 // Create order
@@ -16,7 +16,7 @@ router.post('/', authenticate, async (req, res) => {
       created_at: new Date()
     };
     
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('orders')
       .insert([orderData])
       .select()
@@ -33,7 +33,7 @@ router.post('/', authenticate, async (req, res) => {
 // Get user's orders
 router.get('/my', authenticate, async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('orders')
       .select('*')
       .eq('user_id', req.user.id)
@@ -50,7 +50,7 @@ router.get('/my', authenticate, async (req, res) => {
 // Get all orders (admin only)
 router.get('/', authenticate, isAdmin, async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('orders')
       .select('*, profiles(*)')
       .order('created_at', { ascending: false });
@@ -69,7 +69,7 @@ router.put('/:id', authenticate, isAdmin, async (req, res) => {
     const { id } = req.params;
     const { status, payment_status } = req.body;
     
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('orders')
       .update({ status, payment_status })
       .eq('id', id)

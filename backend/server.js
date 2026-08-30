@@ -9,7 +9,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const programRoutes = require('./routes/programRoutes');
-const registrationRoutes = require('./routes/registrationRoutes');
+// const registrationRoutes = require('./routes/registrationRoutes');
 const athleteRoutes = require('./routes/athleteRoutes');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -19,6 +19,8 @@ const coachRoutes = require('./routes/coachRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+// with your other route imports
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -64,7 +66,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/programs', programRoutes);
-app.use('/api/registrations', registrationRoutes);
+// app.use('/api/registrations', registrationRoutes);
 app.use('/api/athletes', athleteRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
@@ -74,6 +76,8 @@ app.use('/api/coaches', coachRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/contacts', contactRoutes);
+// with your other app.use() route mounts
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

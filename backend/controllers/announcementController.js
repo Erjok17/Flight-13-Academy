@@ -1,7 +1,7 @@
 ﻿// Announcement controller
-const { supabase } = require('../config/supabase');
+const { supabase, supabaseAdmin } = require('../config/supabase');
 
-// Get active announcements
+// Get active announcements (public)
 const getActiveAnnouncements = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -22,7 +22,7 @@ const getActiveAnnouncements = async (req, res) => {
 // Get all announcements (admin only)
 const getAllAnnouncements = async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('announcements')
       .select('*')
       .order('created_at', { ascending: false });
@@ -39,7 +39,7 @@ const getAllAnnouncements = async (req, res) => {
 const createAnnouncement = async (req, res) => {
   try {
     const announcementData = req.body;
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('announcements')
       .insert([announcementData])
       .select()
@@ -59,7 +59,7 @@ const updateAnnouncement = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
     
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('announcements')
       .update(updates)
       .eq('id', id)
@@ -78,7 +78,7 @@ const updateAnnouncement = async (req, res) => {
 const deleteAnnouncement = async (req, res) => {
   try {
     const { id } = req.params;
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('announcements')
       .delete()
       .eq('id', id);

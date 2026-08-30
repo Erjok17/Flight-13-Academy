@@ -3,12 +3,12 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { Ruler, Weight, GraduationCap, Award, Mail, Phone, MapPin } from 'lucide-react';
+import { Ruler, Weight, GraduationCap, Award, Mail, Phone } from 'lucide-react';
 import { API_URL } from '../../config/api';
 
 interface AthleteProfile {
   id: string;
-  full_name: string;
+  name: string;
   age: number;
   height: string;
   weight: string;
@@ -16,13 +16,13 @@ interface AthleteProfile {
   school: string;
   achievements: string[];
   strengths: string[];
-  avatar_url: string;
+  image_url: string;
   college_interest: string;
   scholarship_offers: number;
   bio: string;
-  email: string;
-  phone: string;
-  location: string;
+  parent_name: string;
+  parent_phone: string;
+  parent_email: string;
 }
 
 const AthleteProfile = () => {
@@ -96,7 +96,7 @@ const AthleteProfile = () => {
         <Link to="/athletes" style={{ color: 'white', textDecoration: 'none', marginBottom: '16px', display: 'inline-block' }}>
           ← Back to Athletes
         </Link>
-        <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', marginBottom: '8px' }}>{athlete.full_name}</h1>
+        <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', marginBottom: '8px' }}>{athlete.name}</h1>
         <p style={{ fontSize: '18px' }}>{athlete.position} • Age {athlete.age}</p>
       </section>
 
@@ -114,8 +114,8 @@ const AthleteProfile = () => {
                 justifyContent: 'center',
                 marginBottom: '24px'
               }}>
-                {athlete.avatar_url ? (
-                  <img src={athlete.avatar_url} alt={athlete.full_name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+                {athlete.image_url ? (
+                  <img src={athlete.image_url} alt={athlete.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
                 ) : (
                   <span style={{ fontSize: '80px' }}>🏀</span>
                 )}
@@ -127,26 +127,25 @@ const AthleteProfile = () => {
                   <div><Ruler size={16} style={{ display: 'inline', marginRight: '8px' }} /> Height: {athlete.height || 'N/A'}</div>
                   <div><Weight size={16} style={{ display: 'inline', marginRight: '8px' }} /> Weight: {athlete.weight || 'N/A'}</div>
                   <div><GraduationCap size={16} style={{ display: 'inline', marginRight: '8px' }} /> School: {athlete.school || 'N/A'}</div>
-                  <div><MapPin size={16} style={{ display: 'inline', marginRight: '8px' }} /> Location: {athlete.location || 'Kampala, Uganda'}</div>
                 </div>
               </div>
 
-              <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '16px', color: '#333' }}>Contact Information</h3>
+              {/* <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px' }}>
+                <h3 style={{ fontSize: '20px', marginBottom: '16px', color: '#333' }}>Guardian Contact</h3>
                 <div style={{ marginBottom: '12px' }}>
-                  <Mail size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.email || 'Not available'}
+                  <Mail size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.parent_email || 'Not available'}
                 </div>
                 <div>
-                  <Phone size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.phone || 'Not available'}
+                  <Phone size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.parent_phone || 'Not available'}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div>
               <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '16px', color: '#333' }}>About {athlete.full_name.split(' ')[0]}</h3>
+                <h3 style={{ fontSize: '20px', marginBottom: '16px', color: '#333' }}>About {athlete.name.split(' ')[0]}</h3>
                 <p style={{ lineHeight: '1.6', color: '#555', marginBottom: '16px' }}>
-                  {athlete.bio || `${athlete.full_name} is a talented ${athlete.position} who has been developing their skills at Flight 13. With dedication and hard work, they continue to improve every day.`}
+                  {athlete.bio || `${athlete.name} is a talented ${athlete.position} who has been developing their skills at Flight 13. With dedication and hard work, they continue to improve every day.`}
                 </p>
                 <div style={{ backgroundColor: '#f5f5f5', padding: '16px', borderRadius: '12px', marginTop: '16px' }}>
                   <p style={{ fontWeight: 'bold', marginBottom: '8px' }}>🎓 College Interest:</p>

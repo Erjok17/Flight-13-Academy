@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
@@ -7,6 +8,7 @@ import { API_URL } from '../config/api';
 import SEO from '../components/SEO';
 
 const Contact = () => {
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,6 +28,20 @@ const Contact = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    const prefill = searchParams.get('message');
+    if (prefill) {
+      setFormData((prev) => ({
+        ...prev,
+        subject: 'Registration',
+        message: prefill
+      }));
+      setTimeout(() => {
+        document.getElementById('contact-form-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -277,10 +293,34 @@ const Contact = () => {
             </div>
             
             {/* Right Column - Contact Form */}
-            <div style={{ flex: 1 }}>
+            <div id="contact-form-section" style={{ flex: 1 }}>
               <h2 style={{ fontSize: '28px', color: 'var(--red)', marginBottom: '24px' }}>
                 Send Us a Message
               </h2>
+
+              {/* ✅ FIXED: Added missing <a tag */}
+              {formData.message && (
+                <a
+                  href={`https://wa.me/256780898611?text=${encodeURIComponent(formData.message)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#25D366',
+                    color: 'white',
+                    padding: '10px 20px',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                    marginBottom: '20px'
+                  }}
+                >
+                  Send this via WhatsApp instead →
+                </a>
+              )}
               
               {isSubmitted && (
                 <div style={{
@@ -432,7 +472,7 @@ const Contact = () => {
                     width: '100%'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isLoading) e.currentTarget.style.backgroundColor = 'var(--red-dark)';
+                    if (!isLoading) e.currentTarget.style.backgroundColor = '#c62828';
                   }}
                   onMouseLeave={(e) => {
                     if (!isLoading) e.currentTarget.style.backgroundColor = 'var(--red)';

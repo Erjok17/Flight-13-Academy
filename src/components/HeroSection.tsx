@@ -258,7 +258,7 @@ const HeroSection = () => {
           
           <button 
             id="hero-start-journey-btn"
-            onClick={() => navigate('/registration')}
+            onClick={() => navigate(`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`)}
             style={{
               alignSelf: 'flex-start',
               backgroundColor: 'var(--red)',

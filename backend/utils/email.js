@@ -1,93 +1,41 @@
-﻿// Email sending
-const nodemailer = require('nodemailer');
+﻿const { Resend } = require('resend');
 
-// Create transporter
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const FROM_ADDRESS = 'onboarding@resend.dev'; // switch once a domain is verified
+
+const generateCode = () => Math.floor(100000 + Math.random() * 900000).toString();
+
+const sendVerificationEmail = async (toEmail, fullName, code) => {
+  return resend.emails.send({
+    from: `Flight 13 Academy <${FROM_ADDRESS}>`,
+    to: toEmail,
+    subject: 'Verify your Flight 13 account',
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2 style="color: #d32f2f;">Welcome to Flight 13, ${fullName}!</h2>
+        <p>Use this code to verify your account:</p>
+        <p style="font-size: 32px; font-weight: bold; letter-spacing: 6px; background: #f5f5f5; padding: 16px; border-radius: 8px; text-align: center;">${code}</p>
+        <p style="color: #888; font-size: 13px;">This code expires in 15 minutes. If you didn't create this account, you can ignore this email.</p>
+      </div>
+    `,
   });
 };
 
-// Send email
-const sendEmail = async (to, subject, html) => {
-  try {
-    const transporter = createTransporter();
-    
-    const mailOptions = {
-      from: `"Flight 13 Academy" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html
-    };
-    
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.messageId);
-    return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('Email error:', error);
-    return { success: false, error: error.message };
-  }
+const sendPasswordResetEmail = async (toEmail, fullName, code) => {
+  return resend.emails.send({
+    from: `Flight 13 Academy <${FROM_ADDRESS}>`,
+    to: toEmail,
+    subject: 'Reset your Flight 13 password',
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2 style="color: #d32f2f;">Password Reset</h2>
+        <p>Hi ${fullName}, use this code to reset your password:</p>
+        <p style="font-size: 32px; font-weight: bold; letter-spacing: 6px; background: #f5f5f5; padding: 16px; border-radius: 8px; text-align: center;">${code}</p>
+        <p style="color: #888; font-size: 13px;">This code expires in 15 minutes. If you didn't request this, you can safely ignore this email.</p>
+      </div>
+    `,
+  });
 };
 
-// Send welcome email
-const sendWelcomeEmail = async (email, name) => {
-  const subject = 'Welcome to Flight 13 Academy!';
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #D32F2F;">Welcome to Flight 13, ${name}!</h2>
-      <p>Thank you for joining the Flight 13 Basketball Academy community.</p>
-      <p>We're excited to have you on board. Get ready to train, grow, and become an elite athlete.</p>
-      <p style="margin-top: 20px;">- The Flight 13 Team</p>
-      <p style="font-style: italic; color: #666;">"It's a process."</p>
-    </div>
-  `;
-  
-  return sendEmail(email, subject, html);
-};
-
-// Send registration confirmation
-const sendRegistrationConfirmation = async (email, name, program, amount) => {
-  const subject = 'Registration Confirmed - Flight 13 Academy';
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #D32F2F;">Registration Confirmed!</h2>
-      <p>Dear ${name},</p>
-      <p>Your registration for <strong>${program}</strong> has been confirmed.</p>
-      <p><strong>Amount Paid:</strong> UGX ${amount.toLocaleString()}</p>
-      <p>We'll send you more details about the schedule soon.</p>
-      <p style="margin-top: 20px;">- The Flight 13 Team</p>
-    </div>
-  `;
-  
-  return sendEmail(email, subject, html);
-};
-
-// Send password reset email
-const sendPasswordResetEmail = async (email, resetToken) => {
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-  const subject = 'Reset Your Password - Flight 13 Academy';
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #D32F2F;">Password Reset Request</h2>
-      <p>Click the link below to reset your password:</p>
-      <a href="${resetUrl}" style="background-color: #D32F2F; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
-      <p>This link expires in 1 hour.</p>
-      <p>If you didn't request this, please ignore this email.</p>
-    </div>
-  `;
-  
-  return sendEmail(email, subject, html);
-};
-
-module.exports = {
-  sendEmail,
-  sendWelcomeEmail,
-  sendRegistrationConfirmation,
-  sendPasswordResetEmail
-};
+module.exports = { generateCode, sendVerificationEmail, sendPasswordResetEmail };

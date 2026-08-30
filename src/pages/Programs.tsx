@@ -157,7 +157,7 @@ const Programs = () => {
                         ))}
                       </ul>
                       
-                      <Link to="/registration" style={{
+                      <Link to={`/contact?message=${encodeURIComponent(`I'd like to register for ${program.title}`)}`} style={{
                         display: 'inline-block',
                         backgroundColor: 'var(--red)',
                         color: 'white',
@@ -408,7 +408,7 @@ const Programs = () => {
             Join Flight 13 today and take the first step toward becoming an elite athlete
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', padding: '0 16px' }}>
-            <Link to="/registration" style={{
+            <Link to={`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`} style={{
               backgroundColor: 'var(--red)',
               color: 'white',
               padding: 'clamp(10px, 2.5vw, 14px) clamp(20px, 5vw, 32px)',

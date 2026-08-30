@@ -17,7 +17,7 @@ const authenticate = async (req, res, next) => {
     // Verify user still exists in Supabase
     const { data: user, error } = await supabase
       .from('profiles')
-      .select('id, user_type')
+      .select('id, role')
       .eq('id', decoded.id)
       .single();
     
@@ -25,7 +25,7 @@ const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'User not found' });
     }
     
-    req.user = { ...decoded, user_type: user.user_type };
+    req.user = { ...decoded, role: user.role };
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
@@ -40,7 +40,7 @@ const authenticate = async (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  if (req.user.user_type !== 'admin') {
+  if (req.user.role !== 'admin') {
     return res.status(403).json({ error: 'Admin access required' });
   }
   next();

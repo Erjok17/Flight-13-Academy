@@ -1,73 +1,39 @@
-﻿const { supabase } = require('../config/supabase');
+﻿const { supabase, supabaseAdmin } = require('../config/supabase');
 
+// Public: get all active athletes
 const getAllAthletes = async (req, res) => {
   try {
-    console.log('=== SIMPLE DEBUG ===');
-    
-    // First, check if we can even connect
-    console.log('Testing connection...');
-    const { data: testData, error: testError } = await supabase.from('profiles').select('count', { count: 'exact', head: true });
-    console.log('Connection test result:', testError ? 'ERROR: ' + testError.message : 'OK');
-    
-    // Now get ALL profiles with no filtering
-    console.log('Fetching all profiles...');
-    const { data: allProfiles, error: allError } = await supabase
-      .from('profiles')
-      .select('*');
-    
-    if (allError) {
-      console.error('Error fetching profiles:', allError);
-      return res.status(500).json({ error: allError.message });
-    }
-    
-    console.log(`Found ${allProfiles?.length || 0} total profiles`);
-    
-    if (allProfiles && allProfiles.length > 0) {
-      console.log('Profile details:');
-      allProfiles.forEach(profile => {
-        console.log(`  ID: ${profile.id}`);
-        console.log(`  Name: ${profile.full_name}`);
-        console.log(`  User Type: "${profile.user_type}"`);
-        console.log(`  ---`);
-      });
-    } else {
-      console.log('No profiles found in database!');
-    }
-    
-    // Filter for players
-    const players = allProfiles?.filter(p => p.user_type === 'player') || [];
-    console.log(`Players found: ${players.length}`);
-    
-    res.json({ 
-      success: true, 
-      totalProfiles: allProfiles?.length || 0,
-      playersFound: players.length,
-      data: players,
-      allProfiles: allProfiles 
-    });
+    const { data, error } = await supabase
+      .from('athletes')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json({ success: true, data });
   } catch (error) {
     console.error('Error in getAllAthletes:', error);
     res.status(500).json({ error: 'Failed to fetch athletes: ' + error.message });
   }
 };
 
+// Public: get single athlete
 const getAthleteById = async (req, res) => {
   try {
     const { id } = req.params;
-    
     const { data, error } = await supabase
-      .from('profiles')
+      .from('athletes')
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) {
       if (error.code === 'PGRST116') {
         return res.status(404).json({ error: 'Athlete not found' });
       }
       throw error;
     }
-    
+
     res.json({ success: true, data });
   } catch (error) {
     console.error('Error in getAthleteById:', error);
@@ -75,7 +41,63 @@ const getAthleteById = async (req, res) => {
   }
 };
 
+// Admin: create athlete
+const createAthlete = async (req, res) => {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('athletes')
+      .insert([req.body])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.status(201).json({ success: true, data });
+  } catch (error) {
+    console.error('Error creating athlete:', error);
+    res.status(500).json({ error: 'Failed to create athlete: ' + error.message });
+  }
+};
+
+// Admin: update athlete
+const updateAthlete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabaseAdmin
+      .from('athletes')
+      .update(req.body)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Error updating athlete:', error);
+    res.status(500).json({ error: 'Failed to update athlete: ' + error.message });
+  }
+};
+
+// Admin: delete athlete
+const deleteAthlete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = await supabaseAdmin
+      .from('athletes')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+    res.json({ success: true, message: 'Athlete deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting athlete:', error);
+    res.status(500).json({ error: 'Failed to delete athlete: ' + error.message });
+  }
+};
+
 module.exports = {
   getAllAthletes,
-  getAthleteById
+  getAthleteById,
+  createAthlete,
+  updateAthlete,
+  deleteAthlete
 };

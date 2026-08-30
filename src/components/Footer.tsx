@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -60,7 +61,7 @@ const Footer = () => {
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
-                <span style={{ fontSize: '18px' }}>📞</span>
+                <Phone size={18} color="white" />
                 <a 
                   href="tel:+256780898611" 
                   style={{ 
@@ -76,7 +77,7 @@ const Footer = () => {
                 </a>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
-                <span style={{ fontSize: '18px' }}>📍</span>
+                <MapPin size={18} color="white" />
                 <div>
                   <div style={{ opacity: 0.9 }}>Abja Parks, Naalya Estate</div>
                 </div>
@@ -105,7 +106,7 @@ const Footer = () => {
               <li><Link to="/about" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>About Us</Link></li>
               <li><Link to="/programs" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Our Programs</Link></li>
               <li><Link to="/contact" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Contact Us</Link></li>
-              <li><Link to="/registration" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Registration</Link></li>
+              <li><Link to={`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`} style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Registration</Link></li>
               <li><Link to="/media" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Media</Link></li>
             </ul>
           </div>

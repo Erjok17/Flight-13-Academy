@@ -1,127 +1,109 @@
 ﻿// Order model
-const { supabase } = require('../config/supabase');
+const { supabaseAdmin } = require('../config/supabase');
 
-const Payment = {
-  // Create payment
-  async create(paymentData) {
-    const { data, error } = await supabase
-      .from('payments')
-      .insert([paymentData])
+const Order = {
+  // Create order
+  async create(orderData) {
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .insert([orderData])
       .select()
       .single();
-    
+
     if (error) throw error;
     return data;
   },
 
   // Find by ID
   async findById(id) {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*, profiles(*), registrations(*)')
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) throw error;
     return data;
   },
 
   // Find by user ID
   async findByUserId(userId) {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*, registrations(*)')
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
-    
+
     if (error) throw error;
     return data;
   },
 
-  // Find by registration ID
-  async findByRegistrationId(registrationId) {
-    const { data, error } = await supabase
-      .from('payments')
+  // Get all orders (admin)
+  async findAll() {
+    const { data, error } = await supabaseAdmin
+      .from('orders')
       .select('*')
-      .eq('registration_id', registrationId)
-      .single();
-    
-    if (error && error.code !== 'PGRST116') throw error;
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
     return data;
   },
 
-  // Update payment status
-  async updateStatus(id, status, transactionCode = null) {
-    const updates = { status };
-    if (transactionCode) updates.transaction_code = transactionCode;
-    
-    const { data, error } = await supabase
-      .from('payments')
+  // Find by status (admin)
+  async findByStatus(status) {
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .select('*')
+      .eq('status', status)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data;
+  },
+
+  // Update order status (admin)
+  async updateStatus(id, status, payment_status) {
+    const updates = {};
+    if (status) updates.status = status;
+    if (payment_status) updates.payment_status = payment_status;
+
+    const { data, error } = await supabaseAdmin
+      .from('orders')
       .update(updates)
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw error;
     return data;
   },
 
-  // Get all payments (admin)
-  async findAll() {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('*, profiles(*), registrations(*)')
-      .order('created_at', { ascending: false });
-    
+  // Total sales across completed orders
+  async getTotalSales() {
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .select('total_amount')
+      .eq('payment_status', 'completed');
+
     if (error) throw error;
-    return data;
+    return data.reduce((sum, order) => sum + Number(order.total_amount), 0);
   },
 
-  // Get total revenue
-  async getTotalRevenue() {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('amount')
-      .eq('status', 'completed');
-    
-    if (error) throw error;
-    
-    const total = data.reduce((sum, payment) => sum + payment.amount, 0);
-    return total;
-  },
-
-  // Get revenue by date range
-  async getRevenueByDateRange(startDate, endDate) {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('amount')
-      .eq('status', 'completed')
-      .gte('created_at', startDate)
-      .lte('created_at', endDate);
-    
-    if (error) throw error;
-    
-    const total = data.reduce((sum, payment) => sum + payment.amount, 0);
-    return total;
-  },
-
-  // Get payment stats
+  // General order stats (admin)
   async getStats() {
-    const { data, error } = await supabase
-      .from('payments')
-      .select('status, amount')
-      .eq('status', 'completed');
-    
+    const { data, error } = await supabaseAdmin
+      .from('orders')
+      .select('status, payment_status, total_amount');
+
     if (error) throw error;
-    
-    const stats = {
-      total: data.length,
-      totalAmount: data.reduce((sum, p) => sum + p.amount, 0),
-      byStatus: {}
+
+    return {
+      totalOrders: data.length,
+      pending: data.filter(o => o.status === 'pending').length,
+      completed: data.filter(o => o.status === 'completed').length,
+      cancelled: data.filter(o => o.status === 'cancelled').length,
     };
-    
-    return stats;
   }
 };
 
-module.exports = Payment;
+module.exports = Order;

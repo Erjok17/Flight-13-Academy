@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
+import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { API_URL } from '../../config/api';
 
 const Login = () => {
@@ -30,7 +31,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     try {
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
@@ -44,17 +45,46 @@ const Login = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         navigate('/account');
+      } else if (data.requiresVerification) {
+        navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
       } else {
         setError(data.error || 'Invalid email or password');
       }
     } catch (err) {
       console.error('Login error:', err);
       setError('Network error. Please make sure the backend server is running.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+    setError('');
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/api/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/account');
+      } else {
+        setError(data.error || 'Google sign-in failed');
+      }
+    } catch (err) {
+      console.error('Google sign-in error:', err);
+      setError('Network error during Google sign-in');
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +98,7 @@ const Login = () => {
     <div>
       <Navbar />
       <AnnouncementBanner />
-      
+
       <section style={{
         backgroundColor: 'var(--red)',
         color: 'white',
@@ -82,7 +112,7 @@ const Login = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
         <div style={{ maxWidth: '500px', margin: '0 auto', padding: '0 20px' }}>
           <div style={{ backgroundColor: 'white', borderRadius: '20px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
-            
+
             {error && (
               <div style={{ backgroundColor: '#ffebee', color: '#d32f2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '14px' }}>
                 {error}
@@ -183,10 +213,10 @@ const Login = () => {
                 Don't have an account?{' '}
                 <button
                   onClick={handleRegister}
-                  style={{ 
-                    color: 'var(--red)', 
-                    background: 'none', 
-                    border: 'none', 
+                  style={{
+                    color: 'var(--red)',
+                    background: 'none',
+                    border: 'none',
                     cursor: 'pointer',
                     fontWeight: 'bold',
                     textDecoration: 'underline',
@@ -197,11 +227,25 @@ const Login = () => {
                   Create Account
                 </button>
               </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '24px 0' }}>
+                <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }} />
+                <span style={{ fontSize: '13px', color: '#888' }}>OR</span>
+                <div style={{ flex: 1, height: '1px', backgroundColor: '#ddd' }} />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setError('Google sign-in was unsuccessful')}
+                  width="100%"
+                />
+              </div>
             </form>
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

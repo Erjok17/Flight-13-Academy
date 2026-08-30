@@ -1,6 +1,7 @@
 ﻿// Product controller
 
 const Product = require('../models/Product');
+const { supabaseAdmin } = require('../config/supabase');
 
 // Get all products
 const getAllProducts = async (req, res) => {
@@ -43,6 +44,22 @@ const createProduct = async (req, res) => {
   try {
     const productData = req.body;
     const newProduct = await Product.create(productData);
+
+    // Auto-post to announcement banner
+    try {
+      await supabaseAdmin.from('announcements').insert([{
+        title: 'New Merchandise!',
+        message: `${newProduct.name} is now available in the shop.`,
+        icon: '🛍️',
+        link: '/shop',
+        link_text: 'Shop Now',
+        is_active: true,
+      }]);
+    } catch (announceError) {
+      // Don't fail the product creation if the announcement insert fails
+      console.error('Failed to auto-create announcement for product:', announceError);
+    }
+
     res.status(201).json({ success: true, data: newProduct });
   } catch (error) {
     console.error(error);

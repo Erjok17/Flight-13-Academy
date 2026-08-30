@@ -9,7 +9,7 @@ import { SkeletonBase, AthletesEmptyState } from '../../components/skeletons';
 
 interface Athlete {
   id: string;
-  full_name: string;
+  name: string;
   age: number;
   height: string;
   weight: string;
@@ -17,10 +17,9 @@ interface Athlete {
   school: string;
   achievements: string[];
   strengths: string[];
-  avatar_url: string;
+  image_url: string;
   college_interest: string;
   scholarship_offers: number;
-  user_type: string;
 }
 
 const AthletesDirectory = () => {
@@ -58,7 +57,7 @@ const AthletesDirectory = () => {
   };
 
   const filteredAthletes = athletes.filter(athlete => {
-    const matchesSearch = athlete.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+    const matchesSearch = athlete.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false;
     const matchesPosition = selectedPosition === 'all' || athlete.position === selectedPosition;
     const matchesAge = selectedAge === 'all' || 
       (selectedAge === '12-14' && athlete.age >= 12 && athlete.age <= 14) ||
@@ -191,15 +190,15 @@ const AthletesDirectory = () => {
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}>
-                    {athlete.avatar_url ? (
-                      <img src={athlete.avatar_url} alt={athlete.full_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {athlete.image_url ? (
+                      <img src={athlete.image_url} alt={athlete.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
                       <span style={{ fontSize: '48px' }}>🏀</span>
                     )}
                   </div>
                   <div style={{ padding: '20px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <h2 style={{ fontSize: '22px', fontWeight: 'bold', color: '#333' }}>{athlete.full_name}</h2>
+                      <h2 style={{ fontSize: '22px', fontWeight: 'bold', color: '#333' }}>{athlete.name}</h2>
                       {athlete.scholarship_offers > 0 && (
                         <span style={{ backgroundColor: '#4CAF50', color: 'white', padding: '4px 8px', borderRadius: '20px', fontSize: '12px' }}>
                           {athlete.scholarship_offers} Offer{athlete.scholarship_offers > 1 ? 's' : ''}
