@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import AnnouncementBanner from '../../components/AnnouncementBanner';
 import Footer from '../../components/Footer';
-import { Ruler, Weight, GraduationCap, Award, Mail, Phone } from 'lucide-react';
+import { Ruler, Weight, GraduationCap, Award } from 'lucide-react';
 import { API_URL } from '../../config/api';
 
 interface AthleteProfile {
