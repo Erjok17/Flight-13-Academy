@@ -83,6 +83,45 @@ const Footer = () => {
                 </div>
               </div>
             </div>
+            {/* Tech Labs Africa Statement */}
+            <div style={{ marginTop: '25px' }}>
+              <a 
+                href="https://www.techlabsafrica.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ 
+                  textDecoration: 'none',
+                  color: 'white',
+                  display: 'block'
+                }}
+              >
+                <div style={{ 
+                  fontSize: 'clamp(0.7rem, 2vw, 0.85rem)', 
+                  fontWeight: 'bold',
+                  letterSpacing: '1px',
+                  opacity: 0.8,
+                  transition: 'opacity 0.3s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                >
+                  WEBSITE BY TECHLABS AFRICA
+                </div>
+                <div style={{ 
+                  fontSize: 'clamp(0.65rem, 1.8vw, 0.8rem)', 
+                  fontStyle: 'italic',
+                  fontFamily: '"Georgia", "Times New Roman", serif',
+                  opacity: 0.7,
+                  marginTop: '2px',
+                  transition: 'opacity 0.3s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                >
+                  "Another Recipe From the Lab"
+                </div>
+              </a>
+            </div>
           </div>
 
           {/* Column 3: Quick Links */}
