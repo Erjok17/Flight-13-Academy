@@ -38,4 +38,25 @@ const sendPasswordResetEmail = async (toEmail, fullName, code) => {
   });
 };
 
-module.exports = { generateCode, sendVerificationEmail, sendPasswordResetEmail };
+const sendNewDeviceAlert = async (toEmail, fullName, browser, os, location, ip) => {
+  return resend.emails.send({
+    from: `Flight 13 Academy <${FROM_ADDRESS}>`,
+    to: toEmail,
+    subject: 'New sign-in to your Flight 13 account',
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
+        <h2 style="color: #d32f2f;">New Sign-In Detected</h2>
+        <p>Hi ${fullName}, we noticed a sign-in to your account from a device we haven't seen before:</p>
+        <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
+          <p style="margin: 4px 0;"><strong>Browser:</strong> ${browser}</p>
+          <p style="margin: 4px 0;"><strong>Device/OS:</strong> ${os}</p>
+          <p style="margin: 4px 0;"><strong>Approximate location:</strong> ${location}</p>
+          <p style="margin: 4px 0;"><strong>IP address:</strong> ${ip}</p>
+        </div>
+        <p style="color: #888; font-size: 13px;">If this was you, no action is needed. If you don't recognize this activity, we recommend resetting your password immediately.</p>
+      </div>
+    `,
+  });
+};
+  
+module.exports = { generateCode, sendVerificationEmail, sendPasswordResetEmail, sendNewDeviceAlert };

@@ -1,10 +1,68 @@
 ﻿const jwt = require('jsonwebtoken');
 const { supabase, supabaseAdmin } = require('../config/supabase');
-const { generateCode, sendVerificationEmail, sendPasswordResetEmail } = require('../utils/email');
+const { generateCode, sendVerificationEmail, sendPasswordResetEmail, sendNewDeviceAlert } = require('../utils/email');
 const { OAuth2Client } = require('google-auth-library');
+const { parseDevice, getFingerprint, getClientIP } = require('../utils/device');
+const { getLocationFromIP } = require('../utils/geolocation');
 
 const CODE_EXPIRY_MINUTES = 15;
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// Check this login's device against known sessions; record it; alert on new devices
+const checkAndRecordSession = async (user, req) => {
+  try {
+    const ip = getClientIP(req);
+    const userAgentString = req.headers['user-agent'] || '';
+    const fingerprint = getFingerprint(ip, userAgentString);
+    const { browser, os } = parseDevice(userAgentString);
+
+    const { data: existingSession } = await supabaseAdmin
+      .from('login_sessions')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('fingerprint', fingerprint)
+      .maybeSingle();
+
+    if (existingSession) {
+      await supabaseAdmin
+        .from('login_sessions')
+        .update({ last_seen_at: new Date() })
+        .eq('id', existingSession.id);
+      return;
+    }
+
+    // Count how many known devices this user already has
+    const { count } = await supabaseAdmin
+      .from('login_sessions')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id);
+
+    const location = await getLocationFromIP(ip);
+
+    await supabaseAdmin.from('login_sessions').insert([{
+      user_id: user.id,
+      fingerprint,
+      user_agent: userAgentString,
+      ip_address: ip,
+      browser,
+      os,
+      location,
+    }]);
+
+    // Only alert if they already had at least one known device -
+    // don't alert on someone's very first ever login
+    if (count && count > 0) {
+      try {
+        await sendNewDeviceAlert(user.email, user.full_name || user.fullName, browser, os, location, ip);
+      } catch (emailErr) {
+        console.error('Failed to send new device alert:', emailErr);
+      }
+    }
+  } catch (err) {
+    console.error('Session check error:', err);
+    // Never block login because of a session-tracking failure
+  }
+};
 
 // Register user
 const register = async (req, res) => {
@@ -13,7 +71,6 @@ const register = async (req, res) => {
 
     console.log('Register request received:', { email, fullName, phone });
 
-    // Server-side password strength check (mirrors frontend rules)
     const hasLetter = /[A-Za-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecial = /[^A-Za-z0-9]/.test(password);
@@ -24,7 +81,6 @@ const register = async (req, res) => {
       });
     }
 
-    // Check if user exists - check both profiles and auth.users
     const { data: existingUser, error: findError } = await supabase
       .from('profiles')
       .select('id, email_verified')
@@ -32,25 +88,20 @@ const register = async (req, res) => {
       .maybeSingle();
 
     if (existingUser) {
-      // If user exists and is verified, reject
       if (existingUser.email_verified) {
         return res.status(400).json({ error: 'User already exists' });
       }
 
-      // Stale unverified account - clean it up and let this registration proceed
       console.log('Removing stale unverified account for:', email);
-      
-      // Delete from auth_codes first (if table exists)
+
       try {
         await supabaseAdmin.from('auth_codes').delete().eq('user_id', existingUser.id);
       } catch (err) {
         console.log('No auth_codes to delete or table missing');
       }
-      
-      // Delete from profiles
+
       await supabaseAdmin.from('profiles').delete().eq('id', existingUser.id);
-      
-      // Delete from auth.users
+
       try {
         await supabaseAdmin.auth.admin.deleteUser(existingUser.id);
       } catch (err) {
@@ -58,7 +109,6 @@ const register = async (req, res) => {
       }
     }
 
-    // Create user in Supabase Auth using admin client
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -71,7 +121,6 @@ const register = async (req, res) => {
       return res.status(400).json({ error: authError.message });
     }
 
-    // Create profile using admin client (bypasses RLS) - unverified by default
     const profileData = {
       id: authData.user.id,
       email,
@@ -95,7 +144,6 @@ const register = async (req, res) => {
       return res.status(500).json({ error: 'Failed to create profile: ' + profileError.message });
     }
 
-    // Generate and store verification code
     const code = generateCode();
     const expiresAt = new Date(Date.now() + CODE_EXPIRY_MINUTES * 60 * 1000);
 
@@ -114,12 +162,10 @@ const register = async (req, res) => {
       return res.status(500).json({ error: 'Failed to generate verification code' });
     }
 
-    // Send verification email
     try {
       await sendVerificationEmail(email, fullName, code);
     } catch (emailError) {
       console.error('Failed to send verification email:', emailError);
-      // Don't fail registration if email fails - user can request a resend
     }
 
     console.log('User registered, verification pending:', email);
@@ -162,13 +208,11 @@ const verifyEmail = async (req, res) => {
       return res.status(400).json({ error: 'Invalid or expired code' });
     }
 
-    // Mark code as used
     await supabaseAdmin
       .from('auth_codes')
       .update({ used: true })
       .eq('id', codeRow.id);
 
-    // Mark profile as verified
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .update({ email_verified: true })
@@ -178,7 +222,8 @@ const verifyEmail = async (req, res) => {
 
     if (profileError) throw profileError;
 
-    // Issue JWT now that they're verified
+    await checkAndRecordSession(profile, req);
+
     const token = jwt.sign(
       { id: profile.id, email: profile.email, role: profile.role },
       process.env.JWT_SECRET,
@@ -284,6 +329,10 @@ const login = async (req, res) => {
       });
     }
 
+    if (profile) {
+      await checkAndRecordSession(profile, req);
+    }
+
     const token = jwt.sign(
       { id: authData.user.id, email, role: profile?.role || 'user' },
       process.env.JWT_SECRET,
@@ -318,8 +367,6 @@ const googleAuth = async (req, res) => {
       return res.status(400).json({ error: 'Missing Google credential' });
     }
 
-    // Verify the token with Google directly - this is what makes it secure,
-    // never trust the frontend's claim of who the user is
     const ticket = await googleClient.verifyIdToken({
       idToken: credential,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -332,7 +379,6 @@ const googleAuth = async (req, res) => {
       return res.status(400).json({ error: 'Google account email is not verified' });
     }
 
-    // Check if this email already has a profile
     const { data: existingProfile } = await supabaseAdmin
       .from('profiles')
       .select('*')
@@ -342,7 +388,6 @@ const googleAuth = async (req, res) => {
     let profile = existingProfile;
 
     if (!profile) {
-      // New user via Google - create both the auth user and profile
       const randomPassword = require('crypto').randomBytes(32).toString('hex');
 
       const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
@@ -365,7 +410,7 @@ const googleAuth = async (req, res) => {
           full_name: name,
           phone: null,
           role: 'user',
-          email_verified: true, // Google already verified this email
+          email_verified: true,
           created_at: new Date(),
           updated_at: new Date()
         }])
@@ -380,7 +425,6 @@ const googleAuth = async (req, res) => {
 
       profile = newProfile;
     } else if (!profile.email_verified) {
-      // Existing but unverified account signing in with Google - trust Google's verification
       const { data: updatedProfile, error: updateError } = await supabaseAdmin
         .from('profiles')
         .update({ email_verified: true })
@@ -390,6 +434,8 @@ const googleAuth = async (req, res) => {
 
       if (!updateError) profile = updatedProfile;
     }
+
+    await checkAndRecordSession(profile, req);
 
     const token = jwt.sign(
       { id: profile.id, email: profile.email, role: profile.role },
@@ -429,8 +475,6 @@ const forgotPassword = async (req, res) => {
       .eq('email', email)
       .maybeSingle();
 
-    // Always respond the same way whether or not the account exists,
-    // so this endpoint can't be used to check which emails are registered
     if (!profile) {
       return res.json({ success: true, message: 'If an account exists with that email, a reset code has been sent.' });
     }
@@ -472,7 +516,6 @@ const resetPassword = async (req, res) => {
       return res.status(400).json({ error: 'Email, code, and new password are required' });
     }
 
-    // Same strength rule as registration
     const hasLetter = /[A-Za-z]/.test(newPassword);
     const hasNumber = /[0-9]/.test(newPassword);
     const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
@@ -500,14 +543,11 @@ const resetPassword = async (req, res) => {
       return res.status(400).json({ error: 'Invalid or expired code' });
     }
 
-    // Mark code as used
     await supabaseAdmin
       .from('auth_codes')
       .update({ used: true })
       .eq('id', codeRow.id);
 
-    // Actually change the password via the admin API - user isn't authenticated
-    // at this point, so this is the only way to set it
     const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
       codeRow.user_id,
       { password: newPassword }
@@ -551,11 +591,11 @@ const updateProfile = async (req, res) => {
   try {
     const { id } = req.user;
     const updates = req.body;
-    
+
     delete updates.id;
     delete updates.created_at;
-    delete updates.role; // prevent self-promotion via profile update
-    delete updates.email_verified; // prevent self-verification via profile update
+    delete updates.role;
+    delete updates.email_verified;
 
     const { data, error } = await supabase
       .from('profiles')
