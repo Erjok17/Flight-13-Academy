@@ -377,7 +377,7 @@ const Register = () => {
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
                   onError={() => setError('Google sign-in was unsuccessful')}
-                  width="100%"
+                  width="320"
                 />
               </div>
             </form>
