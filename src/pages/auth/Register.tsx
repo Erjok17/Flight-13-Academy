@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import { User, Mail, Phone, Lock, Eye, EyeOff, Check, X } from 'lucide-react';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { API_URL } from '../../config/api';
+import { reloadCartForCurrentUser } from '../../store/useCartStore';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -134,6 +135,7 @@ const Register = () => {
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        reloadCartForCurrentUser();
         navigate('/account');
       } else {
         setError(data.error || 'Google sign-in failed');

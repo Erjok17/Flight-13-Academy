@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, type PersistStorage } from 'zustand/middleware';
 
 export interface CartItem {
   id: string;
@@ -19,6 +19,35 @@ interface CartState {
   getItemsCount: () => number;
   getTotalPrice: () => number;
 }
+
+// Resolves which storage slot the cart should read/write to, based on
+// whoever is currently logged in. Logged-out visitors get a shared "guest"
+// cart; each logged-in account gets its own isolated cart.
+const getCartStorageKey = () => {
+  try {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      const user = JSON.parse(userData);
+      if (user?.id) return `flight13-cart-storage-${user.id}`;
+    }
+  } catch (e) {
+    // fall through to guest key
+  }
+  return 'flight13-cart-storage-guest';
+};
+
+const dynamicStorage: PersistStorage<Pick<CartState, 'items'>> = {
+  getItem: (_name) => {
+    const raw = localStorage.getItem(getCartStorageKey());
+    return raw ? JSON.parse(raw) : null;
+  },
+  setItem: (_name, value) => {
+    localStorage.setItem(getCartStorageKey(), JSON.stringify(value));
+  },
+  removeItem: (_name) => {
+    localStorage.removeItem(getCartStorageKey());
+  },
+};
 
 export const useCartStore = create<CartState>()(
   persist(
@@ -80,7 +109,15 @@ export const useCartStore = create<CartState>()(
       }
     }),
     {
-      name: 'flight13-cart-storage'
+      name: 'flight13-cart-storage',
+      storage: dynamicStorage,
     }
   )
 );
+
+// Call this immediately after localStorage's 'user' key changes (login,
+// logout, or switching accounts) so the cart reloads from the correct
+// per-account slot without needing a full page refresh.
+export const reloadCartForCurrentUser = () => {
+  useCartStore.persist.rehydrate();
+};

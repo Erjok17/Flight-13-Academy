@@ -6,6 +6,7 @@ import Footer from '../../components/Footer';
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { API_URL } from '../../config/api';
+import { reloadCartForCurrentUser } from '../../store/useCartStore';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const Login = () => {
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        reloadCartForCurrentUser();
         navigate('/account');
       } else if (data.requiresVerification) {
         navigate(`/verify-email?email=${encodeURIComponent(data.email)}`);
@@ -78,6 +80,7 @@ const Login = () => {
       if (data.success) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        reloadCartForCurrentUser();
         navigate('/account');
       } else {
         setError(data.error || 'Google sign-in failed');

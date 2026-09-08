@@ -5,6 +5,7 @@ import AnnouncementBanner from '../components/AnnouncementBanner';
 import Footer from '../components/Footer';
 import { User, LogOut, Edit2, Save, X, ShoppingBag } from 'lucide-react';
 import { API_URL } from '../config/api';
+import { reloadCartForCurrentUser } from '../store/useCartStore';
 
 const Account = () => {
   const navigate = useNavigate();
@@ -134,6 +135,7 @@ const Account = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    reloadCartForCurrentUser();
     navigate('/');
   };
 
