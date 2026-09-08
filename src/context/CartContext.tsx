@@ -6,8 +6,8 @@ export const useCart = () => {
   return {
     items: store.items,
     addToCart: store.addToCart,
-    removeFromCart: (id: string) => store.removeFromCart(id),
-    updateQuantity: (id: string, quantity: number) => store.updateQuantity(id, quantity),
+    removeFromCart: (id: string, size?: string) => store.removeFromCart(id, size),
+    updateQuantity: (id: string, quantity: number, size?: string) => store.updateQuantity(id, quantity, size),
     clearCart: store.clearCart,
     getTotalItems: store.getItemsCount,
     getTotalPrice: store.getTotalPrice,

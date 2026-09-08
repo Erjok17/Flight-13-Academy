@@ -107,7 +107,7 @@ const Cart = () => {
                 
                 {items.map((item: CartItem) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}-${item.size || 'no-size'}`}
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '80px 1fr 100px 120px 50px',
@@ -128,21 +128,21 @@ const Cart = () => {
                     <div style={{ fontWeight: 'bold', color: '#333' }}>UGX {item.price.toLocaleString()}</div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity - 1, item.size)}
                         style={{ width: '28px', height: '28px', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', backgroundColor: 'white' }}
                       >
                         <Minus size={14} color="#666" />
                       </button>
                       <span style={{ width: '30px', textAlign: 'center', fontWeight: '500' }}>{item.quantity}</span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.id, item.quantity + 1, item.size)}
                         style={{ width: '28px', height: '28px', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', backgroundColor: 'white' }}
                       >
                         <Plus size={14} color="#666" />
                       </button>
                     </div>
                     <button 
-                      onClick={() => removeFromCart(item.id)} 
+                      onClick={() => removeFromCart(item.id, item.size)} 
                       style={{ color: '#999', cursor: 'pointer', background: 'none', border: 'none' }}
                     >
                       <Trash2 size={18} />
