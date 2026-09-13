@@ -299,7 +299,29 @@ const Account = () => {
                           </div>
                           <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>📅 {new Date(order.created_at).toLocaleDateString()}</div>
                           <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>🛍️ {itemsCount} item(s)</div>
-                          <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--red)' }}>UGX {Number(order.total).toLocaleString()}</div>
+                          <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--red)', marginBottom: order.status === 'fulfilled' ? '12px' : 0 }}>UGX {Number(order.total).toLocaleString()}</div>
+
+                          {order.status === 'fulfilled' && Array.isArray(order.items) && (
+                            <div style={{ borderTop: '1px solid #eee', paddingTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                              {order.items.map((item: any, idx: number) => (
+                                <Link
+                                  key={idx}
+                                  to={`/product/${item.product_id}`}
+                                  style={{
+                                    fontSize: '13px',
+                                    color: 'var(--red)',
+                                    border: '1px solid var(--red)',
+                                    padding: '6px 14px',
+                                    borderRadius: '20px',
+                                    textDecoration: 'none',
+                                    fontWeight: '500'
+                                  }}
+                                >
+                                  Leave a review: {item.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       );
                     })

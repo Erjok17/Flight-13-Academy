@@ -1,15 +1,14 @@
 const Review = require('../models/Review');
 
-// Get reviews for a product
 const getProductReviews = async (req, res) => {
   try {
     const { productId } = req.params;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    
+
     const { data, count } = await Review.findByProductId(productId, page, limit);
     const stats = await Review.getProductStats(productId);
-    
+
     res.json({
       success: true,
       data: {
@@ -29,24 +28,37 @@ const getProductReviews = async (req, res) => {
   }
 };
 
-// Create a review
 const createReview = async (req, res) => {
   try {
     const { product_id, rating, title, comment } = req.body;
     const userId = req.user.id;
-    
-    // Check if user has purchased the product
-    const hasPurchased = await Review.hasPurchasedProduct(userId, product_id);
-    
+
+    if (!product_id || !rating) {
+      return res.status(400).json({ error: 'Product and rating are required' });
+    }
+
+    const hasFulfilled = await Review.hasFulfilledOrderForProduct(userId, product_id);
+    if (!hasFulfilled) {
+      return res.status(403).json({
+        error: 'You can only review a product after your order for it has been marked as fulfilled.'
+      });
+    }
+
+    const existing = await Review.findByUserAndProduct(userId, product_id);
+    if (existing) {
+      return res.status(400).json({ error: 'You have already reviewed this product. Edit your existing review instead.' });
+    }
+
     const reviewData = {
       product_id,
       user_id: userId,
       rating,
       title,
       comment,
-      is_verified_purchase: hasPurchased
+      is_verified_purchase: true,
+      helpful_count: 0
     };
-    
+
     const review = await Review.create(reviewData);
     res.status(201).json({ success: true, data: review });
   } catch (error) {
@@ -55,24 +67,23 @@ const createReview = async (req, res) => {
   }
 };
 
-// Update a review
 const updateReview = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    
+
     const existingReview = await Review.findById(id);
     if (!existingReview) {
       return res.status(404).json({ error: 'Review not found' });
     }
-    
-    if (existingReview.user_id !== userId && req.user.user_type !== 'admin') {
+
+    if (existingReview.user_id !== userId && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied' });
     }
-    
+
     const { rating, title, comment } = req.body;
     const updatedReview = await Review.update(id, { rating, title, comment });
-    
+
     res.json({ success: true, data: updatedReview });
   } catch (error) {
     console.error(error);
@@ -80,21 +91,20 @@ const updateReview = async (req, res) => {
   }
 };
 
-// Delete a review
 const deleteReview = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    
+
     const existingReview = await Review.findById(id);
     if (!existingReview) {
       return res.status(404).json({ error: 'Review not found' });
     }
-    
-    if (existingReview.user_id !== userId && req.user.user_type !== 'admin') {
+
+    if (existingReview.user_id !== userId && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied' });
     }
-    
+
     await Review.delete(id);
     res.json({ success: true, message: 'Review deleted successfully' });
   } catch (error) {
@@ -103,7 +113,6 @@ const deleteReview = async (req, res) => {
   }
 };
 
-// Get user's reviews
 const getUserReviews = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -115,19 +124,17 @@ const getUserReviews = async (req, res) => {
   }
 };
 
-// Mark review as helpful
 const markHelpful = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-    
-    // Check if already marked
+
     const alreadyHelpful = await Review.isHelpful(id, userId);
     if (alreadyHelpful) {
       await Review.removeHelpful(id, userId);
       return res.json({ success: true, message: 'Removed helpful mark' });
     }
-    
+
     await Review.markHelpful(id, userId);
     res.json({ success: true, message: 'Marked as helpful' });
   } catch (error) {
@@ -136,7 +143,6 @@ const markHelpful = async (req, res) => {
   }
 };
 
-// Get product rating summary
 const getProductRating = async (req, res) => {
   try {
     const { productId } = req.params;

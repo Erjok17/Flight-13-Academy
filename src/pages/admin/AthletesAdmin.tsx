@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Plus, Edit, Trash2, X, Upload } from 'lucide-react';
 import { API_URL } from '../../config/api';
 
 const emptyForm = {
@@ -18,6 +18,9 @@ const AthletesAdmin = () => {
   const [form, setForm] = useState(emptyForm);
   const [medicalNotes, setMedicalNotes] = useState('');
   const [savingMedical, setSavingMedical] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { fetchAthletes(); }, []);
 
@@ -33,6 +36,40 @@ const AthletesAdmin = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const token = localStorage.getItem('token');
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await fetch(`${API_URL}/api/upload`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.url) {
+        setForm({ ...form, image_url: data.url });
+      } else {
+        alert(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Network error while uploading image');
+    } finally {
+      setUploading(false);
+      // reset the input so selecting the same file again re-triggers onChange
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   const openAdd = () => {
@@ -179,7 +216,33 @@ const AthletesAdmin = () => {
               <input name="jersey_size" placeholder="Jersey Size (e.g., YL, M, XL)" value={form.jersey_size} onChange={handleChange} style={inputStyle} />
               <input name="college_interest" placeholder="College Interest" value={form.college_interest} onChange={handleChange} style={inputStyle} />
               <input name="scholarship_offers" type="number" placeholder="Scholarship Offers" value={form.scholarship_offers} onChange={handleChange} style={inputStyle} />
-              <input name="image_url" placeholder="Image URL" value={form.image_url} onChange={handleChange} style={{ ...inputStyle, gridColumn: '1/3' }} />
+
+              {/* Player Photo Upload */}
+              <div style={{ gridColumn: '1/3' }}>
+                <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#666' }}>Player Photo</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  {form.image_url && (
+                    <img src={form.image_url} alt="Preview" style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', backgroundColor: '#f0f0f0', border: '1px dashed #999', borderRadius: '8px', cursor: uploading ? 'wait' : 'pointer' }}
+                  >
+                    <Upload size={16} />
+                    {uploading ? 'Uploading...' : form.image_url ? 'Replace Photo' : 'Upload Photo'}
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png, image/jpeg, image/webp"
+                    onChange={handleFileSelect}
+                    style={{ display: 'none' }}
+                  />
+                </div>
+              </div>
+
               <textarea name="achievements" placeholder="Achievements (comma separated)" value={form.achievements} onChange={handleChange} rows={2} style={inputStyle} />
               <textarea name="strengths" placeholder="Strengths (comma separated)" value={form.strengths} onChange={handleChange} rows={2} style={inputStyle} />
               <textarea name="bio" placeholder="Bio" value={form.bio} onChange={handleChange} rows={3} style={{ ...inputStyle, gridColumn: '1/3' }} />

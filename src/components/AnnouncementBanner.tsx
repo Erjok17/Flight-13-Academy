@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { API_URL } from '../config/api'; // adjust path to match this file's location
+import { API_URL } from '../config/api';
 
 interface Announcement {
   id: string;
@@ -36,7 +36,6 @@ const AnnouncementBanner = () => {
     fetchAnnouncements();
   }, []);
 
-  // Rotate announcements every 8 seconds
   useEffect(() => {
     if (isHovering || announcements.length <= 1) return;
 
@@ -75,40 +74,55 @@ const AnnouncementBanner = () => {
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '12px 20px',
+        padding: '16px 20px',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         justifyContent: 'space-between',
-        gap: '20px',
+        gap: '16px',
         position: 'relative',
         zIndex: 1
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0, paddingTop: '2px' }}>
           <div style={{
             backgroundColor: 'rgba(255,255,255,0.2)',
-            padding: '8px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '18px',
-            width: '20px',
-            height: '20px'
+            width: '32px',
+            height: '32px'
           }}>
             {announcement.icon || '📢'}
           </div>
         </div>
 
         <div
-          style={{ flex: 1, textAlign: 'center', cursor: announcement.link ? 'pointer' : 'default' }}
+          style={{ flex: 1, textAlign: 'center', cursor: announcement.link ? 'pointer' : 'default', minWidth: 0 }}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
           onClick={() => announcement.link && window.location.assign(announcement.link)}
         >
-          <h4 style={{ color: 'white', fontSize: 'clamp(14px, 2vw, 16px)', fontWeight: 'bold', marginBottom: '4px' }}>
+          <h4 style={{
+            color: 'white',
+            fontSize: 'clamp(14px, 2vw, 16px)',
+            fontWeight: 'bold',
+            marginBottom: '6px',
+            lineHeight: '1.4',
+            wordBreak: 'break-word'
+          }}>
             {announcement.title}
           </h4>
-          <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: 'clamp(12px, 1.8vw, 14px)', marginBottom: '4px' }}>
+          <p style={{
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: 'clamp(12px, 1.8vw, 14px)',
+            marginBottom: '6px',
+            lineHeight: '1.5',
+            wordBreak: 'break-word',
+            maxWidth: '700px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }}>
             {announcement.message}
             {announcement.event_date && ` • ${new Date(announcement.event_date).toLocaleDateString()}`}
             {announcement.location && ` • ${announcement.location}`}
@@ -128,7 +142,7 @@ const AnnouncementBanner = () => {
           )}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0, paddingTop: '2px' }}>
           {announcements.length > 1 && (
             <div style={{ display: 'flex', gap: '6px' }}>
               {announcements.map((_, index) => (
@@ -161,7 +175,8 @@ const AnnouncementBanner = () => {
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              flexShrink: 0
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.3)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
