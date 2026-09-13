@@ -64,6 +64,11 @@ const ProductDetail = () => {
   const [reviewError, setReviewError] = useState('');
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
+  // Pagination state
+  const [reviewPage, setReviewPage] = useState(1);
+  const [hasMoreReviews, setHasMoreReviews] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -89,29 +94,37 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (!id) return;
-    fetchReviews();
+    fetchReviews(1);
     checkEligibility();
   }, [id]);
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (page = 1, append = false) => {
     try {
-      const response = await fetch(`${API_URL}/api/reviews/product/${id}`);
+      const response = await fetch(`${API_URL}/api/reviews/product/${id}?page=${page}&limit=5`);
       const data = await response.json();
       if (data.success) {
-        setReviews(data.data.reviews);
+        setReviews(prev => append ? [...prev, ...data.data.reviews] : data.data.reviews);
         setStats(data.data.stats);
+        setHasMoreReviews(data.data.pagination.page < data.data.pagination.totalPages);
+        setReviewPage(page);
 
         const token = localStorage.getItem('token');
         const userData = localStorage.getItem('user');
         if (token && userData) {
           const currentUser = JSON.parse(userData);
           const mine = data.data.reviews.find((r: Review) => r.user_id === currentUser.id);
-          setAlreadyReviewed(!!mine);
+          if (mine) setAlreadyReviewed(true);
         }
       }
     } catch (err) {
       console.error('Error fetching reviews:', err);
     }
+  };
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    await fetchReviews(reviewPage + 1, true);
+    setLoadingMore(false);
   };
 
   const checkEligibility = async () => {
@@ -174,7 +187,7 @@ const ProductDetail = () => {
       if (data.success) {
         setReviewSuccess(true);
         setReviewForm({ rating: 5, title: '', comment: '' });
-        fetchReviews();
+        fetchReviews(1);
       } else {
         setReviewError(data.error || 'Failed to submit review');
       }
@@ -443,6 +456,26 @@ const ProductDetail = () => {
                     </p>
                   </div>
                 ))}
+
+                {hasMoreReviews && (
+                  <button
+                    onClick={handleLoadMore}
+                    disabled={loadingMore}
+                    style={{
+                      alignSelf: 'center',
+                      padding: '10px 28px',
+                      backgroundColor: 'white',
+                      border: '1px solid var(--red)',
+                      color: 'var(--red)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      marginTop: '8px'
+                    }}
+                  >
+                    {loadingMore ? 'Loading...' : 'Load More Reviews'}
+                  </button>
+                )}
               </div>
             )}
           </div>
