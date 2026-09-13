@@ -1,7 +1,7 @@
 // Contact routes
 const express = require('express');
 const router = express.Router();
-const { supabase } = require('../config/supabase');
+const { supabase, supabaseAdmin } = require('../config/supabase');
 const { authenticate, isAdmin } = require('../middleware/auth');
 
 // Create contact message (Public)
@@ -22,14 +22,12 @@ router.post('/', async (req, res) => {
       created_at: new Date()
     };
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('contacts')
-      .insert([contactData])
-      .select()
-      .single();
+      .insert([contactData]);
 
     if (error) throw error;
-    res.status(201).json({ success: true, data });
+    res.status(201).json({ success: true, message: 'Contact form submitted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to submit contact form' });
@@ -39,7 +37,7 @@ router.post('/', async (req, res) => {
 // Get all contact messages (Admin only)
 router.get('/', authenticate, isAdmin, async (req, res) => {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('contacts')
       .select('*')
       .order('created_at', { ascending: false });
@@ -58,7 +56,7 @@ router.put('/:id', authenticate, isAdmin, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('contacts')
       .update({ status })
       .eq('id', id)

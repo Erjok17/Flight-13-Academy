@@ -29,6 +29,7 @@ import SettingsAdmin from './pages/admin/SettingsAdmin';
 import OrdersAdmin from './pages/admin/OrdersAdmin';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import ResetPassword from './pages/auth/ResetPassword';
+import MessagesAdmin from './pages/admin/MessagesAdmin';
 
 // Page Transition Animation Wrapper
 const PageTransition = ({ children }: { children: React.ReactNode }) => {
@@ -114,6 +115,7 @@ function AppContent() {
           <Route path="programs" element={<PageTransition><ProgramsAdmin /></PageTransition>} />
           <Route path="products" element={<PageTransition><ProductsAdmin /></PageTransition>} />
           <Route path="orders" element={<PageTransition><OrdersAdmin /></PageTransition>} />
+          <Route path="messages" element={<PageTransition><MessagesAdmin /></PageTransition>} />
           <Route path="settings" element={<PageTransition><SettingsAdmin /></PageTransition>} />
         </Route>
         

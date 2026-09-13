@@ -10,6 +10,7 @@ const AdminLayout = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [pendingOrders, setPendingOrders] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
 
   useEffect(() => {
     const init = async () => {
@@ -32,6 +33,7 @@ const AdminLayout = () => {
 
         setIsAdmin(true);
         fetchPendingOrdersCount(token);
+        fetchUnreadMessagesCount(token);
       } catch (err) {
         console.error('Failed to verify admin access:', err);
         navigate('/');
@@ -57,12 +59,27 @@ const AdminLayout = () => {
     }
   };
 
+  const fetchUnreadMessagesCount = async (token: string) => {
+    try {
+      const response = await fetch(`${API_URL}/api/contacts`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUnreadMessages(data.data.filter((m: any) => m.status === 'unread').length);
+      }
+    } catch (err) {
+      console.error('Error fetching unread messages count:', err);
+    }
+  };
+
   const tabs = [
     { label: 'Overview', path: '/admin', end: true },
     { label: 'Athletes', path: '/admin/athletes' },
     { label: 'Programs', path: '/admin/programs' },
     { label: 'Products', path: '/admin/products' },
     { label: 'Orders', path: '/admin/orders', badge: pendingOrders },
+    { label: 'Messages', path: '/admin/messages', badge: unreadMessages },
     { label: 'Settings', path: '/admin/settings' },
   ];
 

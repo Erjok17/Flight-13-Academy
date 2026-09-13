@@ -1,26 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Users, ShoppingBag, Megaphone, ClipboardList, TrendingUp } from 'lucide-react';
+import { Users, ShoppingBag, Megaphone, ClipboardList, Mail, TrendingUp } from 'lucide-react';
 import { API_URL } from '../../config/api';
 
 const AdminDashboard = () => {
-  const [counts, setCounts] = useState({ athletes: 0, products: 0, announcements: 0, pendingOrders: 0 });
+  const [counts, setCounts] = useState({ athletes: 0, products: 0, announcements: 0, pendingOrders: 0, unreadMessages: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCounts = async () => {
       const token = localStorage.getItem('token');
       try {
-        const [athletesRes, productsRes, announcementsRes, ordersRes] = await Promise.all([
+        const [athletesRes, productsRes, announcementsRes, ordersRes, messagesRes] = await Promise.all([
           fetch(`${API_URL}/api/athletes`),
           fetch(`${API_URL}/api/products`),
           fetch(`${API_URL}/api/announcements`, { headers: { 'Authorization': `Bearer ${token}` } }),
           fetch(`${API_URL}/api/orders`, { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch(`${API_URL}/api/contacts`, { headers: { 'Authorization': `Bearer ${token}` } }),
         ]);
-        const [athletesData, productsData, announcementsData, ordersData] = await Promise.all([
+        const [athletesData, productsData, announcementsData, ordersData, messagesData] = await Promise.all([
           athletesRes.json(),
           productsRes.json(),
           announcementsRes.json(),
           ordersRes.json(),
+          messagesRes.json(),
         ]);
 
         setCounts({
@@ -28,6 +30,7 @@ const AdminDashboard = () => {
           products: productsData.data?.length || 0,
           announcements: announcementsData.data?.length || 0,
           pendingOrders: ordersData.data?.filter((o: any) => o.status === 'pending').length || 0,
+          unreadMessages: messagesData.data?.filter((m: any) => m.status === 'unread').length || 0,
         });
       } catch (err) {
         console.error('Error fetching overview counts:', err);
@@ -44,6 +47,7 @@ const AdminDashboard = () => {
     { title: 'Total Products', value: counts.products, icon: <ShoppingBag size={24} />, color: '#FF9800' },
     { title: 'Announcements', value: counts.announcements, icon: <Megaphone size={24} />, color: 'var(--red)' },
     { title: 'Pending Orders', value: counts.pendingOrders, icon: <ClipboardList size={24} />, color: '#9C27B0' },
+    { title: 'Unread Messages', value: counts.unreadMessages, icon: <Mail size={24} />, color: '#00897B' },
   ];
 
   if (loading) {
