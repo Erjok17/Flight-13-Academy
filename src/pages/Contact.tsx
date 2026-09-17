@@ -209,7 +209,7 @@ const Contact = () => {
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                   >
                     <img 
-                      src="/images/ig-icon-white.png" 
+                      src="/images/ig-icon-white.jpg" 
                       alt="Instagram"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
@@ -229,7 +229,7 @@ const Contact = () => {
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                   >
                     <img 
-                      src="/images/x-icon-white.png" 
+                      src="/images/x-icon-white.webp" 
                       alt="X (Twitter)"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
