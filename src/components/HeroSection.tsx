@@ -82,7 +82,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section style={{ 
+    <section id="hero" style={{ 
       position: 'relative', 
       width: '100%', 
       height: '80vh',
@@ -291,6 +291,7 @@ const HeroSection = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
+              aria-label={`Go to slide ${index + 1}`}
               style={{
                 width: currentSlide === index ? 'clamp(30px, 6vw, 40px)' : 'clamp(8px, 2vw, 10px)',
                 height: 'clamp(8px, 2vw, 10px)',

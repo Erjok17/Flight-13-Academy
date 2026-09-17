@@ -60,13 +60,16 @@ const WeeklySchedule = () => {
   const currentDay = scheduleData[currentIndex];
 
   return (
-    <section style={{ 
+    <section id="scholarship" style={{ 
       position: 'relative', 
       padding: '60px 0', 
       backgroundColor: 'white' 
     }}>
       {/* Red Left Trapezoid */}
       <div
+        role="button"
+        aria-label="Previous day"
+        tabIndex={0}
         style={{
           position: 'absolute',
           left: 0,
@@ -86,6 +89,12 @@ const WeeklySchedule = () => {
           if (!isMobile) e.currentTarget.style.width = '180px';
         }}
         onClick={handlePrev}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handlePrev();
+          }
+        }}
       >
         <div style={{
           position: 'absolute',
@@ -102,6 +111,9 @@ const WeeklySchedule = () => {
 
       {/* Red Right Trapezoid */}
       <div
+        role="button"
+        aria-label="Next day"
+        tabIndex={0}
         style={{
           position: 'absolute',
           right: 0,
@@ -121,6 +133,12 @@ const WeeklySchedule = () => {
           if (!isMobile) e.currentTarget.style.width = '180px';
         }}
         onClick={handleNext}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleNext();
+          }
+        }}
       >
         <div style={{
           position: 'absolute',
@@ -265,6 +283,7 @@ const WeeklySchedule = () => {
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
+              aria-label={`Go to ${scheduleData[idx].day}`}
               style={{
                 width: currentIndex === idx ? '40px' : '10px',
                 height: '8px',

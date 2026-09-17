@@ -37,7 +37,6 @@
   margin: 0;
 }
 
-/* Red Trapezoid Container - touches right edge */
 .trapezoidContainer {
   position: absolute;
   right: 0;
@@ -47,7 +46,6 @@
   z-index: 1;
 }
 
-/* Red Trapezoid Shape */
 .desktopIcons {
   background-color: var(--red);
   width: 100%;
@@ -123,19 +121,14 @@
 .mobileNav {
   position: fixed;
   top: 0;
-  right: -100%;
+  right: 0;
   width: 280px;
   height: 100vh;
   background-color: white;
   box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-  transition: right 0.3s ease;
-  z-index: 1000;
+  z-index: 1001;
   padding: 80px 20px 20px;
   overflow-y: auto;
-}
-
-.mobileNav.open {
-  right: 0;
 }
 
 .closeBtn {
@@ -193,7 +186,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
-  z-index: 999;
+  z-index: 1000;
 }
 
 /* Desktop styles */

@@ -42,7 +42,7 @@ const cardVariants: Variants = {
 
 const CoachesSection = () => {
   return (
-    <section style={{ padding: '80px 0', backgroundColor: 'white' }}>
+    <section id="coaches" style={{ padding: '80px 0', backgroundColor: 'white' }}>
       <div className="container" style={{
         maxWidth: '1200px',
         margin: '0 auto',
@@ -91,6 +91,9 @@ const CoachesSection = () => {
                   <SafeImage 
                     src={coach.image} 
                     alt={coach.name} 
+                    width={600}
+                    height={320}
+                    loading="lazy"
                     style={{ 
                       width: '100%', 
                       height: '100%'
