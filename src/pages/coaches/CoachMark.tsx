@@ -27,11 +27,17 @@ const CoachMark = () => {
                 <img 
                   src="/images/mark1.jpeg" 
                   alt="Coach Mark during league play"
+                  width={600}
+                  height={600}
+                  loading="lazy"
                   style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }}
                 />
                 <img 
                   src="/images/mark2.jpeg" 
                   alt="Coach Mark competing at high level"
+                  width={600}
+                  height={600}
+                  loading="lazy"
                   style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }}
                 />
               </div>

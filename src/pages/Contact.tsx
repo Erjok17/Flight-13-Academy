@@ -199,6 +199,7 @@ const Contact = () => {
                     href="https://www.instagram.com/flight_13_basketball_academy/" 
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Instagram"
                     style={{
                       display: 'inline-block',
                       transition: 'transform 0.3s',
@@ -211,6 +212,9 @@ const Contact = () => {
                     <img 
                       src="/images/ig-icon-white.jpg" 
                       alt="Instagram"
+                      width={40}
+                      height={40}
+                      loading="lazy"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   </a>
@@ -219,6 +223,7 @@ const Contact = () => {
                     href="#" 
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="X (Twitter)"
                     style={{
                       display: 'inline-block',
                       transition: 'transform 0.3s',
@@ -231,6 +236,9 @@ const Contact = () => {
                     <img 
                       src="/images/x-icon-white.webp" 
                       alt="X (Twitter)"
+                      width={36}
+                      height={36}
+                      loading="lazy"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   </a>
@@ -239,6 +247,7 @@ const Contact = () => {
                     href="#" 
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="YouTube"
                     style={{
                       display: 'inline-block',
                       transition: 'transform 0.3s',
@@ -251,6 +260,9 @@ const Contact = () => {
                     <img 
                       src="/images/youtube-icon-white.png" 
                       alt="YouTube"
+                      width={44}
+                      height={44}
+                      loading="lazy"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   </a>
@@ -259,6 +271,7 @@ const Contact = () => {
                     href="https://wa.me/256780898611" 
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="WhatsApp"
                     style={{
                       display: 'inline-block',
                       transition: 'transform 0.3s',
@@ -271,6 +284,9 @@ const Contact = () => {
                     <img 
                       src="/images/whatsApp-ic.jpg" 
                       alt="WhatsApp"
+                      width={40}
+                      height={40}
+                      loading="lazy"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   </a>
@@ -298,7 +314,6 @@ const Contact = () => {
                 Send Us a Message
               </h2>
 
-              {/* ✅ FIXED: Added missing <a tag */}
               {formData.message && (
                 <a
                   href={`https://wa.me/256780898611?text=${encodeURIComponent(formData.message)}`}
@@ -350,10 +365,11 @@ const Contact = () => {
               
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+                  <label htmlFor="contact-name" style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
                     Your Name *
                   </label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     value={formData.name}
@@ -373,10 +389,11 @@ const Contact = () => {
                 </div>
                 
                 <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+                  <label htmlFor="contact-email" style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
                     Email Address *
                   </label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     value={formData.email}
@@ -396,10 +413,11 @@ const Contact = () => {
                 </div>
                 
                 <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+                  <label htmlFor="contact-subject" style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
                     Subject *
                   </label>
                   <select
+                    id="contact-subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
@@ -427,10 +445,11 @@ const Contact = () => {
                 </div>
                 
                 <div style={{ marginBottom: '24px' }}>
-                  <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
+                  <label htmlFor="contact-message" style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#333' }}>
                     Message *
                   </label>
                   <textarea
+                    id="contact-message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}

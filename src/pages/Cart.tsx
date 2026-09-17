@@ -119,6 +119,9 @@ const Cart = () => {
                     <img 
                       src={item.image_url || '/images/placeholder.jpg'} 
                       alt={item.name} 
+                      width={60} 
+                      height={60}
+                      loading="lazy"
                       style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} 
                     />
                     <div>
@@ -129,6 +132,7 @@ const Cart = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1, item.size)}
+                        aria-label="Decrease quantity"
                         style={{ width: '28px', height: '28px', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', backgroundColor: 'white' }}
                       >
                         <Minus size={14} color="#666" />
@@ -136,6 +140,7 @@ const Cart = () => {
                       <span style={{ width: '30px', textAlign: 'center', fontWeight: '500' }}>{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1, item.size)}
+                        aria-label="Increase quantity"
                         style={{ width: '28px', height: '28px', border: '1px solid #ddd', borderRadius: '6px', cursor: 'pointer', backgroundColor: 'white' }}
                       >
                         <Plus size={14} color="#666" />
@@ -143,6 +148,7 @@ const Cart = () => {
                     </div>
                     <button 
                       onClick={() => removeFromCart(item.id, item.size)} 
+                      aria-label={`Remove ${item.name} from cart`}
                       style={{ color: '#999', cursor: 'pointer', background: 'none', border: 'none' }}
                     >
                       <Trash2 size={18} />

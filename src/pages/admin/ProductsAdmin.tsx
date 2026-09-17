@@ -158,7 +158,7 @@ const ProductsAdmin = () => {
         <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '20px' }}>{editing ? 'Edit Product' : 'Add New Product'}</h3>
-            <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}>
+            <button onClick={() => setShowForm(false)} aria-label="Close form" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}>
               <X size={20} />
             </button>
           </div>
@@ -173,7 +173,7 @@ const ProductsAdmin = () => {
               <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#666' }}>Product Image</label>
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 {form.image_url && (
-                  <img src={form.image_url} alt="Preview" style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
+                  <img src={form.image_url} alt="Preview" width={70} height={70} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
                 )}
                 <button
                   type="button"
@@ -229,7 +229,7 @@ const ProductsAdmin = () => {
               <tr key={product.id} style={{ borderBottom: '1px solid #eee' }}>
                 <td style={{ padding: '12px' }}>
                   {product.image_url ? (
-                    <img src={product.image_url} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px' }} />
+                    <img src={product.image_url} alt={product.name} width={40} height={40} loading="lazy" style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '6px' }} />
                   ) : '—'}
                 </td>
                 <td style={{ padding: '12px' }}>{product.name}</td>
@@ -237,8 +237,8 @@ const ProductsAdmin = () => {
                 <td style={{ padding: '12px' }}>{product.category || 'N/A'}</td>
                 <td style={{ padding: '12px' }}>{product.in_stock ? 'In Stock' : 'Out of Stock'}</td>
                 <td style={{ padding: '12px' }}>
-                  <button onClick={() => openEdit(product)} style={{ color: 'var(--red)', cursor: 'pointer', background: 'none', border: 'none', marginRight: '8px' }}><Edit size={16} /></button>
-                  <button onClick={() => deleteProduct(product.id)} style={{ color: '#f44336', cursor: 'pointer', background: 'none', border: 'none' }}><Trash2 size={16} /></button>
+                  <button onClick={() => openEdit(product)} aria-label="Edit product" style={{ color: 'var(--red)', cursor: 'pointer', background: 'none', border: 'none', marginRight: '8px' }}><Edit size={16} /></button>
+                  <button onClick={() => deleteProduct(product.id)} aria-label="Delete product" style={{ color: '#f44336', cursor: 'pointer', background: 'none', border: 'none' }}><Trash2 size={16} /></button>
                 </td>
               </tr>
             ))}

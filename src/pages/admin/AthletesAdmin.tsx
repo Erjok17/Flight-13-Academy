@@ -67,7 +67,6 @@ const AthletesAdmin = () => {
       alert('Network error while uploading image');
     } finally {
       setUploading(false);
-      // reset the input so selecting the same file again re-triggers onChange
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
@@ -105,7 +104,6 @@ const AthletesAdmin = () => {
     });
     setShowForm(true);
 
-    // fetch medical notes separately (admin-only endpoint)
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(`${API_URL}/api/athletes/${athlete.id}/medical`, {
@@ -149,7 +147,6 @@ const AthletesAdmin = () => {
 
       const athleteId = editing ? editing.id : data.data.id;
 
-      // save medical notes separately
       setSavingMedical(true);
       await fetch(`${API_URL}/api/athletes/${athleteId}/medical`, {
         method: 'PUT',
@@ -200,7 +197,7 @@ const AthletesAdmin = () => {
         <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px', marginBottom: '24px', boxShadow: '0 5px 15px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '20px' }}>{editing ? 'Edit Athlete' : 'Add New Athlete'}</h3>
-            <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}>
+            <button onClick={() => setShowForm(false)} aria-label="Close form" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#666' }}>
               <X size={20} />
             </button>
           </div>
@@ -217,12 +214,11 @@ const AthletesAdmin = () => {
               <input name="college_interest" placeholder="College Interest" value={form.college_interest} onChange={handleChange} style={inputStyle} />
               <input name="scholarship_offers" type="number" placeholder="Scholarship Offers" value={form.scholarship_offers} onChange={handleChange} style={inputStyle} />
 
-              {/* Player Photo Upload */}
               <div style={{ gridColumn: '1/3' }}>
                 <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#666' }}>Player Photo</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   {form.image_url && (
-                    <img src={form.image_url} alt="Preview" style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
+                    <img src={form.image_url} alt="Preview" width={70} height={70} style={{ width: '70px', height: '70px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #ddd' }} />
                   )}
                   <button
                     type="button"
@@ -297,8 +293,8 @@ const AthletesAdmin = () => {
                 <td style={{ padding: '12px' }}>{athlete.position || 'N/A'}</td>
                 <td style={{ padding: '12px' }}>{athlete.school || 'N/A'}</td>
                 <td style={{ padding: '12px' }}>
-                  <button onClick={() => openEdit(athlete)} style={{ color: 'var(--red)', cursor: 'pointer', background: 'none', border: 'none', marginRight: '8px' }}><Edit size={16} /></button>
-                  <button onClick={() => deleteAthlete(athlete.id)} style={{ color: '#f44336', cursor: 'pointer', background: 'none', border: 'none' }}><Trash2 size={16} /></button>
+                  <button onClick={() => openEdit(athlete)} aria-label="Edit athlete" style={{ color: 'var(--red)', cursor: 'pointer', background: 'none', border: 'none', marginRight: '8px' }}><Edit size={16} /></button>
+                  <button onClick={() => deleteAthlete(athlete.id)} aria-label="Delete athlete" style={{ color: '#f44336', cursor: 'pointer', background: 'none', border: 'none' }}><Trash2 size={16} /></button>
                 </td>
               </tr>
             ))}

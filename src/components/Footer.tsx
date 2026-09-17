@@ -164,21 +164,53 @@ const Footer = () => {
                 href="https://www.instagram.com/flight_13_basketball_academy/" 
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram"
                 style={{ display: 'inline-block', transition: 'transform 0.3s', width: '28px', height: '28px' }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
-                <img src="/images/ig-icon-white.jpg" alt="Instagram" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img 
+                  src="/images/ig-icon-white.jpg" 
+                  alt="Instagram" 
+                  width={28}
+                  height={28}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', transition: 'transform 0.3s', width: '26px', height: '26px' }}
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="X (Twitter)"
+                style={{ display: 'inline-block', transition: 'transform 0.3s', width: '26px', height: '26px' }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                <img src="/images/x-icon-white.webp" alt="X (Twitter)" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img 
+                  src="/images/x-icon-white.webp" 
+                  alt="X (Twitter)" 
+                  width={26}
+                  height={26}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                />
               </a>
-              <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', transition: 'transform 0.3s', width: '32px', height: '32px' }}
+              <a 
+                href="#" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="YouTube"
+                style={{ display: 'inline-block', transition: 'transform 0.3s', width: '32px', height: '32px' }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                <img src="/images/youtube-icon-white.png" alt="YouTube" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img 
+                  src="/images/youtube-icon-white.png" 
+                  alt="YouTube" 
+                  width={32}
+                  height={32}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                />
               </a>
             </div>
             

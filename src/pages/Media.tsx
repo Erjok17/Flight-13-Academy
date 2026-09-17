@@ -129,6 +129,7 @@ const Media = () => {
             <div style={{ display: 'flex', gap: '10px' }}>
               <button
                 onClick={() => setViewMode('grid')}
+                aria-label="Grid view"
                 style={{
                   padding: '8px',
                   borderRadius: '8px',
@@ -141,6 +142,7 @@ const Media = () => {
               </button>
               <button
                 onClick={() => setViewMode('list')}
+                aria-label="List view"
                 style={{
                   padding: '8px',
                   borderRadius: '8px',
@@ -183,6 +185,8 @@ const Media = () => {
                     <video
                       src={item.src}
                       controls
+                      width={320}
+                      height={220}
                       style={{
                         width: '100%',
                         height: '220px',
@@ -194,6 +198,9 @@ const Media = () => {
                     <img 
                       src={item.src} 
                       alt={item.title}
+                      width={320}
+                      height={220}
+                      loading="lazy"
                       style={{ width: '100%', height: '220px', objectFit: 'cover', cursor: 'pointer' }}
                       onClick={() => openModal(item)}
                     />
@@ -225,6 +232,8 @@ const Media = () => {
                     <video
                       src={item.src}
                       controls
+                      width={160}
+                      height={90}
                       style={{
                         width: '160px',
                         height: '90px',
@@ -237,6 +246,9 @@ const Media = () => {
                     <img 
                       src={item.src} 
                       alt={item.title}
+                      width={160}
+                      height={90}
+                      loading="lazy"
                       style={{ width: '160px', height: '90px', objectFit: 'cover', cursor: 'pointer', flexShrink: 0 }}
                       onClick={() => openModal(item)}
                     />
@@ -274,6 +286,7 @@ const Media = () => {
         }} onClick={closeModal}>
           <button
             onClick={closeModal}
+            aria-label="Close"
             style={{
               position: 'absolute',
               top: '20px',
@@ -329,6 +342,7 @@ const Media = () => {
         }} onClick={closeModal}>
           <button
             onClick={closeModal}
+            aria-label="Close"
             style={{
               position: 'absolute',
               top: '20px',

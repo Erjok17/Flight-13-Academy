@@ -48,31 +48,57 @@ const Navbar = () => {
     <nav className={styles.navbar}>
       <div className={styles.topRow}>
         <div id="nav-logo" onClick={() => navigate('/')} className={styles.logoSection}>
-          <img src="/images/logo.jpeg" alt="Flight 13 Logo" className={styles.logo} />
+          <img 
+            src="/images/logo.jpeg" 
+            alt="Flight 13 Logo" 
+            width={50}
+            height={50}
+            className={styles.logo} 
+          />
           <h1 className={styles.academyName}>FLIGHT 13</h1>
         </div>
 
         {/* Red Trapezoid Container */}
         <div className={styles.trapezoidContainer}>
           <div className={styles.desktopIcons}>
-            <div id="nav-search-btn" onClick={() => navigate('/search')} className={styles.iconWrapper}>
+            <div 
+              id="nav-search-btn" 
+              onClick={() => navigate('/search')} 
+              className={styles.iconWrapper}
+              aria-label="Search"
+            >
               <Search color="white" size={20} />
             </div>
             
-            <div id="nav-cart-btn" onClick={() => navigate('/cart')} className={styles.iconWrapper}>
+            <div 
+              id="nav-cart-btn" 
+              onClick={() => navigate('/cart')} 
+              className={styles.iconWrapper}
+              aria-label={`Shopping cart${itemCount > 0 ? `, ${itemCount} items` : ''}`}
+            >
               <ShoppingCart color="white" size={20} />
               {itemCount > 0 && (
                 <span className={styles.cartBadge}>{itemCount}</span>
               )}
             </div>
             
-            <div id="nav-profile-btn" onClick={() => navigate(isLoggedIn ? '/account' : '/login')} className={styles.iconWrapper}>
+            <div 
+              id="nav-profile-btn" 
+              onClick={() => navigate(isLoggedIn ? '/account' : '/login')} 
+              className={styles.iconWrapper}
+              aria-label={isLoggedIn ? 'My account' : 'Sign in'}
+            >
               <User color="white" size={20} />
             </div>
           </div>
         </div>
 
-        <button id="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className={styles.mobileMenuBtn}>
+        <button 
+          id="mobile-menu-toggle" 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+          className={styles.mobileMenuBtn}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+        >
           {isMobileMenuOpen ? <X color="var(--red)" size={24} /> : <Menu color="var(--red)" size={24} />}
         </button>
       </div>
@@ -110,7 +136,12 @@ const Navbar = () => {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 150, damping: 20 }}
             >
-              <button id="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)} className={styles.closeBtn}>
+              <button 
+                id="mobile-menu-close" 
+                onClick={() => setIsMobileMenuOpen(false)} 
+                className={styles.closeBtn}
+                aria-label="Close menu"
+              >
                 <X size={24} color="var(--red)" />
               </button>
               

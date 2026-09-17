@@ -132,6 +132,7 @@ const AthletesDirectory = () => {
                 <input
                   type="text"
                   placeholder="Search athletes by name..."
+                  aria-label="Search athletes by name"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{
@@ -147,6 +148,7 @@ const AthletesDirectory = () => {
                 <select
                   value={selectedPosition}
                   onChange={(e) => setSelectedPosition(e.target.value)}
+                  aria-label="Filter by position"
                   style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px' }}
                 >
                   {positions.map(pos => (
@@ -158,6 +160,7 @@ const AthletesDirectory = () => {
                 <select
                   value={selectedAge}
                   onChange={(e) => setSelectedAge(e.target.value)}
+                  aria-label="Filter by age range"
                   style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px' }}
                 >
                   {ageRanges.map(age => (
@@ -191,7 +194,14 @@ const AthletesDirectory = () => {
                     justifyContent: 'center'
                   }}>
                     {athlete.image_url ? (
-                      <img src={athlete.image_url} alt={athlete.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img 
+                        src={athlete.image_url} 
+                        alt={athlete.name} 
+                        width={350} 
+                        height={200} 
+                        loading="lazy"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      />
                     ) : (
                       <span style={{ fontSize: '48px' }}>🏀</span>
                     )}

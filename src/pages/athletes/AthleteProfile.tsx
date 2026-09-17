@@ -115,7 +115,13 @@ const AthleteProfile = () => {
                 marginBottom: '24px'
               }}>
                 {athlete.image_url ? (
-                  <img src={athlete.image_url} alt={athlete.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} />
+                  <img 
+                    src={athlete.image_url} 
+                    alt={athlete.name} 
+                    width={600} 
+                    height={400} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '20px' }} 
+                  />
                 ) : (
                   <span style={{ fontSize: '80px' }}>🏀</span>
                 )}
@@ -129,16 +135,6 @@ const AthleteProfile = () => {
                   <div><GraduationCap size={16} style={{ display: 'inline', marginRight: '8px' }} /> School: {athlete.school || 'N/A'}</div>
                 </div>
               </div>
-
-              {/* <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '24px' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '16px', color: '#333' }}>Guardian Contact</h3>
-                <div style={{ marginBottom: '12px' }}>
-                  <Mail size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.parent_email || 'Not available'}
-                </div>
-                <div>
-                  <Phone size={16} style={{ display: 'inline', marginRight: '8px' }} /> {athlete.parent_phone || 'Not available'}
-                </div>
-              </div> */}
             </div>
 
             <div>
@@ -208,6 +204,7 @@ const AthleteProfile = () => {
                   <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>Request More Information</h3>
                   <textarea
                     placeholder="Write your message here..."
+                    aria-label="Your message"
                     rows={4}
                     style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '12px' }}
                   />

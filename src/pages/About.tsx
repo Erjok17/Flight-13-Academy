@@ -73,7 +73,6 @@ const About = () => {
     }, 200);
   };
 
-  // Define sections for navigation dots
   const sections = ['about-hero', 'about-what', 'about-numbers', 'about-values', 'about-philosophy', 'about-founded', 'about-cta'];
 
   return (
@@ -100,6 +99,8 @@ const About = () => {
           loop
           muted
           playsInline
+          width={1920}
+          height={1080}
           style={{
             position: 'absolute',
             top: 0,
@@ -294,6 +295,9 @@ const About = () => {
                 <img 
                   src="/images/p6.jpeg" 
                   alt="Flight 13 Training"
+                  width={600}
+                  height={600}
+                  loading="lazy"
                   style={{ width: '100%', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
                 />
               </div>
@@ -342,6 +346,9 @@ const About = () => {
                 <img 
                   src="/images/ball.webp" 
                   alt="Basketball"
+                  width={80}
+                  height={80}
+                  loading="lazy"
                   style={{ 
                     width: '100%', 
                     height: '100%', 
@@ -383,6 +390,9 @@ const About = () => {
                 <img 
                   src="/images/registered.jpg" 
                   alt="Official Registration"
+                  width={80}
+                  height={80}
+                  loading="lazy"
                   style={{ 
                     width: '100%', 
                     height: '100%', 

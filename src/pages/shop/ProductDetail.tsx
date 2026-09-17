@@ -238,7 +238,13 @@ const ProductDetail = () => {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px', backgroundColor: 'white', borderRadius: '20px', padding: '40px', marginBottom: '30px' }}>
             <div>
               {product.image_url ? (
-                <img src={product.image_url} alt={product.name} style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }} />
+                <img 
+                  src={product.image_url} 
+                  alt={product.name} 
+                  width={600} 
+                  height={600}
+                  style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }} 
+                />
               ) : (
                 <div style={{ width: '100%', aspectRatio: '1', backgroundColor: '#f0f0f0', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontSize: '48px' }}>🛍️</span>
@@ -373,6 +379,7 @@ const ProductDetail = () => {
                         key={n}
                         type="button"
                         onClick={() => setReviewForm({ ...reviewForm, rating: n })}
+                        aria-label={`Rate ${n} star${n !== 1 ? 's' : ''}`}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                       >
                         <Star size={26} fill={n <= reviewForm.rating ? '#FFB800' : 'none'} color="#FFB800" />

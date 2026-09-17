@@ -244,6 +244,9 @@ const Programs = () => {
                                 <img 
                                   src={coach.image}
                                   alt={coach.name}
+                                  width={60}
+                                  height={60}
+                                  loading="lazy"
                                   style={{
                                     width: 'clamp(50px, 10vw, 60px)',
                                     height: 'clamp(50px, 10vw, 60px)',
@@ -296,6 +299,8 @@ const Programs = () => {
                             loop
                             muted
                             playsInline
+                            width={600}
+                            height={400}
                             style={{
                               width: '100%',
                               borderRadius: '12px',
@@ -322,6 +327,9 @@ const Programs = () => {
                           <img 
                             src={program.image}
                             alt="Competitive Games"
+                            width={600}
+                            height={400}
+                            loading="lazy"
                             style={{
                               width: '100%',
                               borderRadius: '12px',
