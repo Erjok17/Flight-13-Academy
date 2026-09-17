@@ -1,7 +1,7 @@
 // Contact routes
 const express = require('express');
 const router = express.Router();
-const { supabase, supabaseAdmin } = require('../config/supabase');
+const { supabaseAdmin } = require('../config/supabase');
 const { authenticate, isAdmin } = require('../middleware/auth');
 
 // Create contact message (Public)
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
       created_at: new Date()
     };
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('contacts')
       .insert([contactData]);
 
