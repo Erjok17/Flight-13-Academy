@@ -21,7 +21,7 @@ const coaches = [
     id: 3, 
     name: 'Coach Erjok Agot', 
     role: 'Defense & Strength Conditioning', 
-    image: '/images/coach-erjok.png', 
+    image: '/images/coach-erjok.webp', 
     bio: 'Focuses on defensive fundamentals, agility, and strength training. Committed to building disciplined, hard-nosed players who compete at the highest level.' 
   }
 ];

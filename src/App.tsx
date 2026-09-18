@@ -3,30 +3,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 import ScrollToTop from './components/ScrollToTop';
 
-// Public pages — eagerly loaded (part of the main bundle, seen first)
+// Eager — the pages people land on first
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Programs from './pages/Programs';
-import Media from './pages/Media';
-import Search from './pages/Search';
-import Cart from './pages/Cart';
-import Account from './pages/Account';
-import Checkout from './pages/Checkout';
-import Shop from './pages/shop/Shop';
-import ProductDetail from './pages/shop/ProductDetail';
-import AthletesDirectory from './pages/athletes/AthletesDirectory';
-import AthleteProfile from './pages/athletes/AthleteProfile';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import ForgotPassword from './pages/auth/ForgotPassword';
-import VerifyEmail from './pages/auth/VerifyEmail';
-import ResetPassword from './pages/auth/ResetPassword';
-import CoachChut from './pages/coaches/CoachChut';
-import CoachMark from './pages/coaches/CoachMark';
-import CoachNathan from './pages/coaches/CoachErjok';
 
-// Admin pages — lazy-loaded (never needed by public visitors)
+// Lazy — everything else
+const Media = lazy(() => import('./pages/Media'));
+const Search = lazy(() => import('./pages/Search'));
+const Cart = lazy(() => import('./pages/Cart'));
+const Account = lazy(() => import('./pages/Account'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Shop = lazy(() => import('./pages/shop/Shop'));
+const ProductDetail = lazy(() => import('./pages/shop/ProductDetail'));
+const AthletesDirectory = lazy(() => import('./pages/athletes/AthletesDirectory'));
+const AthleteProfile = lazy(() => import('./pages/athletes/AthleteProfile'));
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
+const VerifyEmail = lazy(() => import('./pages/auth/VerifyEmail'));
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'));
+const CoachChut = lazy(() => import('./pages/coaches/CoachChut'));
+const CoachMark = lazy(() => import('./pages/coaches/CoachMark'));
+const CoachNathan = lazy(() => import('./pages/coaches/CoachErjok'));
+
+// Admin — always lazy
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const AthletesAdmin = lazy(() => import('./pages/admin/AthletesAdmin'));
@@ -50,17 +52,22 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Fallback while lazy chunks load
-const AdminFallback = () => (
+// Fallback for lazy-loaded routes
+const PageFallback = () => (
   <div style={{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '60vh',
-    color: '#888'
+    color: '#888',
+    fontSize: '14px'
   }}>
-    Loading admin…
+    Loading…
   </div>
+);
+
+const Lazy = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<PageFallback />}>{children}</Suspense>
 );
 
 // Protected Route Component
@@ -72,14 +79,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Admin Route Component - Requires Login (role check happens server-side in AdminLayout)
+// Admin Route Component
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
-
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-
   return <>{children}</>;
 };
 
@@ -89,88 +94,60 @@ function AppContent() {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {/* Public Pages - Always Accessible */}
+        {/* Public — eager */}
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/programs" element={<PageTransition><Programs /></PageTransition>} />
-        <Route path="/media" element={<PageTransition><Media /></PageTransition>} />
-        <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
-        <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
-        <Route path="/shop" element={<PageTransition><Shop /></PageTransition>} />
-        <Route path="/product/:id" element={<PageTransition><ProductDetail /></PageTransition>} />
-        <Route path="/athletes" element={<PageTransition><AthletesDirectory /></PageTransition>} />
-        <Route path="/athletes/:id" element={<PageTransition><AthleteProfile /></PageTransition>} />
-        <Route path="/verify-email" element={<PageTransition><VerifyEmail /></PageTransition>} />
 
-        {/* Auth Pages */}
+        {/* Public — lazy */}
+        <Route path="/media" element={<Lazy><PageTransition><Media /></PageTransition></Lazy>} />
+        <Route path="/search" element={<Lazy><PageTransition><Search /></PageTransition></Lazy>} />
+        <Route path="/cart" element={<Lazy><PageTransition><Cart /></PageTransition></Lazy>} />
+        <Route path="/shop" element={<Lazy><PageTransition><Shop /></PageTransition></Lazy>} />
+        <Route path="/product/:id" element={<Lazy><PageTransition><ProductDetail /></PageTransition></Lazy>} />
+        <Route path="/athletes" element={<Lazy><PageTransition><AthletesDirectory /></PageTransition></Lazy>} />
+        <Route path="/athletes/:id" element={<Lazy><PageTransition><AthleteProfile /></PageTransition></Lazy>} />
+        <Route path="/verify-email" element={<Lazy><PageTransition><VerifyEmail /></PageTransition></Lazy>} />
+
+        {/* Auth */}
         <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
         <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
-        <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
-        <Route path="/reset-password" element={<PageTransition><ResetPassword /></PageTransition>} />
+        <Route path="/forgot-password" element={<Lazy><PageTransition><ForgotPassword /></PageTransition></Lazy>} />
+        <Route path="/reset-password" element={<Lazy><PageTransition><ResetPassword /></PageTransition></Lazy>} />
 
-        {/* Protected Routes - Require Login */}
+        {/* Protected — lazy */}
         <Route path="/checkout" element={
           <ProtectedRoute>
-            <PageTransition><Checkout /></PageTransition>
+            <Lazy><PageTransition><Checkout /></PageTransition></Lazy>
           </ProtectedRoute>
         } />
 
         <Route path="/account" element={
           <ProtectedRoute>
-            <PageTransition><Account /></PageTransition>
+            <Lazy><PageTransition><Account /></PageTransition></Lazy>
           </ProtectedRoute>
         } />
 
-        {/* Admin Routes - Lazy-loaded, nested with AdminLayout */}
+        {/* Admin — lazy */}
         <Route path="/admin" element={
           <AdminRoute>
-            <Suspense fallback={<AdminFallback />}>
-              <AdminLayout />
-            </Suspense>
+            <Lazy><AdminLayout /></Lazy>
           </AdminRoute>
         }>
-          <Route index element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><AdminDashboard /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="athletes" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><AthletesAdmin /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="programs" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><ProgramsAdmin /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="products" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><ProductsAdmin /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="orders" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><OrdersAdmin /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="messages" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><MessagesAdmin /></PageTransition>
-            </Suspense>
-          } />
-          <Route path="settings" element={
-            <Suspense fallback={<AdminFallback />}>
-              <PageTransition><SettingsAdmin /></PageTransition>
-            </Suspense>
-          } />
+          <Route index element={<Lazy><PageTransition><AdminDashboard /></PageTransition></Lazy>} />
+          <Route path="athletes" element={<Lazy><PageTransition><AthletesAdmin /></PageTransition></Lazy>} />
+          <Route path="programs" element={<Lazy><PageTransition><ProgramsAdmin /></PageTransition></Lazy>} />
+          <Route path="products" element={<Lazy><PageTransition><ProductsAdmin /></PageTransition></Lazy>} />
+          <Route path="orders" element={<Lazy><PageTransition><OrdersAdmin /></PageTransition></Lazy>} />
+          <Route path="messages" element={<Lazy><PageTransition><MessagesAdmin /></PageTransition></Lazy>} />
+          <Route path="settings" element={<Lazy><PageTransition><SettingsAdmin /></PageTransition></Lazy>} />
         </Route>
 
-        {/* Coach Detail Pages */}
-        <Route path="/coaches/1" element={<PageTransition><CoachChut /></PageTransition>} />
-        <Route path="/coaches/2" element={<PageTransition><CoachMark /></PageTransition>} />
-        <Route path="/coaches/3" element={<PageTransition><CoachNathan /></PageTransition>} />
+        {/* Coaches — lazy */}
+        <Route path="/coaches/1" element={<Lazy><PageTransition><CoachChut /></PageTransition></Lazy>} />
+        <Route path="/coaches/2" element={<Lazy><PageTransition><CoachMark /></PageTransition></Lazy>} />
+        <Route path="/coaches/3" element={<Lazy><PageTransition><CoachNathan /></PageTransition></Lazy>} />
       </Routes>
     </AnimatePresence>
   );
