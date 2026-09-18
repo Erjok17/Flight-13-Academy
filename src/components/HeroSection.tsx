@@ -85,7 +85,7 @@ const HeroSection = () => {
     <section id="hero" style={{ 
       position: 'relative', 
       width: '100%', 
-      height: '80vh',
+      minHeight: '80vh',         /* ← CHANGED from height: '80vh' */
       display: 'flex',
       justifyContent: 'center'
     }}>
@@ -93,7 +93,7 @@ const HeroSection = () => {
         position: 'relative',
         width: '85%',
         maxWidth: '1400px',
-        height: '100%',
+        minHeight: '80vh',       /* ← CHANGED from height: '100%' */
         borderRadius: '1px',
         overflow: 'hidden'
       }}>
@@ -139,7 +139,9 @@ const HeroSection = () => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          textAlign: 'left'
+          textAlign: 'left',
+          paddingTop: '40px',        /* ← ADDED */
+          paddingBottom: '40px'      /* ← ADDED */
         }}>
           <h1 style={{ 
             fontSize: 'clamp(24px, 5vw, 44px)', 
@@ -198,7 +200,6 @@ const HeroSection = () => {
               justifyContent: 'center'
             }}
           >
-            {/* Slide Ticker Bottom Progress Indicator */}
             <motion.div 
               style={{
                 position: 'absolute',
@@ -270,7 +271,8 @@ const HeroSection = () => {
               fontWeight: 'bold',
               borderRadius: '4px',
               cursor: 'pointer',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              marginBottom: '20px'      /* ← ADDED */
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
