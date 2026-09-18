@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,26 +7,9 @@
     <title>Flight 13 Basketball Academy</title>
     <meta name="description" content="Elite basketball training for young athletes ages 5-18 in Kampala. Join Flight 13 Basketball Academy — It's a process.">
 
-    <!-- Google Fonts: Poppins — load asynchronously to avoid render-blocking -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-    >
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-      media="print"
-      onload="this.media='all'"
-    >
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-      >
-    </noscript>
+    <!-- Preload the two most-used font weights (Regular + Bold) for fast first paint -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/Poppins-Regular.woff2" crossorigin>
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/Poppins-Bold.woff2" crossorigin>
   </head>
   <body>
     <div id="root"></div>
