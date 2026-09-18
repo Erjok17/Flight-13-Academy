@@ -7,7 +7,15 @@
     <title>Flight 13 Basketball Academy</title>
     <meta name="description" content="Elite basketball training for young athletes ages 5-18 in Kampala. Join Flight 13 Basketball Academy — It's a process.">
 
-    <!-- Preload the two most-used font weights (Regular + Bold) for fast first paint -->
+    <!-- Preload the hero image so it starts downloading before React renders -->
+    <link 
+      rel="preload" 
+      as="image" 
+      href="/images/p9.webp" 
+      fetchpriority="high"
+    >
+
+    <!-- Preload the two most-used font weights -->
     <link rel="preload" as="font" type="font/woff2" href="/fonts/Poppins-Regular.woff2" crossorigin>
     <link rel="preload" as="font" type="font/woff2" href="/fonts/Poppins-Bold.woff2" crossorigin>
   </head>

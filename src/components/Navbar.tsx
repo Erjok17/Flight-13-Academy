@@ -49,7 +49,7 @@ const Navbar = () => {
       <div className={styles.topRow}>
         <div id="nav-logo" onClick={() => navigate('/')} className={styles.logoSection}>
           <img 
-            src="/images/logo.jpeg" 
+            src="/images/logo.webp" 
             alt="Flight 13 Logo" 
             width={50}
             height={50}

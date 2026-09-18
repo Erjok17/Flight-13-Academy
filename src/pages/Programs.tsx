@@ -39,7 +39,7 @@ const Programs = () => {
         'Competition preparation and tournament play'
       ],
       guestCoaches: [
-        { name: 'Wal Deng', role: 'Elite Basketball Coach & Mentor', image: '/images/wal1.jpeg' },
+        { name: 'Wal Deng', role: 'Elite Basketball Coach & Mentor', image: '/images/wal1.webp' },
         { name: 'NBA Africa Scout', role: 'Talent Evaluation Specialist' },
         { name: 'Kaman Maluach & Mawut Mabil', role: 'Khaman NBA Drafted Player & Inspiration. Mawut Mabil Arizona Wildcat & NBA Draft prospect', image: '/images/wal-khaman.webp' }
       ],
@@ -73,7 +73,7 @@ const Programs = () => {
         'Exposure to different playing styles',
         'Building game confidence and experience'
       ],
-      image: '/images/p12.jpeg',
+      image: '/images/p12.webp',
       color: '#f9f9f9'
     }
   ];

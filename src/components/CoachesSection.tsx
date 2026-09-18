@@ -7,14 +7,14 @@ const coaches = [
     id: 1, 
     name: 'Coach Chut Achol Matet', 
     role: 'Head Coach & Skill Development', 
-    image: '/images/chut2.jpeg', 
+    image: '/images/chut2.webp', 
     bio: 'Dedicated to developing elite talent through disciplined training and basketball IQ. Focuses on fundamentals, game strategy, and player mentorship.' 
   },
   { 
     id: 2, 
     name: 'Coach Bamutende Mark', 
     role: 'Shooting & Offensive Coordinator', 
-    image: '/images/mark1.jpeg', 
+    image: '/images/mark1.webp', 
     bio: 'Specializes in shooting mechanics, footwork, and offensive systems. Passionate about helping players become consistent scoring threats.' 
   },
   { 

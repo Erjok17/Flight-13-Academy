@@ -293,7 +293,7 @@ const About = () => {
               </div>
               <div>
                 <img 
-                  src="/images/p6.jpeg" 
+                  src="/images/p6.webp" 
                   alt="Flight 13 Training"
                   width={600}
                   height={600}

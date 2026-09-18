@@ -34,14 +34,14 @@ const TrainWithPurpose = () => {
     {
       id: 1,
       title: 'JOIN THE ACADEMY',
-      image: '/images/p10.jpeg',
+      image: '/images/p10.webp',
       description: 'Become part of Flight 13\'s elite basketball program. Open to ages 5-18, all skill levels welcome. Join a community dedicated to growth, discipline, and excellence on and off the court.',
       features: ['Ages 5-18', 'All skill levels', 'Professional coaching']
     },
     {
       id: 2,
       title: 'MILESTONES',
-      image: '/images/p11.jpg',
+      image: '/images/p11.webp',
       description: 'Track your progress and celebrate achievements. From mastering fundamentals to earning scholarships, every step forward is a victory in your basketball journey.',
       features: ['Skill benchmarks', 'Scholarship opportunities', 'Player development']
     },

@@ -32,15 +32,15 @@ const Media = () => {
     { id: 4, type: 'video', src: '/videos/tyron1.mp4', title: 'Private Session - One on One', category: 'training' },
     { id: 5, type: 'video', src: '/videos/idris.mp4', title: 'Camp Highlights - Building Champions', category: 'camps' },
     { id: 6, type: 'video', src: '/videos/tyron.mp4', title: 'Individual Workout - Tyron', category: 'training' },
-    { id: 7, type: 'image', src: '/images/p1.jpeg', title: 'Private Workout Session', category: 'training' },
-    { id: 8, type: 'image', src: '/images/p6.jpeg', title: 'Team Practice', category: 'training' },
-    { id: 9, type: 'image', src: '/images/p7.jpeg', title: 'Game Action', category: 'games' },
-    { id: 10, type: 'image', src: '/images/p8.jpeg', title: 'Group Training', category: 'training' },
-    { id: 11, type: 'image', src: '/images/p10.jpeg', title: 'Join the Academy', category: 'training' },
-    { id: 12, type: 'image', src: '/images/p11.jpg', title: 'Milestone Celebration', category: 'highlights' },
-    { id: 13, type: 'image', src: '/images/p12.jpeg', title: 'Coach on Touchline', category: 'games' },
-    { id: 14, type: 'image', src: '/images/wal-deng-coaching.jpg', title: 'Coach Wal Deng Training Session', category: 'camps' },
-    { id: 15, type: 'image', src: '/images/wal-deng-khaman.jpg', title: 'Coach Wal Deng with Kaman Maluach', category: 'camps' },
+    { id: 7, type: 'image', src: '/images/p1.webp', title: 'Private Workout Session', category: 'training' },
+    { id: 8, type: 'image', src: '/images/p6.webp', title: 'Team Practice', category: 'training' },
+    { id: 9, type: 'image', src: '/images/p7.webp', title: 'Game Action', category: 'games' },
+    { id: 10, type: 'image', src: '/images/p8.webp', title: 'Group Training', category: 'training' },
+    { id: 11, type: 'image', src: '/images/p10.webp', title: 'Join the Academy', category: 'training' },
+    { id: 12, type: 'image', src: '/images/p11.webp', title: 'Milestone Celebration', category: 'highlights' },
+    { id: 13, type: 'image', src: '/images/p12.webp', title: 'Coach on Touchline', category: 'games' },
+    { id: 14, type: 'image', src: '/images/wal-deng-coaching.webp', title: 'Coach Wal Deng Training Session', category: 'camps' },
+    { id: 15, type: 'image', src: '/images/wal-deng-khaman.webp', title: 'Coach Wal Deng with Kaman Maluach', category: 'camps' },
   ];
 
   const filteredMedia = activeCategory === 'all' 
@@ -67,7 +67,7 @@ const Media = () => {
         color: 'white',
         padding: '60px 0',
         textAlign: 'center',
-        backgroundImage: 'url("/images/p7.jpeg")',
+        backgroundImage: 'url("/images/p7.webp")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         position: 'relative'

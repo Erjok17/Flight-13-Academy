@@ -25,7 +25,7 @@ const CoachChut = () => {
             <div style={{ padding: '40px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <img 
-                  src="/images/chut1.jpg" 
+                  src="/images/chut1.webp" 
                   alt="Coach Chut coaching Flight 13 players"
                   width={600}
                   height={600}
@@ -33,7 +33,7 @@ const CoachChut = () => {
                   style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }}
                 />
                 <img 
-                  src="/images/chut2.jpeg" 
+                  src="/images/chut2.webp" 
                   alt="Coach Chut during his playing days"
                   width={600}
                   height={600}

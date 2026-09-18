@@ -5,19 +5,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 const slides = [
   {
     id: 1,
-    image: '/images/p9.jpeg',
+    image: '/images/p9.webp',
     title: 'SCRIMMAGES',
     description: 'We have scrimmages to help kids apply skills they worked on and improve game IQ'
   },
   {
     id: 2,
-    image: '/images/p1.jpeg',
+    image: '/images/p1.webp',
     title: 'PRIVATE WORKOUTS',
     description: 'Private workouts to work on individual weaknesses'
   },
   {
     id: 3,
-    image: '/images/p8.jpeg',
+    image: '/images/p8.webp',
     title: 'GROUP WORKOUTS',
     description: 'Group workouts to help build teamwork, collaboration, and communication on the court'
   }
@@ -102,6 +102,7 @@ const HeroSection = () => {
             key={currentSlide}
             src={slides[currentSlide].image} 
             alt={slides[currentSlide].title}
+            fetchPriority="high"
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}

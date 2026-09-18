@@ -25,7 +25,7 @@ const CoachMark = () => {
             <div style={{ padding: '40px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <img 
-                  src="/images/mark1.jpeg" 
+                  src="/images/mark1.webp" 
                   alt="Coach Mark during league play"
                   width={600}
                   height={600}
@@ -33,7 +33,7 @@ const CoachMark = () => {
                   style={{ width: '100%', borderRadius: '16px', objectFit: 'cover' }}
                 />
                 <img 
-                  src="/images/mark2.jpeg" 
+                  src="/images/mark2.webp" 
                   alt="Coach Mark competing at high level"
                   width={600}
                   height={600}
