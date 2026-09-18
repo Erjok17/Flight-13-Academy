@@ -39,20 +39,20 @@ const HeroSection = () => {
       if (!startTimeRef.current) {
         startTimeRef.current = timestamp;
       }
-      
+
       const elapsed = timestamp - startTimeRef.current;
       const progress = Math.min(elapsed / slideDuration, 1);
       setBorderProgress(progress);
-      
+
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         moveToNextSlide();
       }
     };
-    
+
     animationRef.current = requestAnimationFrame(animate);
-    
+
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -69,7 +69,7 @@ const HeroSection = () => {
     setIsAnimating(false);
     setBorderProgress(0);
     startTimeRef.current = 0;
-    
+
     setTimeout(() => {
       setIsAnimating(true);
     }, 100);
@@ -82,10 +82,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" style={{ 
-      position: 'relative', 
-      width: '100%', 
-      minHeight: '80vh',         /* ← CHANGED from height: '80vh' */
+    <section id="hero" style={{
+      position: 'relative',
+      width: '100%',
+      minHeight: '80vh',
       display: 'flex',
       justifyContent: 'center'
     }}>
@@ -93,32 +93,38 @@ const HeroSection = () => {
         position: 'relative',
         width: '85%',
         maxWidth: '1400px',
-        minHeight: '80vh',       /* ← CHANGED from height: '100%' */
+        minHeight: '80vh',
         borderRadius: '1px',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
       }}>
+        {/* Background image - absolutely positioned, doesn't affect layout */}
         <AnimatePresence mode="popLayout">
-          <motion.img 
+          <motion.img
             key={currentSlide}
-            src={slides[currentSlide].image} 
+            src={slides[currentSlide].image}
             alt={slides[currentSlide].title}
             {...({ fetchpriority: 'high' } as any)}
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
-            style={{ 
-              width: '100%', 
-              height: '100%', 
+            style={{
+              width: '100%',
+              height: '100%',
               objectFit: 'cover',
               display: 'block',
               position: 'absolute',
               top: 0,
-              left: 0
+              left: 0,
+              zIndex: 0
             }}
           />
         </AnimatePresence>
-        
+
+        {/* Gradient overlay */}
         <div style={{
           position: 'absolute',
           bottom: 0,
@@ -126,35 +132,31 @@ const HeroSection = () => {
           width: '100%',
           height: '50%',
           background: 'linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0) 70%)',
-          zIndex: 1
+          zIndex: 1,
+          pointerEvents: 'none'
         }} />
 
+        {/* Content - IN FLOW so container grows to fit it */}
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '10%',
-          right: '10%',
-          bottom: 0,
+          position: 'relative',
           zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
+          padding: '40px 10%',
           textAlign: 'left',
-          paddingTop: '40px',        /* ← ADDED */
-          paddingBottom: '40px'      /* ← ADDED */
+          width: '100%',
+          boxSizing: 'border-box'
         }}>
-          <h1 style={{ 
-            fontSize: 'clamp(24px, 5vw, 44px)', 
-            marginBottom: '4px', 
+          <h1 style={{
+            fontSize: 'clamp(24px, 5vw, 44px)',
+            marginBottom: '4px',
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
           }}>
             FLIGHT13 BASKETBALL ACADEMY
           </h1>
-          <p style={{ 
-            fontSize: 'clamp(12px, 2vw, 16px)', 
-            marginBottom: '16px', 
+          <p style={{
+            fontSize: 'clamp(12px, 2vw, 16px)',
+            marginBottom: '16px',
             color: 'white',
             fontStyle: 'italic',
             fontWeight: 'bold',
@@ -162,26 +164,26 @@ const HeroSection = () => {
           }}>
             "it's a process."
           </p>
-          <h2 style={{ 
-            fontSize: 'clamp(20px, 4vw, 32px)', 
-            marginBottom: '4px', 
+          <h2 style={{
+            fontSize: 'clamp(20px, 4vw, 32px)',
+            marginBottom: '4px',
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
           }}>
             ELITE SKILLS TRAINING
           </h2>
-          <p style={{ 
-            fontSize: 'clamp(14px, 3vw, 22px)', 
-            marginBottom: '20px', 
+          <p style={{
+            fontSize: 'clamp(14px, 3vw, 22px)',
+            marginBottom: '20px',
             color: 'white',
             fontWeight: 'bold',
             textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
           }}>
             FOR AGES 5-18
           </p>
-          
-          <div 
+
+          <div
             id={`hero-slide-card-${currentSlide}`}
             style={{
               backgroundColor: 'rgba(15, 15, 15, 0.65)',
@@ -200,7 +202,7 @@ const HeroSection = () => {
               justifyContent: 'center'
             }}
           >
-            <motion.div 
+            <motion.div
               style={{
                 position: 'absolute',
                 bottom: 0,
@@ -211,7 +213,7 @@ const HeroSection = () => {
               animate={{ width: `${borderProgress * 100}%` }}
               transition={{ duration: 0.05, ease: 'linear' }}
             />
-            
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -221,7 +223,7 @@ const HeroSection = () => {
                 transition={{ duration: 0.3 }}
                 style={{ position: 'relative', zIndex: 1 }}
               >
-                <h3 
+                <h3
                   id={`hero-slide-title-${currentSlide}`}
                   style={{
                     fontSize: 'clamp(15px, 2.5vw, 20px)',
@@ -232,7 +234,7 @@ const HeroSection = () => {
                 >
                   {slides[currentSlide].title}
                 </h3>
-                <p 
+                <p
                   id={`hero-slide-desc-${currentSlide}`}
                   style={{
                     fontSize: 'clamp(12px, 1.8vw, 15px)',
@@ -245,7 +247,7 @@ const HeroSection = () => {
                 </p>
               </motion.div>
             </AnimatePresence>
-            
+
             <div style={{
               position: 'absolute',
               bottom: '8px',
@@ -257,8 +259,8 @@ const HeroSection = () => {
               {Math.ceil((1 - borderProgress) * (slideDuration / 1000))}s
             </div>
           </div>
-          
-          <button 
+
+          <button
             id="hero-start-journey-btn"
             onClick={() => navigate(`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`)}
             style={{
@@ -272,7 +274,7 @@ const HeroSection = () => {
               borderRadius: '4px',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              marginBottom: '20px'      /* ← ADDED */
+              marginBottom: '20px'
             }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}
@@ -281,6 +283,7 @@ const HeroSection = () => {
           </button>
         </div>
 
+        {/* Slide dots */}
         <div style={{
           position: 'absolute',
           bottom: '20px',
