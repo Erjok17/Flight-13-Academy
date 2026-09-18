@@ -61,35 +61,38 @@ const Navbar = () => {
         {/* Red Trapezoid Container */}
         <div className={styles.trapezoidContainer}>
           <div className={styles.desktopIcons}>
-            <div 
+            <button 
               id="nav-search-btn" 
               onClick={() => navigate('/search')} 
               className={styles.iconWrapper}
               aria-label="Search"
+              type="button"
             >
               <Search color="white" size={20} />
-            </div>
+            </button>
             
-            <div 
+            <button 
               id="nav-cart-btn" 
               onClick={() => navigate('/cart')} 
               className={styles.iconWrapper}
               aria-label={`Shopping cart${itemCount > 0 ? `, ${itemCount} items` : ''}`}
+              type="button"
             >
               <ShoppingCart color="white" size={20} />
               {itemCount > 0 && (
                 <span className={styles.cartBadge}>{itemCount}</span>
               )}
-            </div>
+            </button>
             
-            <div 
+            <button 
               id="nav-profile-btn" 
               onClick={() => navigate(isLoggedIn ? '/account' : '/login')} 
               className={styles.iconWrapper}
               aria-label={isLoggedIn ? 'My account' : 'Sign in'}
+              type="button"
             >
               <User color="white" size={20} />
-            </div>
+            </button>
           </div>
         </div>
 
@@ -98,6 +101,7 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
           className={styles.mobileMenuBtn}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          type="button"
         >
           {isMobileMenuOpen ? <X color="var(--red)" size={24} /> : <Menu color="var(--red)" size={24} />}
         </button>
@@ -141,6 +145,7 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)} 
                 className={styles.closeBtn}
                 aria-label="Close menu"
+                type="button"
               >
                 <X size={24} color="var(--red)" />
               </button>
@@ -204,6 +209,7 @@ const Navbar = () => {
                       id="mobile-nav-logout"
                       onClick={handleLogout}
                       className={styles.mobileLogoutBtn}
+                      type="button"
                     >
                       Logout
                     </button>

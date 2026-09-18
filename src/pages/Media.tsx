@@ -130,6 +130,7 @@ const Media = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 aria-label="Grid view"
+                type="button"
                 style={{
                   padding: '8px',
                   borderRadius: '8px',
@@ -143,6 +144,7 @@ const Media = () => {
               <button
                 onClick={() => setViewMode('list')}
                 aria-label="List view"
+                type="button"
                 style={{
                   padding: '8px',
                   borderRadius: '8px',
@@ -183,7 +185,6 @@ const Media = () => {
                 >
                   {item.type === 'video' ? (
                     <video
-                      src={item.src}
                       controls
                       width={320}
                       height={220}
@@ -193,7 +194,10 @@ const Media = () => {
                         objectFit: 'cover',
                         backgroundColor: '#1a1a1a'
                       }}
-                    />
+                    >
+                      <source src={item.src} type="video/mp4" />
+                      <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
+                    </video>
                   ) : (
                     <img 
                       src={item.src} 
@@ -230,7 +234,6 @@ const Media = () => {
                 >
                   {item.type === 'video' ? (
                     <video
-                      src={item.src}
                       controls
                       width={160}
                       height={90}
@@ -241,7 +244,10 @@ const Media = () => {
                         backgroundColor: '#1a1a1a',
                         flexShrink: 0
                       }}
-                    />
+                    >
+                      <source src={item.src} type="video/mp4" />
+                      <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
+                    </video>
                   ) : (
                     <img 
                       src={item.src} 
@@ -287,6 +293,7 @@ const Media = () => {
           <button
             onClick={closeModal}
             aria-label="Close"
+            type="button"
             style={{
               position: 'absolute',
               top: '20px',
@@ -343,6 +350,7 @@ const Media = () => {
           <button
             onClick={closeModal}
             aria-label="Close"
+            type="button"
             style={{
               position: 'absolute',
               top: '20px',
@@ -364,11 +372,13 @@ const Media = () => {
           
           <div style={{ maxWidth: '90vw', maxHeight: '90vh' }} onClick={(e) => e.stopPropagation()}>
             <video
-              src={selectedMedia.src}
               controls
               autoPlay
               style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: '8px' }}
-            />
+            >
+              <source src={selectedMedia.src} type="video/mp4" />
+              <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
+            </video>
             <div style={{
               backgroundColor: 'rgba(0,0,0,0.7)',
               padding: '12px 20px',

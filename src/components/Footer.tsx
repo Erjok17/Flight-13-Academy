@@ -34,7 +34,6 @@ const Footer = () => {
             <p style={{ 
               fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', 
               lineHeight: '1.6',
-              opacity: 0.9,
               maxWidth: '300px',
               margin: '0 auto'
             }}>
@@ -43,8 +42,7 @@ const Footer = () => {
             <p style={{ 
               fontSize: 'clamp(0.8rem, 2.5vw, 0.9rem)', 
               marginTop: '15px',
-              fontStyle: 'italic',
-              opacity: 0.9
+              fontStyle: 'italic'
             }}>
               "It's a process."
             </p>
@@ -67,11 +65,10 @@ const Footer = () => {
                   style={{ 
                     color: 'white', 
                     textDecoration: 'none',
-                    opacity: 0.9,
                     transition: 'opacity 0.3s'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.9'}
+                  onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
                   +256 780 898611
                 </a>
@@ -79,7 +76,7 @@ const Footer = () => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
                 <MapPin size={18} color="white" />
                 <div>
-                  <div style={{ opacity: 0.9 }}>Abja Parks, Naalya Estate</div>
+                  <div>Abja Parks, Naalya Estate</div>
                 </div>
               </div>
             </div>
@@ -99,11 +96,10 @@ const Footer = () => {
                   fontSize: 'clamp(0.7rem, 2vw, 0.85rem)', 
                   fontWeight: 'bold',
                   letterSpacing: '1px',
-                  opacity: 0.8,
                   transition: 'opacity 0.3s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
                   WEBSITE BY TECHLABS AFRICA
                 </div>
@@ -111,12 +107,11 @@ const Footer = () => {
                   fontSize: 'clamp(0.65rem, 1.8vw, 0.8rem)', 
                   fontStyle: 'italic',
                   fontFamily: '"Georgia", "Times New Roman", serif',
-                  opacity: 0.7,
                   marginTop: '2px',
                   transition: 'opacity 0.3s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                 >
                   "Another Recipe From the Lab"
                 </div>
@@ -141,12 +136,12 @@ const Footer = () => {
               gap: '10px',
               alignItems: 'center'
             }}>
-              <li><Link to="/" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Home</Link></li>
-              <li><Link to="/about" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>About Us</Link></li>
-              <li><Link to="/programs" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Our Programs</Link></li>
-              <li><Link to="/contact" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Contact Us</Link></li>
-              <li><Link to={`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`} style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Registration</Link></li>
-              <li><Link to="/media" style={{ color: 'white', textDecoration: 'none', opacity: 0.9 }}>Media</Link></li>
+              <li><Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link></li>
+              <li><Link to="/about" style={{ color: 'white', textDecoration: 'none' }}>About Us</Link></li>
+              <li><Link to="/programs" style={{ color: 'white', textDecoration: 'none' }}>Our Programs</Link></li>
+              <li><Link to="/contact" style={{ color: 'white', textDecoration: 'none' }}>Contact Us</Link></li>
+              <li><Link to={`/contact?message=${encodeURIComponent('I want to register and be part of the academy.')}`} style={{ color: 'white', textDecoration: 'none' }}>Registration</Link></li>
+              <li><Link to="/media" style={{ color: 'white', textDecoration: 'none' }}>Media</Link></li>
             </ul>
           </div>
 
@@ -215,7 +210,7 @@ const Footer = () => {
             </div>
             
             <div style={{ marginTop: '25px' }}>
-              <p style={{ fontSize: 'clamp(0.7rem, 2.5vw, 0.8rem)', opacity: 0.8, lineHeight: '1.5' }}>
+              <p style={{ fontSize: 'clamp(0.7rem, 2.5vw, 0.8rem)', lineHeight: '1.5' }}>
                 <strong>Training Days:</strong><br />
                 Monday, Wednesday, Friday & Saturday
               </p>
@@ -224,12 +219,11 @@ const Footer = () => {
         </div>
 
         <div style={{ 
-          borderTop: '1px solid rgba(255,255,255,0.2)',
+          borderTop: '1px solid rgba(255,255,255,0.4)',
           paddingTop: 'clamp(20px, 5vw, 25px)',
           marginTop: 'clamp(20px, 5vw, 20px)',
           textAlign: 'center',
-          fontSize: 'clamp(0.7rem, 2vw, 0.8rem)',
-          opacity: 0.7
+          fontSize: 'clamp(0.7rem, 2vw, 0.8rem)'
         }}>
           <p>© {new Date().getFullYear()} Flight 13 Basketball Academy. All rights reserved.</p>
           <p style={{ marginTop: '5px' }}>"It's a process."</p>

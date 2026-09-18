@@ -14,7 +14,7 @@ const About = () => {
     ageGroups: 0,
     scholarships: 0
   });
-  
+
   const [hasAnimated, setHasAnimated] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +41,7 @@ const About = () => {
         clearInterval(athleteInterval);
       }
     }, 50);
-    
+
     let currentDays = 0;
     const daysInterval = setInterval(() => {
       if (currentDays < 4) {
@@ -51,7 +51,7 @@ const About = () => {
         clearInterval(daysInterval);
       }
     }, 80);
-    
+
     let currentAge = 0;
     const ageInterval = setInterval(() => {
       if (currentAge < 1) {
@@ -61,7 +61,7 @@ const About = () => {
         clearInterval(ageInterval);
       }
     }, 50);
-    
+
     let currentScholarships = 0;
     const scholarshipsInterval = setInterval(() => {
       if (currentScholarships < 2) {
@@ -80,7 +80,7 @@ const About = () => {
       <SEO title="About Us - Our Story & Vision" />
       <Navbar />
       <AnnouncementBanner />
-      
+
       {/* Hero Section with Video */}
       <section id="about-hero" style={{
         position: 'relative',
@@ -112,8 +112,9 @@ const About = () => {
           }}
         >
           <source src="/videos/children1.mp4" type="video/mp4" />
+          <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
         </video>
-        
+
         <div style={{
           position: 'absolute',
           top: 0,
@@ -123,7 +124,7 @@ const About = () => {
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           zIndex: 1
         }} />
-        
+
         <div style={{ position: 'relative', zIndex: 2 }}>
           <h1 style={{
             fontSize: 'clamp(36px, 6vw, 56px)',
@@ -147,22 +148,22 @@ const About = () => {
       </section>
 
       <main style={{ backgroundColor: 'white' }}>
-        
+
         {/* What is Flight 13 Section */}
         <section id="about-what" style={{ padding: '80px 0', maxWidth: '1200px', margin: '0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', color: 'var(--red)', marginBottom: '24px' }}>
             What is Flight 13?
           </h2>
           <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#444', marginBottom: '24px' }}>
-            Flight 13 is an elite basketball program focused on skill development and basketball knowledge 
-            for young athletes between the ages of 5-18. Our mission is to develop not just better players, 
+            Flight 13 is an elite basketball program focused on skill development and basketball knowledge
+            for young athletes between the ages of 5-18. Our mission is to develop not just better players,
             but better people — through discipline, hard work, and a love for the game.
           </p>
           <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#444', marginBottom: '24px' }}>
-            Our training days are <strong>Monday, Wednesday, Friday, and Saturday</strong> — because consistency is key. 
+            Our training days are <strong>Monday, Wednesday, Friday, and Saturday</strong> — because consistency is key.
             We believe that greatness doesn't happen overnight. <strong>"It's a process."</strong>
           </p>
-          
+
           <div style={{
             backgroundColor: '#f5f5f5',
             padding: '30px',
@@ -172,7 +173,7 @@ const About = () => {
           }}>
             <h3 style={{ fontSize: '24px', color: 'var(--red)', marginBottom: '12px' }}>Our Purpose</h3>
             <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#444' }}>
-              To empower young athletes to reach their full potential on and off the court, 
+              To empower young athletes to reach their full potential on and off the court,
               preparing them for success in basketball, academics, and life.
             </p>
           </div>
@@ -197,21 +198,21 @@ const About = () => {
                   </h3>
                   <p style={{ fontSize: '16px', color: '#666' }}>Active Athletes</p>
                 </div>
-                
+
                 <div>
                   <h3 style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '8px' }}>
                     {counts.trainingDays}
                   </h3>
                   <p style={{ fontSize: '16px', color: '#666' }}>Training Days/Week</p>
                 </div>
-                
+
                 <div>
                   <h3 style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '8px' }}>
                     {counts.ageGroups === 1 ? '5-18' : '0'}
                   </h3>
                   <p style={{ fontSize: '16px', color: '#666' }}>Age Groups</p>
                 </div>
-                
+
                 <div>
                   <h3 style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--red)', marginBottom: '8px' }}>
                     {counts.scholarships === 2 ? '2+' : counts.scholarships}
@@ -231,7 +232,7 @@ const About = () => {
           <p style={{ fontSize: '18px', color: '#666', textAlign: 'center', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px auto' }}>
             The guiding principles that define who we are and how we train.
           </p>
-          
+
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -271,20 +272,20 @@ const About = () => {
                   Our Training Philosophy
                 </h2>
                 <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#444', marginBottom: '20px' }}>
-                  We combine fundamental skill development with game intelligence. Every session is designed 
+                  We combine fundamental skill development with game intelligence. Every session is designed
                   to push athletes to their limits while teaching them the mental aspects of the game.
                 </p>
                 <p style={{ fontSize: '18px', lineHeight: '1.7', color: '#444', marginBottom: '20px' }}>
-                  Our coaches focus on individual weaknesses while building team chemistry. From private workouts 
+                  Our coaches focus on individual weaknesses while building team chemistry. From private workouts
                   to competitive scrimmages, every moment on the court has a purpose.
                 </p>
-                <Link to="/programs" style={{ 
-                  backgroundColor: 'var(--red)', 
-                  color: 'white', 
-                  padding: '12px 30px', 
-                  borderRadius: '30px', 
-                  textDecoration: 'none', 
-                  fontWeight: 'bold', 
+                <Link to="/programs" style={{
+                  backgroundColor: 'var(--red)',
+                  color: 'white',
+                  padding: '12px 30px',
+                  borderRadius: '30px',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
                   display: 'inline-block',
                   transition: 'all 0.3s'
                 }}>
@@ -292,8 +293,8 @@ const About = () => {
                 </Link>
               </div>
               <div>
-                <img 
-                  src="/images/p6.webp" 
+                <img
+                  src="/images/p6.webp"
                   alt="Flight 13 Training"
                   width={600}
                   height={600}
@@ -313,7 +314,7 @@ const About = () => {
           <p style={{ fontSize: '18px', color: '#666', textAlign: 'center', marginBottom: '48px', maxWidth: '700px', margin: '0 auto 48px auto' }}>
             From vision to reality — the story of Flight 13.
           </p>
-          
+
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -330,8 +331,8 @@ const About = () => {
               boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
               borderTop: `4px solid var(--red)`
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
               <div style={{
                 width: '80px',
                 height: '80px',
@@ -343,23 +344,23 @@ const About = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <img 
-                  src="/images/ball.webp" 
+                <img
+                  src="/images/ball.webp"
                   alt="Basketball"
                   width={80}
                   height={80}
                   loading="lazy"
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
+                  style={{
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'cover'
                   }}
                 />
               </div>
               <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>Founded in 2020</h3>
               <p style={{ color: '#666', fontSize: '16px', lineHeight: '1.6' }}>
-                Flight 13 was born from a vision to create a premier basketball program 
-                that develops young athletes into skilled, disciplined players. What started 
+                Flight 13 was born from a vision to create a premier basketball program
+                that develops young athletes into skilled, disciplined players. What started
                 as a dream became a reality in 2020.
               </p>
             </div>
@@ -374,8 +375,8 @@ const About = () => {
               boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
               borderTop: `4px solid var(--red)`
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
               <div style={{
                 width: '80px',
                 height: '80px',
@@ -387,23 +388,23 @@ const About = () => {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <img 
-                  src="/images/registered.jpg" 
+                <img
+                  src="/images/registered.jpg"
                   alt="Official Registration"
                   width={80}
                   height={80}
                   loading="lazy"
-                  style={{ 
-                    width: '100%', 
-                    height: '100%', 
+                  style={{
+                    width: '100%',
+                    height: '100%',
                     objectFit: 'cover'
                   }}
                 />
               </div>
               <h3 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>Officially Registered in 2023</h3>
               <p style={{ color: '#666', fontSize: '16px', lineHeight: '1.6' }}>
-                After years of dedication and growth, Flight 13 became an officially 
-                registered academy in 2023, solidifying our commitment to excellence 
+                After years of dedication and growth, Flight 13 became an officially
+                registered academy in 2023, solidifying our commitment to excellence
                 and our promise to develop the next generation of basketball talent.
               </p>
             </div>
@@ -419,7 +420,7 @@ const About = () => {
             borderLeft: `4px solid var(--red)`
           }}>
             <p style={{ fontSize: '16px', color: '#444' }}>
-              <strong>From 2020 to 2023:</strong> Three years of building, growing, and developing 
+              <strong>From 2020 to 2023:</strong> Three years of building, growing, and developing
               young athletes. Today, Flight 13 continues to soar to new heights.
             </p>
           </div>
@@ -448,7 +449,7 @@ const About = () => {
           </Link>
         </section>
       </main>
-      
+
       <Footer />
       <NavigationDots sections={sections} />
     </div>

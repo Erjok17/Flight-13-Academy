@@ -102,7 +102,7 @@ const HeroSection = () => {
             key={currentSlide}
             src={slides[currentSlide].image} 
             alt={slides[currentSlide].title}
-            fetchPriority="high"
+            {...({ fetchpriority: 'high' } as any)}
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -141,15 +141,15 @@ const HeroSection = () => {
           justifyContent: 'center',
           textAlign: 'left'
         }}>
-          <h2 style={{ 
-            fontSize: 'clamp(16px, 3vw, 28px)', 
+          <h1 style={{ 
+            fontSize: 'clamp(24px, 5vw, 44px)', 
             marginBottom: '4px', 
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
           }}>
             FLIGHT13 BASKETBALL ACADEMY
-          </h2>
+          </h1>
           <p style={{ 
             fontSize: 'clamp(12px, 2vw, 16px)', 
             marginBottom: '16px', 
@@ -160,15 +160,15 @@ const HeroSection = () => {
           }}>
             "it's a process."
           </p>
-          <h1 style={{ 
-            fontSize: 'clamp(24px, 5vw, 44px)', 
+          <h2 style={{ 
+            fontSize: 'clamp(20px, 4vw, 32px)', 
             marginBottom: '4px', 
             color: 'white',
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
           }}>
             ELITE SKILLS TRAINING
-          </h1>
+          </h2>
           <p style={{ 
             fontSize: 'clamp(14px, 3vw, 22px)', 
             marginBottom: '20px', 
@@ -293,6 +293,7 @@ const HeroSection = () => {
               key={index}
               onClick={() => goToSlide(index)}
               aria-label={`Go to slide ${index + 1}`}
+              type="button"
               style={{
                 width: currentSlide === index ? 'clamp(30px, 6vw, 40px)' : 'clamp(8px, 2vw, 10px)',
                 height: 'clamp(8px, 2vw, 10px)',

@@ -14,10 +14,12 @@ const Home = () => {
       <SEO title="Home - Elite Basketball Training" />
       <Navbar />
       <AnnouncementBanner />
-      <HeroSection />
-      <TrainWithPurpose />
-      <ScholarshipSlideshow />
-      <CoachesSection />
+      <main>
+        <HeroSection />
+        <TrainWithPurpose />
+        <ScholarshipSlideshow />
+        <CoachesSection />
+      </main>
       <Footer />
       <NavigationDots sections={['hero', 'train-purpose', 'scholarship', 'coaches']} />
     </div>

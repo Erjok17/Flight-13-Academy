@@ -83,7 +83,7 @@ const Programs = () => {
       <SEO title="Programs - Basketball Training Classes" />
       <Navbar />
       <AnnouncementBanner />
-      
+
       <section style={{
         backgroundColor: 'var(--red)',
         color: 'white',
@@ -102,7 +102,7 @@ const Programs = () => {
         <section style={{ padding: 'clamp(40px, 8vw, 80px) 0' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(30px, 6vw, 60px)' }}>
-              {programs.map((program ) => (
+              {programs.map((program) => (
                 <div
                   key={program.id}
                   style={{
@@ -121,42 +121,42 @@ const Programs = () => {
                     {/* Left Side Content */}
                     <div>
                       <div style={{ marginBottom: '20px' }}>{program.icon}</div>
-                      <h2 style={{ 
-                        fontSize: 'clamp(22px, 5vw, 28px)', 
-                        fontWeight: 'bold', 
-                        color: 'var(--red)', 
-                        marginBottom: '16px' 
+                      <h2 style={{
+                        fontSize: 'clamp(22px, 5vw, 28px)',
+                        fontWeight: 'bold',
+                        color: 'var(--red)',
+                        marginBottom: '16px'
                       }}>
                         {program.title}
                       </h2>
-                      <p style={{ 
-                        fontSize: 'clamp(14px, 2.5vw, 16px)', 
-                        lineHeight: '1.6', 
-                        color: '#555', 
-                        marginBottom: '24px' 
+                      <p style={{
+                        fontSize: 'clamp(14px, 2.5vw, 16px)',
+                        lineHeight: '1.6',
+                        color: '#555',
+                        marginBottom: '24px'
                       }}>
                         {program.description}
                       </p>
-                      
+
                       <h3 style={{ fontSize: 'clamp(16px, 3vw, 18px)', fontWeight: 'bold', color: '#333', marginBottom: '16px' }}>
                         Key Features:
                       </h3>
                       <ul style={{ listStyle: 'none', padding: 0 }}>
                         {program.features.map((feature, idx) => (
-                          <li key={idx} style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '10px', 
-                            marginBottom: '12px', 
-                            fontSize: 'clamp(12px, 2vw, 14px)', 
-                            color: '#555' 
+                          <li key={idx} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            marginBottom: '12px',
+                            fontSize: 'clamp(12px, 2vw, 14px)',
+                            color: '#555'
                           }}>
                             <span style={{ color: 'var(--red)', fontSize: '18px' }}>✓</span>
                             {feature}
                           </li>
                         ))}
                       </ul>
-                      
+
                       <Link to={`/contact?message=${encodeURIComponent(`I'd like to register for ${program.title}`)}`} style={{
                         display: 'inline-block',
                         backgroundColor: 'var(--red)',
@@ -169,12 +169,12 @@ const Programs = () => {
                         transition: 'all 0.3s',
                         fontSize: 'clamp(13px, 2.5vw, 16px)'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
                         Register Now →
                       </Link>
                     </div>
-                    
+
                     {/* Right Side Content */}
                     <div>
                       {program.schedule ? (
@@ -184,11 +184,11 @@ const Programs = () => {
                           padding: 'clamp(16px, 4vw, 24px)',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{ 
-                            fontSize: 'clamp(16px, 3.5vw, 20px)', 
-                            fontWeight: 'bold', 
-                            color: 'var(--red)', 
-                            marginBottom: '20px' 
+                          <h3 style={{
+                            fontSize: 'clamp(16px, 3.5vw, 20px)',
+                            fontWeight: 'bold',
+                            color: 'var(--red)',
+                            marginBottom: '20px'
                           }}>
                             Schedule Details
                           </h3>
@@ -223,11 +223,11 @@ const Programs = () => {
                           padding: 'clamp(16px, 4vw, 24px)',
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
                         }}>
-                          <h3 style={{ 
-                            fontSize: 'clamp(16px, 3.5vw, 20px)', 
-                            fontWeight: 'bold', 
-                            color: 'var(--red)', 
-                            marginBottom: '20px' 
+                          <h3 style={{
+                            fontSize: 'clamp(16px, 3.5vw, 20px)',
+                            fontWeight: 'bold',
+                            color: 'var(--red)',
+                            marginBottom: '20px'
                           }}>
                             Guest Coaches & Scouts
                           </h3>
@@ -241,7 +241,7 @@ const Programs = () => {
                               flexWrap: 'wrap'
                             }}>
                               {coach.image && (
-                                <img 
+                                <img
                                   src={coach.image}
                                   alt={coach.name}
                                   width={60}
@@ -281,7 +281,7 @@ const Programs = () => {
                             color: '#666',
                             textAlign: 'center'
                           }}>
-                            Coach Wal Deng has worked directly with NBA prospect Kaman Maluach, bringing elite-level 
+                            Coach Wal Deng has worked directly with NBA prospect Kaman Maluach, bringing elite-level
                             training insights and connections to Flight 13 athletes.
                           </div>
                         </div>
@@ -294,7 +294,6 @@ const Programs = () => {
                           overflow: 'hidden'
                         }}>
                           <video
-                            src={program.video}
                             autoPlay
                             loop
                             muted
@@ -306,7 +305,10 @@ const Programs = () => {
                               borderRadius: '12px',
                               display: 'block'
                             }}
-                          />
+                          >
+                            <source src={program.video} type="video/mp4" />
+                            <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
+                          </video>
                           <div style={{
                             padding: '16px',
                             textAlign: 'center',
@@ -324,7 +326,7 @@ const Programs = () => {
                           boxShadow: '0 5px 15px rgba(0,0,0,0.08)',
                           overflow: 'hidden'
                         }}>
-                          <img 
+                          <img
                             src={program.image}
                             alt="Competitive Games"
                             width={600}
@@ -367,7 +369,7 @@ const Programs = () => {
             </div>
           </div>
         </section>
-        
+
         <section style={{ backgroundColor: '#f9f9f9', padding: 'clamp(40px, 8vw, 80px) 0' }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px', textAlign: 'center' }}>
             <h2 style={{ fontSize: 'clamp(24px, 5vw, 36px)', color: 'var(--red)', marginBottom: '16px' }}>
@@ -376,7 +378,7 @@ const Programs = () => {
             <p style={{ fontSize: 'clamp(14px, 2.5vw, 18px)', color: '#666', maxWidth: '700px', margin: '0 auto 48px auto', padding: '0 16px' }}>
               We're committed to developing not just skilled players, but responsible young men and women
             </p>
-            
+
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -395,8 +397,8 @@ const Programs = () => {
                   boxShadow: '0 5px 15px rgba(0,0,0,0.05)',
                   transition: 'transform 0.3s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
                   <div style={{ color: 'var(--red)', marginBottom: '16px' }}>
                     {item.icon}
                   </div>
@@ -407,7 +409,7 @@ const Programs = () => {
             </div>
           </div>
         </section>
-        
+
         <section style={{ padding: 'clamp(40px, 8vw, 80px) 0', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(22px, 5vw, 32px)', marginBottom: '16px', color: '#222' }}>
             Ready to Start Your Journey?
@@ -426,8 +428,8 @@ const Programs = () => {
               transition: 'all 0.3s',
               fontSize: 'clamp(13px, 2.5vw, 16px)'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--red-dark)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--red)'}>
               Register Now
             </Link>
             <Link to="/contact" style={{
@@ -441,20 +443,20 @@ const Programs = () => {
               transition: 'all 0.3s',
               fontSize: 'clamp(13px, 2.5vw, 16px)'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'var(--red)';
-              e.currentTarget.style.color = 'white';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.color = 'var(--red)';
-            }}>
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--red)';
+                e.currentTarget.style.color = 'white';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = 'var(--red)';
+              }}>
               Contact Us
             </Link>
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

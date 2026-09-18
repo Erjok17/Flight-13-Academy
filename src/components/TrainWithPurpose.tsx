@@ -156,7 +156,6 @@ const TrainWithPurpose = () => {
                   <>
                     <video
                       ref={videoRef}
-                      src={card.video}
                       loop
                       muted
                       playsInline
@@ -169,7 +168,10 @@ const TrainWithPurpose = () => {
                         transition: 'transform 0.5s ease',
                         transform: hoveredCard === card.id ? 'scale(1.05)' : 'scale(1)'
                       }}
-                    />
+                    >
+                      <source src={card.video} type="video/mp4" />
+                      <track kind="captions" src="/captions/empty.vtt" srcLang="en" label="English" />
+                    </video>
                     {hoveredCard !== card.id && (
                       <div style={{
                         position: 'absolute',
