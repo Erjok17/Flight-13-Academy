@@ -95,7 +95,6 @@ const HeroSection = () => {
         maxWidth: '1400px',
         minHeight: '80vh',
         borderRadius: '1px',
-        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center'
