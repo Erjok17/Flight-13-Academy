@@ -210,7 +210,7 @@ const Contact = () => {
                     onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                   >
                     <img 
-                      src="/images/ig-icon-white.jpg" 
+                      src="/images/ig2-logo.webp" 
                       alt="Instagram"
                       width={40}
                       height={40}

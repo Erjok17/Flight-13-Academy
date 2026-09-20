@@ -281,28 +281,35 @@ const Search = () => {
       <main style={{ padding: '60px 0', backgroundColor: '#f9f9f9', minHeight: '60vh' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
           
+          {/* Search bar - fixed for mobile overflow */}
           <div style={{
             display: 'flex',
-            gap: '12px',
+            gap: '8px',
             backgroundColor: 'white',
-            padding: '8px 16px',
+            padding: '8px 12px 8px 16px',
             borderRadius: '50px',
             boxShadow: '0 5px 20px rgba(0,0,0,0.1)',
-            marginBottom: '40px'
+            marginBottom: '40px',
+            alignItems: 'center',
+            boxSizing: 'border-box',
+            width: '100%',
+            maxWidth: '100%'
           }}>
-            <SearchIcon size={24} color="#888" />
+            <SearchIcon size={20} color="#888" style={{ flexShrink: 0 }} />
             <input
               type="text"
-              placeholder="Search for programs, coaches, products, athletes..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={handleKeyPress}
               style={{
                 flex: 1,
+                minWidth: 0,
                 border: 'none',
                 outline: 'none',
                 fontSize: '16px',
-                padding: '12px 0'
+                padding: '12px 0',
+                background: 'transparent'
               }}
             />
             {searchTerm && (
@@ -313,32 +320,59 @@ const Search = () => {
                   setPageMatch(null);
                   setHasSearched(false);
                 }}
-                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                aria-label="Clear search"
+                type="button"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  padding: '4px'
+                }}
               >
-                <X size={20} color="#888" />
+                <X size={18} color="#888" />
               </button>
             )}
             <button
               onClick={handleSearch}
               disabled={isLoading}
+              aria-label="Search"
+              type="button"
               style={{
                 backgroundColor: 'var(--red)',
                 color: 'white',
                 border: 'none',
-                padding: '8px 24px',
+                padding: '10px 16px',
                 borderRadius: '50px',
                 cursor: isLoading ? 'not-allowed' : 'pointer',
                 fontWeight: 'bold',
                 opacity: isLoading ? 0.7 : 1,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px'
+                justifyContent: 'center',
+                gap: '6px',
+                flexShrink: 0,
+                minWidth: '44px',
+                fontSize: '14px'
               }}
             >
-              {isLoading ? <Loader size={18} className="spinner" /> : <SearchIcon size={18} />}
-              Search
+              {isLoading ? (
+                <Loader size={18} className="spinner" />
+              ) : (
+                <>
+                  <SearchIcon size={18} />
+                  <span className="search-btn-label">Search</span>
+                </>
+              )}
             </button>
           </div>
+
+          <style>{`
+            .search-btn-label { display: inline; }
+            @media (max-width: 480px) {
+              .search-btn-label { display: none; }
+            }
+          `}</style>
 
           {hasSearched && !isLoading && pageMatch && (
             <div style={{
@@ -362,6 +396,7 @@ const Search = () => {
               </div>
               <button
                 onClick={() => handlePageRedirect(pageMatch.link)}
+                type="button"
                 style={{
                   backgroundColor: '#2196F3',
                   color: 'white',
@@ -468,6 +503,7 @@ const Search = () => {
                   <button
                     key={index}
                     onClick={() => handlePopularSearch(item)}
+                    type="button"
                     style={{
                       backgroundColor: '#f0f0f0',
                       border: 'none',

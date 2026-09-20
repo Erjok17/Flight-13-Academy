@@ -38,7 +38,9 @@ const scheduleData = [
 
 const WeeklySchedule = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+  );
 
   useEffect(() => {
     const checkMobile = () => {
@@ -153,7 +155,7 @@ const WeeklySchedule = () => {
         </div>
       </div>
 
-      {/* Center Content - Responsive text colors */}
+      {/* Center Content - Black on mobile, red/dark on desktop */}
       <div style={{ 
         position: 'relative', 
         zIndex: 2, 
@@ -162,21 +164,19 @@ const WeeklySchedule = () => {
         margin: '0 auto',
         padding: '0 20px'
       }}>
-        {/* Title - Red on desktop, White with shadow on mobile */}
+        {/* Title - black on mobile, red on desktop */}
         <h2 style={{ 
           fontSize: 'clamp(24px, 5vw, 36px)', 
-          color: isMobile ? 'white' : 'var(--red)',
-          textShadow: isMobile ? '2px 2px 4px rgba(0,0,0,0.5)' : 'none',
+          color: isMobile ? '#000000' : 'var(--red)',
           marginBottom: '16px' 
         }}>
           WEEKLY TRAINING SCHEDULE
         </h2>
         
-        {/* Subtitle - Dark gray on desktop, White with shadow on mobile */}
+        {/* Subtitle - black on mobile, dark gray on desktop */}
         <p style={{ 
           fontSize: 'clamp(14px, 3vw, 18px)', 
-          color: isMobile ? 'white' : 'var(--gray-dark)',
-          textShadow: isMobile ? '1px 1px 2px rgba(0,0,0,0.5)' : 'none',
+          color: isMobile ? '#000000' : 'var(--gray-dark)',
           marginBottom: '40px',
           padding: '0 10px'
         }}>
@@ -284,11 +284,12 @@ const WeeklySchedule = () => {
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               aria-label={`Go to ${scheduleData[idx].day}`}
+              type="button"
               style={{
                 width: currentIndex === idx ? '40px' : '10px',
                 height: '8px',
                 borderRadius: '4px',
-                backgroundColor: currentIndex === idx ? (isMobile ? 'white' : 'var(--red)') : (isMobile ? 'rgba(255,255,255,0.5)' : '#e0e0e0'),
+                backgroundColor: currentIndex === idx ? 'var(--red)' : '#e0e0e0',
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.3s'
